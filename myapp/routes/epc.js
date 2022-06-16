@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const got = require("got");
 const { pipeline } = require("stream");
-const { getCertificateByLmkKey } = require("./dynamo ");
+const { getCertificateByLmkKey } = require("./dynamo");
 
 const url =
     "https://epc.opendatacommunities.org/api/v1/domestic/certificate/1573380469022017090821481343938953",
