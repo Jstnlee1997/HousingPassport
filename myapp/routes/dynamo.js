@@ -21,14 +21,20 @@ const getCertificates = async () => {
   return certificates;
 };
 
-const getCertificateByLmkKey = async (lmkKey) => {
+const getCertificateByLmkKey = async (lmkKey, localAuthority) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      lmkKey,
+      "lmk-key": lmkKey,
+      "local-authority": localAuthority,
     },
   };
-  return await dynamoClient.get(params).promise();
+  return await dynamoClient
+    .get(params)
+    .promise()
+    .then(function (result) {
+      console.log(result);
+    });
 };
 
 const addCertificate = async (certificate) => {
@@ -50,6 +56,12 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
   // use client ot call a delete method
   return await dynamoClient.delete(params).promise();
 };
+
+// Testing deleting of certificate by lmk-key & local-authority
+getCertificateByLmkKey(
+  "cee3477e2d6d5aee4d5780b52ab8acf30242b510bf940b342ba5614abe0f8eee",
+  "W06000012"
+);
 
 module.exports = {
   dynamoClient,

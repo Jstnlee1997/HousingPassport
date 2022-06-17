@@ -1,28 +1,40 @@
 const router = require("express").Router();
-const got = require("got");
-const { pipeline } = require("stream");
-const { getCertificateByLmkKey } = require("./dynamo");
+// const got = require("got");
+// const { pipeline } = require("stream");
+const axios = require("axios");
+const { addCertificate } = require("./dynamo");
 
-const url =
-    "https://epc.opendatacommunities.org/api/v1/domestic/certificate/1573380469022017090821481343938953",
-  Authorization =
-    "Basic anpsMThAaWMuYWMudWs6MTA3YzQ1YWJiMjhkZWIyYmM0MDM0MjFkMmY3YTI4OTViMmUwYjA0Ng==",
-  Accept = "application/json";
+// Variables to authenticate energy epc account
+const Authorization = process.env.EPC_AUTHORIZATION;
+const Accept = "application/json";
 
-router.get("/", function (req, res) {
-  const dataStream = got.stream({
-    url: url,
-    headers: {
-      Authorization: auth,
-      Accept: accept,
-    },
-  });
-  pipeline(dataStream, res, (err) => {
-    if (err) {
+// Function to seed data from EPC API into dynamo DB
+const seedData = async () => {
+  // create for loop that runs through from 0 to 30 million, in multiples of 5000
+  for (let i = 825; i < 5000; i += 5000) {
+    // Vary url for different pages
+    var url =
+      "https://epc.opendatacommunities.org/api/v1/domestic/search?size=5000&from=" +
+      i;
+    console.log(url);
+    try {
+      const { data: certificates } = await axios.get(url, {
+        headers: {
+          Authorization: Authorization,
+          Accept: Accept,
+        },
+      });
+
+      const certificatePromises = certificates["rows"].map((certificate) =>
+        addCertificate(certificate)
+      );
+      await Promise.all(certificatePromises);
+    } catch (err) {
       console.log(err);
-      res.sendStatus(500);
     }
-  });
-});
+  }
+};
+
+seedData();
 
 module.exports = router;
