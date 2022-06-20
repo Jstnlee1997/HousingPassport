@@ -2,7 +2,7 @@ const router = require("express").Router();
 // const got = require("got");
 // const { pipeline } = require("stream");
 const axios = require("axios");
-const { addCertificate } = require("./dynamo");
+const { addCertificate, getCertificateByLmkKey } = require("./dynamo");
 
 // Variables to authenticate energy epc account
 const Authorization = process.env.EPC_AUTHORIZATION;
@@ -11,10 +11,10 @@ const Accept = "application/json";
 // Function to seed data from EPC API into dynamo DB
 const seedData = async () => {
   const url =
-    "https://epc.opendatacommunities.org/api/v1/domestic/search?size=1&from=";
+    "https://epc.opendatacommunities.org/api/v1/domestic/search?size=1000&from=";
 
   // create for loop that runs through from 0 to 30 million, in multiples of 5000
-  for (let i = 2879; i < 3000; i += 1) {
+  for (let i = 1; i < 1000; i += 1000) {
     // Vary url for different pages
     try {
       const { data: certificates } = await axios.get(url + i, {
@@ -57,6 +57,22 @@ const getCertificatesOfPostCode = async (postcode) => {
       console.log(err);
     });
 };
+
+/* GET certificate of lmk-key */
+router.get("/:lmkKey", function (req, res, next) {
+  console.log(req.params);
+
+  // check if there is an lmk-key in the database
+  const found = getCertificateByLmkKey(req.params.lmkKey);
+  found.then((result) => {
+    // Display the epc certificate if valid
+    if (result) {
+      res.send(result["Item"]);
+    } else {
+      res.send("There is no certificate by the given lmk-key");
+    }
+  });
+});
 
 /* GET certificates for postcode query */
 router.get("/postcode/:postcode", function (req, res, next) {
