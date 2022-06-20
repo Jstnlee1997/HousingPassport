@@ -7,7 +7,6 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var epcRouter = require("./routes/epc");
-var dynamoRouter = require("./routes/dynamo");
 
 var app = express();
 

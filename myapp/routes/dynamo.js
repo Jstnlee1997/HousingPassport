@@ -58,10 +58,10 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 };
 
 // Testing deleting of certificate by lmk-key & local-authority
-getCertificateByLmkKey(
-  "cee3477e2d6d5aee4d5780b52ab8acf30242b510bf940b342ba5614abe0f8eee",
-  "W06000012"
-);
+// getCertificateByLmkKey(
+//   "cee3477e2d6d5aee4d5780b52ab8acf30242b510bf940b342ba5614abe0f8eee",
+//   "W06000012"
+// );
 
 module.exports = {
   dynamoClient,
