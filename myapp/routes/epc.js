@@ -83,9 +83,9 @@ router.route("/postcode/:postcode").get((req, res, next) => {
   found.then((result) => {
     console.log(result);
     if (result) {
-      res.send(JSON.stringify(result["rows"]));
+      res.send(result["rows"]);
     } else {
-      res.send("No certificates under indicated postcode");
+      res.status(404).send("No certificates under indicated postcode");
     }
   });
 });
