@@ -59,23 +59,23 @@ const getCertificatesOfPostCode = async (postcode) => {
 };
 
 /* GET certificate of lmk-key */
-router.get("/:lmkKey", function (req, res, next) {
+router.route("/:lmkKey").get((req, res, next) => {
   console.log(req.params);
 
   // check if there is an lmk-key in the database
   const found = getCertificateByLmkKey(req.params.lmkKey);
   found.then((result) => {
     // Display the epc certificate if valid
-    if (result) {
+    if (result.Item) {
       res.send(result["Item"]);
     } else {
-      res.send("There is no certificate by the given lmk-key");
+      res.status(404).send("There is no certificate by the given lmk-key");
     }
   });
 });
 
 /* GET certificates for postcode query */
-router.get("/postcode/:postcode", function (req, res, next) {
+router.route("/postcode/:postcode").get((req, res, next) => {
   console.log(req.params);
 
   // check if there are returned certificates
@@ -91,10 +91,5 @@ router.get("/postcode/:postcode", function (req, res, next) {
 });
 
 // seedData();
-
-// var cert = getCertificatesOfPostCode("sw67sr");
-// cert.then((result) => {
-//   console.log(result);
-// });
 
 module.exports = router;
