@@ -2,7 +2,7 @@ const router = require("express").Router();
 // const got = require("got");
 // const { pipeline } = require("stream");
 const axios = require("axios");
-const { addCertificate, getCertificateByLmkKey } = require("./dynamo");
+const { addCertificate, getCertificateByLmkKey } = require("./dynamo-certs");
 
 // Variables to authenticate energy epc account
 const Authorization = process.env.EPC_AUTHORIZATION;
@@ -14,7 +14,7 @@ const seedData = async () => {
     "https://epc.opendatacommunities.org/api/v1/domestic/search?size=1000&from=";
 
   // create for loop that runs through from 0 to 30 million, in multiples of 5000
-  for (let i = 1; i < 1000; i += 1000) {
+  for (let i = 0; i < 1000; i += 1000) {
     // Vary url for different pages
     try {
       const { data: certificates } = await axios.get(url + i, {

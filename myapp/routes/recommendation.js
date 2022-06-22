@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
-const { response } = require("express");
+const { addRecommendation } = require("./dynamo-recos");
 require("dotenv").config();
 
 // Variables to authenticate energy epc account
@@ -9,8 +9,9 @@ const Accept = "application/json";
 const url =
   "https://epc.opendatacommunities.org/api/v1/domestic/recommendations/";
 
-const getRecommendationByLmkKey = async (lmkKey) => {
-  axios
+// Function to get recommendations by lmk-key from epc API
+const getRecommendationsByLmkKey = async (lmkKey) => {
+  return axios
     .get(url + lmkKey, {
       headers: {
         Authorization: Authorization,
@@ -19,13 +20,39 @@ const getRecommendationByLmkKey = async (lmkKey) => {
     })
     .then((res) => {
       console.log(res.status);
-      console.log(res.data);
+      if (res.data) {
+        return res.data;
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-getRecommendationByLmkKey("1573380469022017090821481343938953");
+// Function to get recommendation and store into dynamo DB given lmkkey
+const seedRecommendation = async (lmkKey) => {
+  // get recommendation from EPC API
+  const recommendations = await getRecommendationsByLmkKey(lmkKey);
+
+  // store recommendation into dynamoDB
+  try {
+    console.log(recommendations);
+    // addRecommendation(recommendation);
+    const recommendationPromises = recommendations["rows"].map(
+      (recommendation) => {
+        addRecommendation(recommendation);
+      }
+    );
+    await Promise.all(recommendationPromises);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// Test getting recommendation using input lmk-key
+// getRecommendationsByLmkKey("1573380469022017090821481343938953");
+
+// Test seedRecommendation to add all recommendations for a given lmk-key
+// seedRecommendation("1573380469022017090821481343938953");
 
 module.exports = router;

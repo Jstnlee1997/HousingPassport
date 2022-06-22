@@ -10,7 +10,7 @@ AWS.config.update({
 
 // create client to conenct to document store for DynamoDB
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = "epc-api";
+const TABLE_NAME = "epc-certificates";
 
 const getCertificates = async () => {
   const params = {
