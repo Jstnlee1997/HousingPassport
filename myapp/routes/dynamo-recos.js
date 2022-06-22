@@ -12,12 +12,25 @@ AWS.config.update({
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "epc-recommendations";
 
-const getRecommendations = async () => {
+const getAllRecommendations = async () => {
   const params = {
     TableName: TABLE_NAME,
   };
   const recommendations = await dynamoClient.scan(params).promise();
   console.log(recommendations);
+  return recommendations;
+};
+
+const getRecommendationsByLmkKey = async (lmkKey) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "lmk-key": lmkKey,
+    },
+  };
+  console.log(params);
+
+  const recommendations = await dynamoClient.scan(params).promise();
   return recommendations;
 };
 
@@ -59,11 +72,6 @@ const deleteRecommendationByLmkKey = async (lmkKey, improvementId) => {
   return await dynamoClient.delete(params).promise();
 };
 
-// Testing finding of recommendation by lmk-key
-// getRecommendationByLmkKey(
-//   "1e087cfceb2b4e4cf113af8991c2775332cf8dfdb9ceec8bbc18540c9eb2011f"
-// );
-
 /* Testing functions */
 // var recommendation = {
 //   "lmk-key": "1573380469022017090821481343938953",
@@ -84,6 +92,13 @@ const deleteRecommendationByLmkKey = async (lmkKey, improvementId) => {
 //   recommendation["improvement-id"]
 // );
 
+// Test getRecommendationsByLmkKey function
+// const found = getRecommendationsByLmkKey(recommendation["lmk-key"]).then(
+//   (result) => {
+//     console.log(result);
+//   }
+// );
+
 // Test getRecommendationByLmkKeyAndImprovementId function
 // const found = getRecommendationByLmkKeyAndImprovementId(
 //   recommendation["lmk-key"],
@@ -92,12 +107,13 @@ const deleteRecommendationByLmkKey = async (lmkKey, improvementId) => {
 //   console.log(result);
 // });
 
-// Test getRecommendations function
-// getRecommendations();
+// Test getAllRecommendations function
+// getAllRecommendations();
 
 module.exports = {
   dynamoClient,
-  getRecommendations,
+  getAllRecommendations,
+  getRecommendationsByLmkKey,
   getRecommendationByLmkKeyAndImprovementId,
   addRecommendation,
   deleteRecommendationByLmkKey,

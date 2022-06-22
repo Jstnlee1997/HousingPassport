@@ -49,6 +49,22 @@ const seedRecommendation = async (lmkKey) => {
   }
 };
 
+/* GET all recommendations given an lmk-key */
+router.route("/:lmkKey").get((req, res, next) => {
+  console.log(req.params);
+
+  // check if there is an lmk-key in the database
+  const found = getRecommendationsByLmkKey(req.params.lmkKey);
+  found.then((result) => {
+    // Display all the recommendations if valid
+    if (result) {
+      res.send(result.rows);
+    } else {
+      res.status(404).send("There are no recommendations by the given lmk-key");
+    }
+  });
+});
+
 // Test getting recommendation using input lmk-key
 // getRecommendationsByLmkKey("1573380469022017090821481343938953");
 
