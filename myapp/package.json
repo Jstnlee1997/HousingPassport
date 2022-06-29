@@ -8,22 +8,22 @@
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000"
   },
   "dependencies": {
-    "aws-sdk": "^2.1155.0",
+    "aws-sdk": "^2.1164.0",
     "axios": "^0.27.2",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
+    "cookie-parser": "~1.4.6",
+    "debug": "~4.3.4",
     "dotenv": "^16.0.1",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1",
+    "express": "~4.18.1",
+    "http-errors": "~2.0.0",
+    "morgan": "~1.10.0",
     "pug": "^3.0.2",
     "request": "^2.88.2",
-    "sequelize": "^6.21.0"
+    "sequelize": "^6.21.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "jest": "^28.1.1",
-    "nodemon": "^2.0.16",
+    "jest": "^28.1.2",
+    "nodemon": "^2.0.18",
     "supertest": "^6.2.3"
   }
 }
