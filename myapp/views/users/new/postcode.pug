@@ -1,0 +1,12 @@
+extends ../../layout
+
+block content 
+    h1= "Please choose which address is yours!"
+    form(action="/users" method="POST")
+        ul 
+            each val in addresses 
+                li= val 
+                    input(type="radio" name="address" value=val)
+                br  
+        input(type="submit")
+    

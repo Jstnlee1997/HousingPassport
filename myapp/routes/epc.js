@@ -50,7 +50,7 @@ const getCertificatesOfPostCode = async (postcode) => {
     .then((res) => {
       console.log(res.status);
       if (res.data) {
-        return res.data;
+        return res.data["rows"];
       }
     })
     .catch((err) => {
@@ -90,6 +90,13 @@ router.route("/postcode/:postcode").get((req, res, next) => {
   });
 });
 
+/* Testing seedData */
 // seedData();
 
-module.exports = router;
+/* Testing getCertificatesOfPostcode */
+getCertificatesOfPostCode("SW6 7SR");
+
+module.exports = {
+  router: router,
+  getCertificatesOfPostCode: getCertificatesOfPostCode,
+};

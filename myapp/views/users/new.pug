@@ -2,7 +2,7 @@ extends ../layout
 
 block content 
     h1= "Key in the postcode of your house!"
-    form(action="/new_user" method="POST")
-    p postcode: 
-        input(type="text" name="postcode" placeholder="")
-    input(type="submit")
+    form(action="/users/new/postcode" method="GET")
+        p postcode: 
+            input(type="text" name="postcode" value= "SW67SR")
+        input(type="submit")
