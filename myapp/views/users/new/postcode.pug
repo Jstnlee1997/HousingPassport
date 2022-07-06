@@ -2,7 +2,7 @@ extends ../../layout
 
 block content 
     h1 Please select your address for postal code: #{postcode}
-    form(action="/users" method="POST")
+    form(action="/" method="POST")
         ul 
             each val in addresses 
                 li= val 
