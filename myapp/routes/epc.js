@@ -34,6 +34,32 @@ const seedData = async () => {
   }
 };
 
+// Function to add a certificate to database using a specific lmk-key
+const addCertificateByLmkKey = async (lmkKey) => {
+  return axios
+    .get(
+      "https://epc.opendatacommunities.org/api/v1/domestic/certificate/" +
+        lmkKey,
+      {
+        headers: {
+          Authorization: Authorization,
+          Accept: Accept,
+        },
+      }
+    )
+    .then((res) => {
+      console.log(res.status);
+      if (res.data) {
+        // add certificate to database
+        addCertificate(res.data["rows"][0]);
+        return res.data["rows"][0];
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // Function to get all the certificates of queried postcode
 const getCertificatesOfPostCode = async (postcode) => {
   return axios
@@ -58,8 +84,8 @@ const getCertificatesOfPostCode = async (postcode) => {
     });
 };
 
-// Function to get 1 certificate of queried address
-const getCertificateOfAddress = async (address) => {
+// Function to get lmk-key of queried address
+const getLmkKeyOfAddress = async (address) => {
   return axios
     .get(
       "https://epc.opendatacommunities.org/api/v1/domestic/search?address=" +
@@ -74,7 +100,7 @@ const getCertificateOfAddress = async (address) => {
     .then((res) => {
       console.log(res.status);
       if (res.data) {
-        return res.data["rows"];
+        return res.data["rows"][0]["lmk-key"];
       }
     })
     .catch((err) => {
@@ -118,10 +144,14 @@ router.route("/postcode/:postcode").get((req, res, next) => {
 // seedData();
 
 /* Testing getCertificatesOfPostcode */
-getCertificatesOfPostCode("SW6 7SR");
+// getCertificatesOfPostCode("SW6 7SR");
+
+/* Testing addCertificateByLmkKey */
+// addCertificateByLmkKey("1573380469022017090821481343938953");
 
 module.exports = {
   router: router,
   getCertificatesOfPostCode: getCertificatesOfPostCode,
-  getCertificateOfAddress: getCertificateOfAddress,
+  getLmkKeyOfAddress: getLmkKeyOfAddress,
+  addCertificateByLmkKey: addCertificateByLmkKey,
 };

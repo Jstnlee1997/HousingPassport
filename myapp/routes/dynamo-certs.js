@@ -52,8 +52,10 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 };
 
 // Testing finding of certificate by lmk-key
-// getCertificateByLmkKey(
-//   "1e087cfceb2b4e4cf113af8991c2775332cf8dfdb9ceec8bbc18540c9eb2011f"
+// const found = getCertificateByLmkKey("1573380469022017090821481343938953").then(
+//   (result) => {
+//     console.log(result);
+//   }
 // );
 
 module.exports = {
