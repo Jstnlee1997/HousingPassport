@@ -1,6 +1,6 @@
 var express = require("express");
 const { route } = require("./recommendation");
-const { getCertificatesOfPostCode } = require("./epc");
+const { getCertificatesOfPostCode, getCertificateOfAddress } = require("./epc");
 var router = express.Router();
 
 /* GET users listing. */
@@ -10,14 +10,17 @@ router
     res.send("respond with a resource");
   })
   // user has identified their address
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     // obtain selected address
     const address = req.body.address;
 
     /* TODO: save in table userId and their address */
 
-    // Get lmk-key using user's address
-    res.json(req.body.address);
+    // TODO: Get lmk-key using user's address and store into user database
+
+    // Return certificate of address
+    const response = await getCertificateOfAddress(address);
+    res.json(response);
   });
 
 // routing for new users to input postcode
@@ -38,7 +41,10 @@ router.route("/new/postcode").get(async (req, res, next) => {
       addresses.push(element["address"]);
     });
     // render the new form with all the addresses
-    res.render("users/new/postcode", { addresses: addresses.sort() });
+    res.render("users/new/postcode", {
+      addresses: addresses.sort(),
+      postcode: postcode,
+    });
   } catch (err) {
     console.log(err);
   }

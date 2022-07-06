@@ -1,7 +1,7 @@
 extends ../../layout
 
 block content 
-    h1= "Please choose which address is yours!"
+    h1 Please select your address for postal code: #{postcode}
     form(action="/users" method="POST")
         ul 
             each val in addresses 
@@ -9,4 +9,3 @@ block content
                     input(type="radio" name="address" value=val)
                 br  
         input(type="submit")
-    

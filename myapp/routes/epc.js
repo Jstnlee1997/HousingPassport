@@ -58,6 +58,30 @@ const getCertificatesOfPostCode = async (postcode) => {
     });
 };
 
+// Function to get 1 certificate of queried address
+const getCertificateOfAddress = async (address) => {
+  return axios
+    .get(
+      "https://epc.opendatacommunities.org/api/v1/domestic/search?address=" +
+        address,
+      {
+        headers: {
+          Authorization: Authorization,
+          Accept: Accept,
+        },
+      }
+    )
+    .then((res) => {
+      console.log(res.status);
+      if (res.data) {
+        return res.data["rows"];
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 /* GET certificate of lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
   // console.log(req.params);
@@ -99,4 +123,5 @@ getCertificatesOfPostCode("SW6 7SR");
 module.exports = {
   router: router,
   getCertificatesOfPostCode: getCertificatesOfPostCode,
+  getCertificateOfAddress: getCertificateOfAddress,
 };
