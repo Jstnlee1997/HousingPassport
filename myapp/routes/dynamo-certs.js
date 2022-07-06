@@ -17,7 +17,7 @@ const getCertificates = async () => {
     TableName: TABLE_NAME,
   };
   const certificates = await dynamoClient.scan(params).promise();
-  console.log(certificates);
+  // console.log(certificates);
   return certificates;
 };
 

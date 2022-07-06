@@ -60,7 +60,7 @@ const getCertificatesOfPostCode = async (postcode) => {
 
 /* GET certificate of lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
 
   // check if there is an lmk-key in the database
   const found = getCertificateByLmkKey(req.params.lmkKey);
@@ -76,7 +76,7 @@ router.route("/:lmkKey").get((req, res, next) => {
 
 /* GET certificates for postcode query */
 router.route("/postcode/:postcode").get((req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
 
   // check if there are returned certificates
   const found = getCertificatesOfPostCode(req.params.postcode);

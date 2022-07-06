@@ -41,7 +41,7 @@ describe("EPC Recommendations", () => {
       .expect(200)
       .then((res) => {
         // expect(res.body.length).toBeGreaterThan(0);
-        console.log(res.body);
+        // console.log(res.body);
         expect(res.body).toEqual(
           expect.arrayContaining([
             expect.objectContaining({

@@ -16,6 +16,7 @@ router
 
     /* TODO: save in table userId and their address */
 
+    // Get lmk-key using user's address
     res.json(req.body.address);
   });
 

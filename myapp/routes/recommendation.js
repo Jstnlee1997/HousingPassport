@@ -36,7 +36,7 @@ const seedRecommendation = async (lmkKey) => {
 
   // store recommendation into dynamoDB
   try {
-    console.log(recommendations);
+    // console.log(recommendations);
     // addRecommendation(recommendation);
     const recommendationPromises = recommendations["rows"].map(
       (recommendation) => {
@@ -51,7 +51,7 @@ const seedRecommendation = async (lmkKey) => {
 
 /* GET all recommendations given an lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
 
   // check if there is an lmk-key in the database
   const found = getRecommendationsByLmkKey(req.params.lmkKey);

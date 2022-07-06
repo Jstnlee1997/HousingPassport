@@ -17,7 +17,7 @@ const getAllRecommendations = async () => {
     TableName: TABLE_NAME,
   };
   const recommendations = await dynamoClient.scan(params).promise();
-  console.log(recommendations);
+  // console.log(recommendations);
   return recommendations;
 };
 
@@ -28,7 +28,7 @@ const getRecommendationsByLmkKey = async (lmkKey) => {
       "lmk-key": lmkKey,
     },
   };
-  console.log(params);
+  // console.log(params);
 
   const recommendations = await dynamoClient.scan(params).promise();
   return recommendations;
@@ -45,7 +45,7 @@ const getRecommendationByLmkKeyAndImprovementId = async (
       "improvement-id": improvementId,
     },
   };
-  console.log(params);
+  // console.log(params);
   return await dynamoClient.get(params).promise();
 };
 
@@ -54,7 +54,7 @@ const addRecommendation = async (recommendation) => {
     TableName: TABLE_NAME,
     Item: recommendation,
   };
-  console.log(params);
+  // console.log(params);
   // use client ot call a put method
   return await dynamoClient.put(params).promise();
 };
@@ -67,7 +67,7 @@ const deleteRecommendationByLmkKey = async (lmkKey, improvementId) => {
       "improvement-id": improvementId,
     },
   };
-  console.log(params);
+  // console.log(params);
   // use client ot call a delete method
   return await dynamoClient.delete(params).promise();
 };
