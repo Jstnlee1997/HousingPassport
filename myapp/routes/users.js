@@ -1,10 +1,5 @@
 const router = require("express").Router();
-const {
-  getCertificatesOfPostCode,
-  getLmkKeyOfAddress,
-  addCertificateByLmkKey,
-} = require("./epc");
-const { getCertificateByLmkKey } = require("./dynamo-certs");
+const { getCertificatesOfPostCode } = require("./epc");
 
 /* GET users listing. */
 router.route("/").get((req, res) => {

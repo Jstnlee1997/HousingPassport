@@ -1,6 +1,4 @@
 const router = require("express").Router();
-// const got = require("got");
-// const { pipeline } = require("stream");
 const axios = require("axios");
 const { addCertificate, getCertificateByLmkKey } = require("./dynamo-certs");
 
