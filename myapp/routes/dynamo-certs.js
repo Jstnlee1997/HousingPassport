@@ -36,7 +36,7 @@ const addCertificate = async (certificate) => {
     TableName: TABLE_NAME,
     Item: certificate,
   };
-  // use client ot call a put method
+  // use client to call a put method
   return await dynamoClient.put(params).promise();
 };
 
