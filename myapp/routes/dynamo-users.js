@@ -21,34 +21,30 @@ const addUser = async (user) => {
   return await dynamoClient.put(params).promise();
 };
 
-const getUser = async (userId) => {
+const getUser = async (email) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      id: userId,
+      email: email,
     },
   };
   return await dynamoClient.get(params).promise();
 };
 
-const deleteUserUsingId = async (userId) => {
+const deleteUser = async (email) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      id: userId,
+      email: email,
     },
   };
   // use client ot call a delete method
   return await dynamoClient.delete(params).promise();
 };
 
-/* Testing function deleteUserUsingId */
-// const userId = "1657187714274";
-// deleteUserUsingId(userId);
-
 module.exports = {
   dynamoClient,
   addUser,
   getUser,
-  deleteUserUsingId,
+  deleteUser,
 };

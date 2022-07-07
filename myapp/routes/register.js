@@ -10,9 +10,7 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      console.log("I got here");
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      console.log(hashedPassword);
       // Create user
       const user = {
         id: Date.now().toString(),
