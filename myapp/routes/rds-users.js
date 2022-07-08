@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-const { getUser } = require("./dynamo-users");
 require("dotenv").config();
 
 // Create connection with AWS RDS DB
@@ -28,7 +27,7 @@ const connection = mysql.createConnection({
 
 /* Function to INSERT new user into Users table */
 function addNewUser(name, email, password) {
-  let addUserQuery = `INSERT INTO Users(name,email,password)
+  var addUserQuery = `INSERT INTO Users(name,email,password)
                       VALUES(?,?,?)`;
   //  execute insert statement
   connection.query(
@@ -49,7 +48,7 @@ function addNewUser(name, email, password) {
 
 /* Function to GET all users in Users table */
 function getAllUsers() {
-  let getAllUsersQuery = `SELECT * FROM Users`;
+  var getAllUsersQuery = `SELECT * FROM Users`;
   connection.query(getAllUsersQuery, (err, results, fields) => {
     if (err) {
       return console.error(err.message);
@@ -59,25 +58,28 @@ function getAllUsers() {
   connection.end();
 }
 // Testing getAllUsers Function
-getAllUsers();
+// getAllUsers();
 
 /* Function to GET user with respective email */
-function getUserWithEmail(email) {
-  let getUserWithEmailQuery = `SELECT * FROM Users WHERE email=?`;
-  connection.query(getUserWithEmailQuery, email, (err, results, fields) => {
-    if (err) {
-      return console.log(err.message);
-    }
-    console.log(results);
+async function getUserWithEmail(email) {
+  var getUserWithEmailQuery = `SELECT * FROM Users WHERE email=?`;
+  return new Promise(function (resolve, reject) {
+    connection.query(getUserWithEmailQuery, email, (err, results, fields) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results[0]);
+    });
+    connection.end();
   });
-  connection.end();
 }
 // Testing getUserWithEmail Function
-// getUserWithEmail("justin@email.com");
+const result = getUserWithEmail("Justin@email.com");
+result.then((res) => console.log("Result:", res["id"]));
 
 /* Function to UPDATE address using email */
 function updateAddressUsingEmail(address, email) {
-  let updateAddressUsingEmailQuery = `UPDATE Users
+  var updateAddressUsingEmailQuery = `UPDATE Users
                         SET address = ?
                         WHERE email = ?`;
   connection.query(
@@ -97,7 +99,7 @@ function updateAddressUsingEmail(address, email) {
 
 /* Function to DELETE row using email */
 function deleteUserUsingEmail(email) {
-  let deleteRowUsingEmailQuery = `DELETE FROM Users WHERE email = ?`;
+  var deleteRowUsingEmailQuery = `DELETE FROM Users WHERE email = ?`;
   connection.query(deleteRowUsingEmailQuery, email, (err, results, fields) => {
     if (err) {
       return console.log(err.message);
@@ -108,3 +110,11 @@ function deleteUserUsingEmail(email) {
 }
 // Testing deleteUserUsingEmail Function
 // deleteUserUsingEmail("miqi@email.com");
+
+module.exports = {
+  addNewUser,
+  getAllUsers,
+  getUserWithEmail,
+  updateAddressUsingEmail,
+  deleteUserUsingEmail,
+};

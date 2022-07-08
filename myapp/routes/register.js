@@ -1,7 +1,6 @@
-const { addUser } = require("./dynamo-users");
-
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
+const { addNewUser } = require("./rds-users");
 
 router
   .route("/")
@@ -11,16 +10,8 @@ router
   .post(async (req, res, next) => {
     try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      // Create user
-      const user = {
-        id: Date.now().toString(),
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword,
-      };
       // Add user to database
-      console.log(user);
-      addUser(user);
+      addNewUser(req.body.name, req.body.email, hashedPassword);
       res.redirect("/login");
     } catch {
       res.redirect("/register");
