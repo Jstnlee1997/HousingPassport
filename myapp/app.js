@@ -43,7 +43,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", indexRouter);
+app.use("/", indexRouter.router);
 app.use("/users", usersRouter);
 app.use("/epc", epcRouter.router);
 app.use("/recommendation", recommendationRouter);

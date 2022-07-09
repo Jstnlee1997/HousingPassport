@@ -1,13 +1,15 @@
 const passport = require("passport");
+const { checkNotAuthenticated } = require(".");
 
 const router = require("express").Router();
 
 router
   .route("/")
-  .get((req, res, next) => {
+  .get(checkNotAuthenticated, (req, res, next) => {
     res.render("login");
   })
   .post(
+    checkNotAuthenticated,
     passport.authenticate("local", {
       successRedirect: "/",
       failureRedirect: "/login",

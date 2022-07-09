@@ -5,7 +5,7 @@ const { getCertificateByLmkKey } = require("./dynamo-certs");
 /* GET home page. */
 router
   .route("/")
-  .get((req, res, next) => {
+  .get(checkAuthenticated, (req, res, next) => {
     res.render("index", { title: "Express" });
   })
   // user has identified their address
@@ -31,4 +31,18 @@ router
     }
   });
 
-module.exports = router;
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  next();
+}
+
+module.exports = { router, checkAuthenticated, checkNotAuthenticated };
