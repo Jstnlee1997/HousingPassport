@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const util = require("util");
 require("dotenv").config();
 
 // Create connection with AWS RDS DB
@@ -9,6 +10,9 @@ const connection = mysql.createConnection({
   password: process.env.RDS_PASSWORD,
   database: process.env.RDS_DB_NAME,
 });
+
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
 
 /* TEST CONNECTION */
 // connection.connect((err) => {
@@ -61,21 +65,53 @@ function getAllUsers() {
 // getAllUsers();
 
 /* Function to GET user with respective email */
-async function getUserWithEmail(email) {
-  var getUserWithEmailQuery = `SELECT * FROM Users WHERE email=?`;
-  return new Promise(function (resolve, reject) {
-    connection.query(getUserWithEmailQuery, email, (err, results, fields) => {
-      if (err) {
-        return reject(err);
+async function getUserByEmail(email) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var getUserByEmailQuery = `SELECT * FROM Users WHERE email=?`;
+        const result = await query(getUserByEmailQuery, email);
+        resolve(result[0]);
+      } catch (err) {
+        reject(err);
       }
-      resolve(results[0]);
-    });
-    connection.end();
+    })();
   });
 }
-// Testing getUserWithEmail Function
-const result = getUserWithEmail("Justin@email.com");
-result.then((res) => console.log("Result:", res["id"]));
+// Testing getUserByEmail Function
+// const result = getUserByEmail("Justin@email.com").then((res) => {
+//   var user = res;
+//   var userId = res["id"];
+//   console.log(" User: ", user);
+//   console.log(userId);
+// });
+
+/* Function to GET user with respective id */
+async function getUserById(id) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var getUserByIdQuery = `SELECT * FROM Users WHERE id=?`;
+        const result = await query(getUserByIdQuery, id);
+        resolve(result[0]);
+      } catch (err) {
+        reject(err);
+      }
+    })();
+  });
+}
+// Testing getUserById Function
+// const result = getUserById(1).then((res) => {
+//   return new Promise((resolve, reject) => {
+//     (async () => {
+//       try {
+//         resolve(res.id);
+//       } catch (err) {
+//         reject(err);
+//       }
+//     })();
+//   });
+// });
 
 /* Function to UPDATE address using email */
 function updateAddressUsingEmail(address, email) {
@@ -114,7 +150,8 @@ function deleteUserUsingEmail(email) {
 module.exports = {
   addNewUser,
   getAllUsers,
-  getUserWithEmail,
+  getUserByEmail,
+  getUserById,
   updateAddressUsingEmail,
   deleteUserUsingEmail,
 };

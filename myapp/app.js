@@ -17,14 +17,9 @@ var epcRouter = require("./routes/epc");
 var recommendationRouter = require("./routes/recommendation");
 var registerRouter = require("./routes/register");
 var loginRouter = require("./routes/login");
-const initializePassport = require("./routes/passport-config");
+var initializePassport = require("./routes/passport-config");
 // Need to be able to find user and return an USER object
-initializePassport(passport, (email) =>
-  users.find(
-    (user) => user.email === email,
-    (id) => users.find((user) => user.id === id)
-  )
-);
+initializePassport(passport);
 
 var app = express();
 
