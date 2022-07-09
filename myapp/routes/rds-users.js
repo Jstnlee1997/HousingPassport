@@ -37,13 +37,16 @@ async function addNewUser(name, email, password) {
         var addNewUserQuery = `INSERT INTO Users(name,email,password)
                       VALUES(?,?,?)`;
         const result = await query(addNewUserQuery, [name, email, password]);
-        resolve(result[0]);
+        console.log("New User Id: " + result.insertId);
+        resolve(result);
       } catch (err) {
         reject(err);
       }
     })();
   });
 }
+// Testing addNewUser Function
+// const result = addNewUser("Dog", "dog@email.com", "dog").then((res) => {});
 
 /* Function to GET all users in Users table */
 function getAllUsers() {
@@ -109,38 +112,45 @@ async function getUserById(id) {
 // });
 
 /* Function to UPDATE address using email */
-function updateAddressUsingEmail(address, email) {
-  var updateAddressUsingEmailQuery = `UPDATE Users
-                        SET address = ?
-                        WHERE email = ?`;
-  connection.query(
-    updateAddressUsingEmailQuery,
-    [address, email],
-    (err, results, fields) => {
-      if (err) {
-        return console.log(err.message);
+async function updateAddressUsingEmail(address, email) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var updateAddressUsingEmailQuery = `UPDATE Users
+                              SET address = ?
+                              WHERE email = ?`;
+        const result = await query(updateAddressUsingEmailQuery, [
+          address,
+          email,
+        ]);
+        console.log("Rows affected: ", result.affectedRows);
+        resolve(result);
+      } catch (err) {
+        reject(err);
       }
-      console.log("Rows affected: ", results.affectedRows);
-    }
-  );
-  connection.end();
+    })();
+  });
 }
 // Testing updateAddressUsingEmail Function
-// updateAddressUsingEmail("51 Kitchen Ave", "miqi@email.com");
+// updateAddressUsingEmail("51 Kitchen Ave", "justin@email.com");
 
 /* Function to DELETE row using email */
-function deleteUserUsingEmail(email) {
-  var deleteRowUsingEmailQuery = `DELETE FROM Users WHERE email = ?`;
-  connection.query(deleteRowUsingEmailQuery, email, (err, results, fields) => {
-    if (err) {
-      return console.log(err.message);
-    }
-    console.log("Deleted Row(s): ", results.affectedRows);
+async function deleteUserUsingEmail(email) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var deleteRowUsingEmailQuery = `DELETE FROM Users WHERE email = ?`;
+        const result = await query(deleteRowUsingEmailQuery, email);
+        console.log("Deleted Row(s): ", result.affectedRows);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      }
+    })();
   });
-  connection.end();
 }
 // Testing deleteUserUsingEmail Function
-// deleteUserUsingEmail("miqi@email.com");
+// deleteUserUsingEmail("r@r");
 
 module.exports = {
   addNewUser,
