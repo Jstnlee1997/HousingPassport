@@ -30,25 +30,20 @@ const query = util.promisify(connection.query).bind(connection);
 // });
 
 /* Function to INSERT new user into Users table */
-function addNewUser(name, email, password) {
-  var addUserQuery = `INSERT INTO Users(name,email,password)
+async function addNewUser(name, email, password) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var addNewUserQuery = `INSERT INTO Users(name,email,password)
                       VALUES(?,?,?)`;
-  //  execute insert statement
-  connection.query(
-    addUserQuery,
-    [name, email, password],
-    (err, results, fields) => {
-      if (err) {
-        return console.error(err.message);
+        const result = await query(addNewUserQuery, [name, email, password]);
+        resolve(result[0]);
+      } catch (err) {
+        reject(err);
       }
-      // get user id
-      console.log("New User Id: " + results.insertId);
-    }
-  );
-  connection.end();
+    })();
+  });
 }
-// Testing addNewUser Function
-// addNewUser("Miqi", "miqi@email.com", "password321");
 
 /* Function to GET all users in Users table */
 function getAllUsers() {
@@ -71,7 +66,6 @@ async function getUserByEmail(email) {
       try {
         var getUserByEmailQuery = `SELECT * FROM Users WHERE email=?`;
         const result = await query(getUserByEmailQuery, email);
-        console.log(result[0]);
         resolve(result[0]);
       } catch (err) {
         reject(err);
