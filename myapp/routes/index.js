@@ -6,7 +6,7 @@ const { getCertificateByLmkKey } = require("./dynamo-certs");
 router
   .route("/")
   .get(checkAuthenticated, (req, res, next) => {
-    res.render("index", { title: "Express" });
+    res.render("index", { title: "Housing Passport" });
   })
   // user has identified their address
   .post(async (req, res, next) => {
@@ -30,6 +30,16 @@ router
       res.json(await addCertificateByLmkKey(lmkKey));
     }
   });
+
+/* LOGOUT */
+router.route("/logout").delete((req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/login");
+  });
+});
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

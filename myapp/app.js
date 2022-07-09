@@ -10,6 +10,7 @@ var logger = require("morgan");
 var passport = require("passport");
 var flash = require("express-flash");
 var session = require("express-session");
+var methodOverride = require("method-override");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -42,6 +43,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride("_method"));
 
 app.use("/", indexRouter.router);
 app.use("/users", usersRouter);

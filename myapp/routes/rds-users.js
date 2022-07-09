@@ -71,6 +71,7 @@ async function getUserByEmail(email) {
       try {
         var getUserByEmailQuery = `SELECT * FROM Users WHERE email=?`;
         const result = await query(getUserByEmailQuery, email);
+        console.log(result[0]);
         resolve(result[0]);
       } catch (err) {
         reject(err);
