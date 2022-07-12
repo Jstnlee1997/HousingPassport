@@ -2,6 +2,8 @@ const router = require("express").Router();
 const { getLmkKeyOfAddress, addCertificateByLmkKey } = require("./epc");
 const { getCertificateByLmkKey } = require("./dynamo-certs");
 const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
+const { getRecommendationsByLmkKey } = require("./dynamo-recos");
+const { addRecommendationsByLmkKey } = require("./recommendation");
 
 /* GET home page. */
 router
@@ -14,28 +16,40 @@ router
     getUserById(userId).then(async (result) => {
       // User has no epc cert -> redirect to /new-user
       const lmkKey = result.lmkKey;
-      console.log("LmkK=-key: ", lmkKey);
+      console.log("Lmk-key of user: ", lmkKey);
       if (lmkKey == null) {
         // User has no EPC -> redirect to new user
-        console.log("I do not get here");
         return res.redirect("/new-user");
       }
 
       /* Check if certificate exists in database, add in if it is not, else just retrieve it */
       const found = await getCertificateByLmkKey(lmkKey);
       if (found.Item) {
-        // certificate is in database, -> retrieve it
+        // If certificate in DB, recommendations is inside as well, just retrieve them
         console.log("Certificate of this address is present in database");
         res.render("index", {
           title: "Housing Passport",
           certificate: JSON.stringify(found.Item),
+          recommendations: JSON.stringify(
+            await (
+              await getRecommendationsByLmkKey(lmkKey)
+            ).Items
+          ),
         });
       } else {
-        // add certificate into database
+        // add certificate into database, AND add recomendations as well
         console.log("Certificate of this address not present in database");
+
+        // Add recommandayions by lmk-key first
+        await addRecommendationsByLmkKey(lmkKey);
         res.render("index", {
           title: "Housing Passport",
           certificate: JSON.stringify(await addCertificateByLmkKey(lmkKey)),
+          recommendations: JSON.stringify(
+            await (
+              await getRecommendationsByLmkKey(lmkKey)
+            ).Items
+          ),
         });
       }
     });

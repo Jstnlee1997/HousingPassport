@@ -129,7 +129,6 @@ router.route("/postcode/:postcode").get((req, res, next) => {
   // check if there are returned certificates
   const found = getCertificatesOfPostCode(req.params.postcode);
   found.then((result) => {
-    console.log(result);
     if (result) {
       res.send(result["rows"]);
     } else {

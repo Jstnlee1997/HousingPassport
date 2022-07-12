@@ -54,7 +54,7 @@ app.use("/", indexRouter.router);
 app.use("/users", usersRouter);
 app.use("/new-user", newUserRouter);
 app.use("/epc", epcRouter.router);
-app.use("/recommendation", recommendationRouter);
+app.use("/recommendation", recommendationRouter.router);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 

@@ -19,7 +19,7 @@ const getRecommendationsByLmkKey = async (lmkKey) => {
       },
     })
     .then((res) => {
-      // console.log(res.status);
+      console.log(res);
       if (res.data) {
         return res.data;
       }
@@ -30,7 +30,7 @@ const getRecommendationsByLmkKey = async (lmkKey) => {
 };
 
 // Function to get recommendation and store into dynamo DB given lmkkey
-const seedRecommendation = async (lmkKey) => {
+const addRecommendationsByLmkKey = async (lmkKey) => {
   // get recommendation from EPC API
   const recommendations = await getRecommendationsByLmkKey(lmkKey);
 
@@ -66,9 +66,9 @@ router.route("/:lmkKey").get((req, res, next) => {
 });
 
 // Test getting recommendation using input lmk-key
-// getRecommendationsByLmkKey("1573380469022017090821481343938953");
+// getRecommendationsByLmkKey("1520005522332017021617435193978006");
 
-// Test seedRecommendation to add all recommendations for a given lmk-key
-// seedRecommendation("1573380469022017090821481343938953");
+// Test addRecommendationsByLmkKey to add all recommendations for a given lmk-key
+// addRecommendationsByLmkKey("1573380469022017090821481343938953");
 
-module.exports = router;
+module.exports = { router, addRecommendationsByLmkKey };
