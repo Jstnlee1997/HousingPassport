@@ -1,11 +1,13 @@
 const router = require("express").Router();
 const { getLmkKeyOfAddress, addCertificateByLmkKey } = require("./epc");
 const { getCertificateByLmkKey } = require("./dynamo-certs");
+const { getUserById } = require("./rds-users");
 
 /* GET home page. */
 router
   .route("/")
-  .get(checkAuthenticated, (req, res, next) => {
+  .get(checkAuthenticated, hasEpcCertificate, (req, res, next) => {
+    // Renders index page only if user has EPC Cert
     res.render("index", { title: "Housing Passport" });
   })
   // user has identified their address
@@ -53,6 +55,19 @@ function checkNotAuthenticated(req, res, next) {
     return res.redirect("/");
   }
   next();
+}
+
+function hasEpcCertificate(req, res, next) {
+  // Get the userId from the session passport
+  const userId = req.session.passport.user;
+  // check if user has EPC certificate allocated
+  getUserById(userId).then(async (result) => {
+    if (result.lmkKey == null) {
+      // User has no EPC -> redirect to new user
+      return res.redirect("/new-user");
+    }
+    next();
+  });
 }
 
 module.exports = { router, checkAuthenticated, checkNotAuthenticated };

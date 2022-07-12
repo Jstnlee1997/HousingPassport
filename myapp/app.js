@@ -14,6 +14,7 @@ var methodOverride = require("method-override");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var newUserRouter = require("./routes/new-user");
 var epcRouter = require("./routes/epc");
 var recommendationRouter = require("./routes/recommendation");
 var registerRouter = require("./routes/register");
@@ -47,6 +48,7 @@ app.use(methodOverride("_method"));
 
 app.use("/", indexRouter.router);
 app.use("/users", usersRouter);
+app.use("/new-user", newUserRouter);
 app.use("/epc", epcRouter.router);
 app.use("/recommendation", recommendationRouter);
 app.use("/register", registerRouter);
