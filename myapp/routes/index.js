@@ -70,4 +70,9 @@ function hasEpcCertificate(req, res, next) {
   });
 }
 
-module.exports = { router, checkAuthenticated, checkNotAuthenticated };
+module.exports = {
+  router,
+  checkAuthenticated,
+  checkNotAuthenticated,
+  hasEpcCertificate,
+};
