@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  p EPC Data: 
+  p EPC Data #{certificate}: 
   p Smart Meter Data:
   form(action="/logout?_method=DELETE" method="POST")
     input(type="submit" value="Log Out")

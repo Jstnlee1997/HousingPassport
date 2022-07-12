@@ -6,9 +6,39 @@ const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
 /* GET home page. */
 router
   .route("/")
-  .get(checkAuthenticated, hasEpcCertificate, (req, res, next) => {
-    // Renders index page only if user has EPC Cert
-    res.render("index", { title: "Housing Passport" });
+  .get(checkAuthenticated, (req, res, next) => {
+    // Get the userId from the session passport
+    const userId = req.session.passport.user;
+
+    // Get the lmk-key of the user
+    getUserById(userId).then(async (result) => {
+      // User has no epc cert -> redirect to /new-user
+      const lmkKey = result.lmkKey;
+      console.log("LmkK=-key: ", lmkKey);
+      if (lmkKey == null) {
+        // User has no EPC -> redirect to new user
+        console.log("I do not get here");
+        return res.redirect("/new-user");
+      }
+
+      /* Check if certificate exists in database, add in if it is not, else just retrieve it */
+      const found = await getCertificateByLmkKey(lmkKey);
+      if (found.Item) {
+        // certificate is in database, -> retrieve it
+        console.log("Certificate of this address is present in database");
+        res.render("index", {
+          title: "Housing Passport",
+          certificate: JSON.stringify(found.Item),
+        });
+      } else {
+        // add certificate into database
+        console.log("Certificate of this address not present in database");
+        res.render("index", {
+          title: "Housing Passport",
+          certificate: JSON.stringify(await addCertificateByLmkKey(lmkKey)),
+        });
+      }
+    });
   })
   // user has identified their address
   .post(async (req, res, next) => {
@@ -27,15 +57,10 @@ router
     updateAddressAndLmkKeyUsingId(address, lmkKey, userId);
     console.log(`New address is: ${address}, and lmk-key is: ${lmkKey}`);
 
-    /* TODO: Check if certificate exists in database, add in if it is not, else just retrieve it */
-    const found = await getCertificateByLmkKey(lmkKey);
-    if (found.Item) {
-      console.log("Certificate of this address is present in database");
-      res.json(found.Item);
-    } else {
-      console.log("Certificate of this address not present in database");
-      res.json(await addCertificateByLmkKey(lmkKey));
-    }
+    /* TODO: Make sure that no 2 users have the same lmk-key */
+
+    // Redirect to index page
+    res.redirect("/");
   });
 
 /* LOGOUT */
@@ -71,7 +96,7 @@ function hasEpcCertificate(req, res, next) {
       // User has no EPC -> redirect to new user
       return res.redirect("/new-user");
     }
-    next();
+    res.redirect("/");
   });
 }
 
