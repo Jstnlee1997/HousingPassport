@@ -46,7 +46,7 @@ const addCertificateByLmkKey = async (lmkKey) => {
       }
     )
     .then((res) => {
-      console.log(res.status);
+      // console.log(res.status);
       if (res.data) {
         // add certificate to database
         addCertificate(res.data["rows"][0]);
@@ -72,7 +72,7 @@ const getCertificatesOfPostCode = async (postcode) => {
       }
     )
     .then((res) => {
-      console.log(res.status);
+      // console.log(res.status);
       if (res.data) {
         return res.data["rows"];
       }
@@ -96,7 +96,7 @@ const getLmkKeyOfAddress = async (address) => {
       }
     )
     .then((res) => {
-      console.log(res.status);
+      // console.log(res.status);
       if (res.data) {
         return res.data["rows"][0]["lmk-key"];
       }

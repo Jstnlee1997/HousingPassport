@@ -134,6 +134,30 @@ async function updateAddressUsingEmail(address, email) {
 // Testing updateAddressUsingEmail Function
 // updateAddressUsingEmail("51 Kitchen Ave", "justin@email.com");
 
+/* Function to UPDATE address using id */
+async function updateAddressAndLmkKeyUsingId(address, lmkKey, id) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        var updateAddressAndLmkKeyUsingIdQuery = `UPDATE Users
+                              SET address = ?, lmkKey = ?
+                              WHERE id = ?`;
+        const result = await query(updateAddressAndLmkKeyUsingIdQuery, [
+          address,
+          lmkKey,
+          id,
+        ]);
+        console.log("Rows affected: ", result.affectedRows);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      }
+    })();
+  });
+}
+// Testing updateAddressUsingEmail Function
+// updateAddressAndLmkKeyUsingId("43 King's Road", "random-lmk-key", 22);
+
 /* Function to DELETE row using email */
 async function deleteUserUsingEmail(email) {
   return new Promise((resolve, reject) => {
@@ -150,7 +174,7 @@ async function deleteUserUsingEmail(email) {
   });
 }
 // Testing deleteUserUsingEmail Function
-// deleteUserUsingEmail("r@r");
+// deleteUserUsingEmail("w@w");
 
 module.exports = {
   addNewUser,
@@ -158,5 +182,6 @@ module.exports = {
   getUserByEmail,
   getUserById,
   updateAddressUsingEmail,
+  updateAddressAndLmkKeyUsingId,
   deleteUserUsingEmail,
 };

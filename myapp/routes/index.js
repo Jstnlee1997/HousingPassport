@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { getLmkKeyOfAddress, addCertificateByLmkKey } = require("./epc");
 const { getCertificateByLmkKey } = require("./dynamo-certs");
-const { getUserById } = require("./rds-users");
+const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
 
 /* GET home page. */
 router
@@ -16,11 +16,16 @@ router
     const address = req.body.address;
 
     /* TODO: save in table userId and their address */
+    // Get the userId from the session passport
+    const userId = req.session.passport.user;
+    console.log("Current User ID: ", userId);
 
-    // TODO: Get lmk-key using user's address and store into user database
-
-    // Return lmk-key of address
+    // Get lmk-key using user's address
     const lmkKey = await getLmkKeyOfAddress(address);
+
+    // Store address and lmk-key into user database
+    updateAddressAndLmkKeyUsingId(address, lmkKey, userId);
+    console.log(`New address is: ${address}, and lmk-key is: ${lmkKey}`);
 
     /* TODO: Check if certificate exists in database, add in if it is not, else just retrieve it */
     const found = await getCertificateByLmkKey(lmkKey);

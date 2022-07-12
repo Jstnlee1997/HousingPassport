@@ -19,7 +19,7 @@ const getRecommendationsByLmkKey = async (lmkKey) => {
       },
     })
     .then((res) => {
-      console.log(res.status);
+      // console.log(res.status);
       if (res.data) {
         return res.data;
       }
