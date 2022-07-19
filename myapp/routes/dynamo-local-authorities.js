@@ -36,7 +36,10 @@ const addNewLocalAuthority = async (localAuthority, lmkKey) => {
       lmkKeys: [lmkKey],
     },
   };
-  console.log("New local-authority added: ", localAuthority);
+  console.log(
+    "New local-authority added into local-authorities table: ",
+    localAuthority
+  );
   // use client to call a put method
   return await dynamoClient.put(params).promise();
 };

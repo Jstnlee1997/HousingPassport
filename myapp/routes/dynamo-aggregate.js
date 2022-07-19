@@ -487,9 +487,6 @@ const returnNewAggregateData = async (
 const addAggregateDataOfLocalAuthority = async (aggregateData) => {
   const params = {
     TableName: TABLE_NAME,
-    Key: {
-      "local-authority": aggregateData["local-authority"],
-    },
     Item: aggregateData,
   };
   // use client to call a put method
@@ -607,7 +604,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
       await addNewLocalAuthority(localAuthority, lmkKey);
 
       // Get the relevant data that we are interested in aggregating
-      const aggregateData = returnAggregateData(certificate);
+      const aggregateData = await returnAggregateData(certificate);
 
       // Add new local-authority to aggregate-data table
       await addAggregateDataOfLocalAuthority(aggregateData);

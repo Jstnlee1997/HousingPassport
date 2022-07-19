@@ -10,6 +10,8 @@ router
   })
   .post(checkNotAuthenticated, async (req, res, next) => {
     try {
+      // TODO: ENSURE NO REPEAT OF EMAIL
+
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       // Add user to database
       addNewUser(req.body.name, req.body.email, hashedPassword);
