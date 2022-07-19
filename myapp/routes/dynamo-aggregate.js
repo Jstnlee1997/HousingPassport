@@ -560,6 +560,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
    */
 
   // Get the lmk-key of the certificate
+  console.log("Cert:", certificate);
   const lmkKey = certificate.Item["lmk-key"];
 
   // Get the local-authority of the certificate

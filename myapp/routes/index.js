@@ -29,9 +29,6 @@ router
         // Certificate is in DB
         console.log("Certificate of this address is present in database");
 
-        // Add certificate to local-authority table
-        updateAggregateDataOfLocalAuthority(certificate);
-
         res.render("index", {
           title: "Housing Passport",
           certificate: JSON.stringify(certificate.Item),
@@ -51,7 +48,9 @@ router
         await addRecommendationsByLmkKey(lmkKey);
 
         // Add certificate to local-authority table
-        updateAggregateDataOfLocalAuthority(certificate);
+        updateAggregateDataOfLocalAuthority(
+          await getCertificateByLmkKey(lmkKey)
+        );
 
         res.render("index", {
           title: "Housing Passport",
