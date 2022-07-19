@@ -4,6 +4,7 @@ const { getCertificateByLmkKey } = require("./dynamo-certs");
 const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
 const { getRecommendationsByLmkKey } = require("./dynamo-recos");
 const { addRecommendationsByLmkKey } = require("./recommendation");
+const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 
 /* GET home page. */
 router
@@ -23,13 +24,17 @@ router
       }
 
       /* Check if certificate exists in database, add in if it is not, else just retrieve it */
-      const found = await getCertificateByLmkKey(lmkKey);
-      if (found.Item) {
-        // If certificate in DB, recommendations is inside as well, just retrieve them
+      const certificate = await getCertificateByLmkKey(lmkKey);
+      if (certificate.Item) {
+        // Certificate is in DB
         console.log("Certificate of this address is present in database");
+
+        // Add certificate to local-authority table
+        updateAggregateDataOfLocalAuthority(certificate);
+
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(found.Item),
+          certificate: JSON.stringify(certificate.Item),
           recommendations: JSON.stringify(
             await (
               await getRecommendationsByLmkKey(lmkKey)
@@ -40,11 +45,17 @@ router
         // add certificate into database, AND add recomendations as well
         console.log("Certificate of this address not present in database");
 
-        // Add recommandayions by lmk-key first
+        // Add certificate by lmk-key first
+        const certificate = await addCertificateByLmkKey(lmkKey);
+        // Add recommendations next
         await addRecommendationsByLmkKey(lmkKey);
+
+        // Add certificate to local-authority table
+        updateAggregateDataOfLocalAuthority(certificate);
+
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(await addCertificateByLmkKey(lmkKey)),
+          certificate: JSON.stringify(certificate),
           recommendations: JSON.stringify(
             await (
               await getRecommendationsByLmkKey(lmkKey)
