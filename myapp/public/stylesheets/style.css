@@ -1,6 +1,19 @@
+/* element styles */
+* {
+  margin: 0;     /* by default, all elements (selector *) have no margin */
+}
+html {
+  width: 100%;                    /* 100% width of parent (root) element */
+  height: 100vh;                              /* 100% height of viewport */
+  background: rgb(0, 0, 0, 0.1);                            /* 10% black */
+  font-size: 1.0em;                                /* our root font size */
+  font-family: Arial, Helvetica, sans-serif;             /* default font */
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100%;
 }
 
 a {

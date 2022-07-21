@@ -16,22 +16,22 @@ const getAllRecommendations = async () => {
   const params = {
     TableName: TABLE_NAME,
   };
-  const recommendations = await dynamoClient.scan(params).promise();
-  // console.log(recommendations);
-  return recommendations;
+  return await dynamoClient.scan(params).promise();
 };
 
 const getRecommendationsByLmkKey = async (lmkKey) => {
   const params = {
     TableName: TABLE_NAME,
-    Key: {
-      "lmk-key": lmkKey,
+    ExpressionAttributeNames: {
+      "#lk": "lmk-key",
     },
+    ExpressionAttributeValues: {
+      ":lk": lmkKey,
+    },
+    KeyConditionExpression: "#lk = :lk",
   };
   // console.log(params);
-
-  const recommendations = await dynamoClient.scan(params).promise();
-  return recommendations;
+  return await dynamoClient.query(params).promise();
 };
 
 const getRecommendationByLmkKeyAndImprovementId = async (

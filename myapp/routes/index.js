@@ -28,15 +28,15 @@ router
       if (certificate.Item) {
         // Certificate is in DB
         console.log("Certificate of this address is present in database");
-
+        const recommendations = await (
+          await getRecommendationsByLmkKey(lmkKey)
+        ).Items;
+        console.log("Recommendations: ", recommendations);
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(certificate.Item),
-          recommendations: JSON.stringify(
-            await (
-              await getRecommendationsByLmkKey(lmkKey)
-            ).Items
-          ),
+          certificate: JSON.stringify(certificate.Item, null, 4),
+          // recommendations: JSON.stringify(recommendations, null, 4),
+          recommendations: recommendations,
         });
       } else {
         // add certificate into database, AND add recomendations as well
@@ -54,11 +54,13 @@ router
 
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(certificate),
+          certificate: JSON.stringify(certificate, null, 4),
           recommendations: JSON.stringify(
             await (
               await getRecommendationsByLmkKey(lmkKey)
-            ).Items
+            ).Items,
+            null,
+            4
           ),
         });
       }
