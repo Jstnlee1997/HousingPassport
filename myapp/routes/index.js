@@ -31,10 +31,10 @@ router
         const recommendations = await (
           await getRecommendationsByLmkKey(lmkKey)
         ).Items;
-        console.log("Recommendations: ", recommendations);
+        console.log("Certificate: ", certificate.Item);
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(certificate.Item, null, 4),
+          certificate: certificate.Item,
           // recommendations: JSON.stringify(recommendations, null, 4),
           recommendations: recommendations,
         });
