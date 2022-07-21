@@ -58,9 +58,12 @@ block content
       li Mechanical Ventilation: #{certificate['mechanical-ventilation']}
       li Energy Tariff: #{certificate['energy-tariff']}
       li Inspection Date: #{certificate['inspection-date']}
+      br
 
   section.smartItems 
     h3 Smart Meter Data 
+    br
+    
   if recommendations
     section.recommendationItems 
       h3 Retrofitting Suggestions 
@@ -73,9 +76,9 @@ block content
         tbody 
           each recommendation in recommendations 
             tr 
-              td= recommendation["improvement-id-text"]
-              td= recommendation["indicative-cost"]
-              td= recommendation["improvement-id"]
+              td #{recommendation["improvement-id-text"]}
+              td #{recommendation["indicative-cost"]}
+              td #{recommendation["improvement-id"]}
   
   form(action="/logout?_method=DELETE" method="POST")
     input(type="submit" value="Log Out")

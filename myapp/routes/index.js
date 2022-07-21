@@ -31,7 +31,7 @@ router
         const recommendations = await (
           await getRecommendationsByLmkKey(lmkKey)
         ).Items;
-        console.log("Certificate: ", certificate.Item);
+        console.log(recommendations);
         res.render("index", {
           title: "Housing Passport",
           certificate: certificate.Item,
@@ -54,14 +54,10 @@ router
 
         res.render("index", {
           title: "Housing Passport",
-          certificate: JSON.stringify(certificate, null, 4),
-          recommendations: JSON.stringify(
-            await (
-              await getRecommendationsByLmkKey(lmkKey)
-            ).Items,
-            null,
-            4
-          ),
+          certificate: certificate.Item,
+          recommendations: await (
+            await getRecommendationsByLmkKey(lmkKey)
+          ).Items,
         });
       }
     });
