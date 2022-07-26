@@ -378,7 +378,7 @@ const returnNewAggregateData = async (
    * newValue = (oldNumberOfLmkKeysInLocalAuthority * oldValue + certficateValue) / (oldNumberOfLmkKeysInLocalAuthority+1)
    * ENERGY RATINGS: -> returnNewEnergyRating
    */
-  console.log("Currently: ", currentAggregateData);
+  // console.log("Currently: ", currentAggregateData);
   const aggregateData = {
     "local-authority": currentAggregateData.Item["local-authority"],
     "current-energy-efficiency": (
@@ -560,7 +560,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
    */
 
   // Get the lmk-key of the certificate
-  console.log("Cert:", certificate);
+  // console.log("Cert:", certificate);
   const lmkKey = certificate.Item["lmk-key"];
 
   // Get the local-authority of the certificate
@@ -619,6 +619,5 @@ module.exports = {
   router,
   dynamoClient,
   getAggregateDataOfLocalAuthority,
-  addAggregateDataOfLocalAuthority,
   updateAggregateDataOfLocalAuthority,
 };

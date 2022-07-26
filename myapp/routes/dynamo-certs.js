@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const { getLonLatCoordinates, getLngLatCoordinates } = require("./open-cage");
 require("dotenv").config();
 
 // connection to AWS
@@ -156,6 +157,62 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 //     console.log(result);
 //   }
 // );
+
+async function addLongLatCoordinates(event, context) {
+  let tableContents;
+  try {
+    // get items from dynamo
+    const params = { TableName: TABLE_NAME };
+    tableContents = await scanDB(params);
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+  let calls = [];
+  tableContents.forEach(function (value) {
+    const address = value["address"];
+    const postcode = value["postcode"];
+    getLngLatCoordinates(address, postcode).then(async (res) => {
+      const { lat, lng } = res;
+      console.log(
+        "Address: " + address + " , postcode: " + postcode + " => lat: ",
+        lat + " , lng: " + lng
+      );
+      let params = {
+        TableName: TABLE_NAME,
+        Key: {
+          "lmk-key": value["lmk-key"],
+        },
+        UpdateExpression: "SET lat = :lat, lng = :lng",
+        ExpressionAttributeValues: {
+          ":lat": lat,
+          ":lng": lng,
+        },
+      };
+      calls.push(dynamoClient.update(params).promise());
+    });
+  });
+  let response;
+  try {
+    response = await Promise.all(calls);
+  } catch (err) {
+    console.log(err);
+  }
+  return response;
+}
+
+async function scanDB(params) {
+  let dynamoContents = [];
+  let items;
+  do {
+    items = await dynamoClient.scan(params).promise();
+    items.Items.forEach((item) => dynamoContents.push(item));
+    params.ExclusiveStartKey = items.LastEvaluatedKey;
+  } while (typeof items.LastEvaluatedKey != "undefined");
+  return dynamoContents;
+}
+
+// addLongLatCoordinates();
 
 module.exports = {
   dynamoClient,

@@ -55,7 +55,7 @@ const addLmkKeyToExistingLocalAuthority = async (localAuthority, lmkKey) => {
 
   // Add new lmkKey to lmkKeys array
   lmkKeys.push(lmkKey);
-  console.log("lmkKeys array: ", lmkKeys);
+  // console.log("lmkKeys array: ", lmkKeys);
 
   const params = {
     TableName: TABLE_NAME,

@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const axios = require("axios");
+const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 const { addCertificate, getCertificateByLmkKey } = require("./dynamo-certs");
+const { addRecommendationsByLmkKey } = require("./recommendation");
 
 // Variables to authenticate energy epc account
 const Authorization = process.env.EPC_AUTHORIZATION;
@@ -24,6 +26,42 @@ const seedData = async () => {
 
       const certificatePromises = certificates["rows"].map((certificate) =>
         addCertificate(certificate)
+      );
+      await Promise.all(certificatePromises);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
+// Function to seed data from EPC API for local-authority
+const seedDataBasedOnLocalAuthority = async () => {
+  const url =
+    "https://epc.opendatacommunities.org/api/v1/domestic/search?local-authority=E09000013&size=1&from=";
+
+  // create for loop that runs through from 0 to 30 million, in multiples of 5000
+  for (let i = 314; i < 1000; i += 1) {
+    // Vary url for different pages
+    try {
+      const { data: certificates } = await axios.get(url + i, {
+        headers: {
+          Authorization: Authorization,
+          Accept: Accept,
+        },
+      });
+
+      const certificatePromises = certificates["rows"].map(
+        async (certificate) => {
+          // add certificate to epc-certificate table
+          await addCertificate(certificate);
+          const lmkKey = certificate["lmk-key"];
+          // add certificate to aggregate table
+          updateAggregateDataOfLocalAuthority(
+            await getCertificateByLmkKey(lmkKey)
+          );
+          // Add recommendations next
+          await addRecommendationsByLmkKey(lmkKey);
+        }
       );
       await Promise.all(certificatePromises);
     } catch (err) {
@@ -139,6 +177,9 @@ router.route("/postcode/:postcode").get((req, res, next) => {
 
 /* Testing seedData */
 // seedData();
+
+/* Testing seedDataBasedOnLocalAuthority */
+// seedDataBasedOnLocalAuthority();
 
 /* Testing getCertificatesOfPostcode */
 // getCertificatesOfPostCode("SW6 7SR");

@@ -2290,5 +2290,9 @@ block content
         //- Create a polyline that uses the latlong coordinates
         var polyline = L.polyline(latlongs, {color: 'red'}).addTo(map);
 
+        // Adding markers
+        var marker = L.marker([51.485262, -0.203158]).addTo(map)
+
         // zoom the map to the polyline
-        map.fitBounds(polyline.getBounds());
+        map.fitBounds(marker.getBounds());
+
