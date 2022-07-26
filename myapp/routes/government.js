@@ -2,6 +2,13 @@ const { getAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 
 const router = require("express").Router();
 
+router.route("/").get((req, res, next) => {
+  res.render("map", {
+    fs: require("fs"),
+    readline: require("readline"),
+  });
+});
+
 router.route("/:localAuthority").get((req, res, next) => {
   // Get the aggregated data of this localAuthority
   getAggregateDataOfLocalAuthority(req.params.localAuthority).then(

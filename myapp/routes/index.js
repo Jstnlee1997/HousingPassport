@@ -31,7 +31,6 @@ router
         const recommendations = await (
           await getRecommendationsByLmkKey(lmkKey)
         ).Items;
-        console.log(recommendations);
         res.render("index", {
           title: "Housing Passport",
           certificate: certificate.Item,
