@@ -2291,7 +2291,8 @@ block content
         var polyline = L.polyline(latlongs, {color: 'red'}).addTo(map);
 
         // Add all the markers of the propertiesInfo
-        console.log("Try2: " + propertiesInfo)
+        const propertiesInfo = !{JSON.stringify(propertiesInfo)};
+        console.log(propertiesInfo);
         for (const propertyInfo of propertiesInfo) {
           L.marker([propertyInfo.lat, propertyInfo.lng]).addTo(map)
         }

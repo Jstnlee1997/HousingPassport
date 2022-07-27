@@ -18,10 +18,11 @@ router.route("/:localAuthority").get((req, res, next) => {
       );
       // There is an existing local-authority
       if ("propertiesInfo" in localAuthorityInformation.Item) {
-        console.log("I GET HERE");
         // Coordinates of properties within this local-authority exist already
         const propertiesInfo = localAuthorityInformation.Item["propertiesInfo"];
-        res.send(propertiesInfo);
+        res.render("map", {
+          propertiesInfo: propertiesInfo,
+        });
       } else {
         // Get all the lmk-keys
         const lmkKeys = await (
@@ -54,12 +55,8 @@ router.route("/:localAuthority").get((req, res, next) => {
             console.log(propertyInfo);
           }
         }
+        res.send(propertiesInfo);
       }
-
-      res.send(propertiesInfo);
-      // res.render("map", {
-      //   propertiesInfo: propertiesInfo,
-      // });
     } else {
       res.send("There are currently no properties under this local-authority");
     }
