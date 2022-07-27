@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 const { getCertificateByLmkKey } = require("./dynamo-certs");
 const {
   addNewLocalAuthority,
-  getLmkKeysUsingLocalAuthority,
+  getLocalAuthorityInformation,
   addLmkKeyToExistingLocalAuthority,
 } = require("./dynamo-local-authorities");
 const router = require("express").Router();
@@ -574,7 +574,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
 
       // Determine if current lmk-key is present in respective local-authority of local-authorities table
       const lmkKeys = await (
-        await getLmkKeysUsingLocalAuthority(localAuthority)
+        await getLocalAuthorityInformation(localAuthority)
       ).Item["lmkKeys"];
       if (lmkKeys.includes(lmkKey)) {
         // CASE 2
