@@ -17,6 +17,7 @@ router.route("/:localAuthority").get((req, res, next) => {
         localAuthority
       );
       // There is an existing local-authority
+      // TODO: Update with latest EPC data
       if ("propertiesInfo" in localAuthorityInformation.Item) {
         // Coordinates of properties within this local-authority exist already
         const propertiesInfo = localAuthorityInformation.Item["propertiesInfo"];
@@ -47,12 +48,13 @@ router.route("/:localAuthority").get((req, res, next) => {
             const propertyInfo = {
               lat: certificate.Item["lat"],
               lng: certificate.Item["lng"],
-              currentEnergyRating: certificate.Item["current-energy-rating"],
-              potentialEnergyRating:
-                certificate.Item["potential-energy-rating"],
+              currentEnergyEfficiency:
+                certificate.Item["current-energy-efficiency"],
+              potentialEnergyEfficiency:
+                certificate.Item["potential-energy-efficiency"],
             };
-            propertiesInfo.push(propertyInfo);
             console.log(propertyInfo);
+            propertiesInfo.push(propertyInfo);
           }
         }
         res.send(propertiesInfo);

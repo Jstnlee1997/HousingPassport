@@ -2290,11 +2290,39 @@ block content
         //- Create a polyline that uses the latlong coordinates
         var polyline = L.polyline(latlongs, {color: 'red'}).addTo(map);
 
+        // Create different marker icons
+        var houseBlue = L.icon({
+          iconUrl: '/images/house-blue.png',
+          iconSize: [24, 14],
+          iconAnchor: [12, 7]
+        })
+        var houseYellow = L.icon({
+          iconUrl: '/images/house-yellow.png',
+          iconSize: [24, 14],
+          iconAnchor: [12, 7]
+        })
+        var houseRed = L.icon({
+          iconUrl: '/images/house-red.png',
+          iconSize: [24, 14],
+          iconAnchor: [12, 7]
+        })
+
         // Add all the markers of the propertiesInfo
         const propertiesInfo = !{JSON.stringify(propertiesInfo)};
         console.log(propertiesInfo);
         for (const propertyInfo of propertiesInfo) {
-          L.marker([propertyInfo.lat, propertyInfo.lng]).addTo(map)
+          // Calculate average of energy efficiencies
+          const averageEfficiency = (Number(propertyInfo.potentialEnergyEfficiency) + Number(propertyInfo.currentEnergyEfficiency))/2
+          switch (true) {
+            case averageEfficiency >= 69:
+              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseBlue}).addTo(map);
+              break;
+            case averageEfficiency >= 39:
+              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseYellow}).addTo(map);
+              break;
+            default:
+              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseRed}).addTo(map);
+          }
         }
         //- var marker = L.marker([51.485262, -0.203158]).addTo(map)
 
