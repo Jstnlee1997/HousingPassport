@@ -12,6 +12,23 @@ AWS.config.update({
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "local-authorities";
 
+// Function to get all the local-authorities
+const getAllLocalAuthorities = async () => {
+  const params = {
+    TableName: TABLE_NAME,
+  };
+  var localAuthorities = [];
+  const items = await dynamoClient.scan(params).promise();
+  for (const item of items.Items) {
+    localAuthorities.push(item["local-authority"]);
+  }
+  return localAuthorities;
+};
+// Testing function getAllLocalAuthorities
+// getAllLocalAuthorities().then((res) => {
+//   console.log(res);
+// });
+
 // Function to get list of lmkKeys from local-authority
 const getLocalAuthorityInformation = async (localAuthority) => {
   const params = {
@@ -4777,6 +4794,7 @@ const propertiesInfo = [
 
 module.exports = {
   dynamoClient,
+  getAllLocalAuthorities,
   getLocalAuthorityInformation,
   addNewLocalAuthority,
   addLmkKeyToExistingLocalAuthority,
