@@ -83,11 +83,11 @@ const addCertificateByLmkKey = async (lmkKey) => {
         },
       }
     )
-    .then((res) => {
+    .then(async (res) => {
       // console.log(res.status);
       if (res.data) {
         // add certificate to database
-        addCertificate(res.data["rows"][0]);
+        await addCertificate(res.data["rows"][0]);
         return res.data["rows"][0];
       }
     })
@@ -188,8 +188,8 @@ router.route("/postcode/:postcode").get((req, res, next) => {
 // addCertificateByLmkKey("1573380469022017090821481343938953");
 
 module.exports = {
-  router: router,
-  getCertificatesOfPostCode: getCertificatesOfPostCode,
-  getLmkKeyOfAddress: getLmkKeyOfAddress,
-  addCertificateByLmkKey: addCertificateByLmkKey,
+  router,
+  getCertificatesOfPostCode,
+  getLmkKeyOfAddress,
+  addCertificateByLmkKey,
 };

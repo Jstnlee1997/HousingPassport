@@ -6,7 +6,6 @@ const getLngLatCoordinates = async (address, postcode) => {
   const url = "https://api.opencagedata.com/geocode/v1/json?";
   const query =
     encodeURIComponent(address) + encodeURIComponent(", " + postcode);
-  console.log(query);
   const countrycode = "gb";
   const OPEN_CAGE_API_KEY = process.env.OPEN_CAGE_API_KEY;
   const res = await axios.get(url, {
@@ -25,13 +24,11 @@ const getLngLatCoordinates = async (address, postcode) => {
   }
 };
 // Testing function getLngLatCoordinates
-// getLngLatCoordinates("94 Acer Apartments, Belvoir Square", "W12 7LU").then(
-//   async (res) => {
-//     // OUTPUTS: { lat: 51.485262, lng: -0.203158 }
-//     const { lat, lng } = res;
-//     console.log(lat, lng);
-//   }
-// );
+// getLngLatCoordinates("112a Finborough Road", "SW10 9ED").then(async (res) => {
+//   // OUTPUTS: { lat: 51.485262, lng: -0.203158 }
+//   const { lat, lng } = res;
+//   console.log(lat, lng);
+// });
 
 module.exports = {
   getLngLatCoordinates,

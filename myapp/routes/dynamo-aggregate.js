@@ -236,28 +236,23 @@ const getAggregateDataOfLocalAuthority = async (localAuthority) => {
 // Function to return an aggregate data given a certificate
 const returnAggregateData = async (certificate) => {
   const aggregateData = {
-    "local-authority": certificate.Item["local-authority"],
-    "current-energy-rating": certificate.Item["current-energy-rating"],
-    "current-energy-efficiency": certificate.Item["current-energy-efficiency"],
-    "potential-energy-rating": certificate.Item["potential-energy-rating"],
-    "potential-energy-efficiency":
-      certificate.Item["potential-energy-efficiency"],
-    "lighting-cost-current": certificate.Item["lighting-cost-current"],
-    "lighting-cost-potential": certificate.Item["lighting-cost-potential"],
-    "co2-emissions-current": certificate.Item["co2-emissions-current"],
-    "co2-emissions-potential": certificate.Item["co2-emissions-potential"],
-    "heating-cost-current": certificate.Item["heating-cost-current"],
-    "heating-cost-potential": certificate.Item["heating-cost-potential"],
-    "environment-impact-current":
-      certificate.Item["environment-impact-current"],
-    "environment-impact-potential":
-      certificate.Item["environment-impact-potential"],
-    "energy-consumption-current":
-      certificate.Item["energy-consumption-current"],
-    "energy-consumption-potential":
-      certificate.Item["energy-consumption-potential"],
-    "low-energy-lighting": certificate.Item["low-energy-lighting"],
-    "hot-water-cost-potential": certificate.Item["hot-water-cost-potential"],
+    "local-authority": certificate["local-authority"],
+    "current-energy-rating": certificate["current-energy-rating"],
+    "current-energy-efficiency": certificate["current-energy-efficiency"],
+    "potential-energy-rating": certificate["potential-energy-rating"],
+    "potential-energy-efficiency": certificate["potential-energy-efficiency"],
+    "lighting-cost-current": certificate["lighting-cost-current"],
+    "lighting-cost-potential": certificate["lighting-cost-potential"],
+    "co2-emissions-current": certificate["co2-emissions-current"],
+    "co2-emissions-potential": certificate["co2-emissions-potential"],
+    "heating-cost-current": certificate["heating-cost-current"],
+    "heating-cost-potential": certificate["heating-cost-potential"],
+    "environment-impact-current": certificate["environment-impact-current"],
+    "environment-impact-potential": certificate["environment-impact-potential"],
+    "energy-consumption-current": certificate["energy-consumption-current"],
+    "energy-consumption-potential": certificate["energy-consumption-potential"],
+    "low-energy-lighting": certificate["low-energy-lighting"],
+    "hot-water-cost-potential": certificate["hot-water-cost-potential"],
   };
   return aggregateData;
 };
@@ -279,59 +274,59 @@ const returnUpdatedAggregateData = async (
     "current-energy-efficiency":
       currentAggregateData.Item["current-energy-efficiency"] -
       oldCertificate.Item["current-energy-efficiency"] +
-      newCertificate.Item["current-energy-efficiency"],
+      newCertificate["current-energy-efficiency"],
     "potential-energy-efficiency":
       currentAggregateData.Item["potential-energy-efficiency"] -
       oldCertificate.Item["potential-energy-efficiency"] +
-      newCertificate.Item["potential-energy-efficiency"],
+      newCertificate["potential-energy-efficiency"],
     "lighting-cost-current":
       currentAggregateData.Item["lighting-cost-current"] -
       oldCertificate["lighting-cost-current"] +
-      newCertificate.Item["lighting-cost-current"],
+      newCertificate["lighting-cost-current"],
     "lighting-cost-potential":
       currentAggregateData.Item["lighting-cost-potential"] -
       oldCertificate["lighting-cost-potential"] +
-      newCertificate.Item["lighting-cost-potential"],
+      newCertificate["lighting-cost-potential"],
     "co2-emissions-current":
       currentAggregateData.Item["co2-emissions-current"] -
       oldCertificate.Item["co2-emissions-current"] +
-      newCertificate.Item["co2-emissions-current"],
+      newCertificate["co2-emissions-current"],
     "co2-emissions-potential":
       currentAggregateData.Item["co2-emissions-potential"] -
       oldCertificate["co2-emissions-potential"] +
-      newCertificate.Item["co2-emissions-potential"],
+      newCertificate["co2-emissions-potential"],
     "heating-cost-current":
       currentAggregateData.Item["heating-cost-current"] -
       oldCertificate.Item["heating-cost-current"] +
-      newCertificate.Item["heating-cost-current"],
+      newCertificate["heating-cost-current"],
     "heating-cost-potential":
       currentAggregateData.Item["heating-cost-potential"] -
       oldCertificate.Item["heating-cost-potential"] +
-      newCertificate.Item["heating-cost-potential"],
+      newCertificate["heating-cost-potential"],
     "environment-impact-current":
       currentAggregateData.Item["environment-impact-current"] -
       oldCertificate.Item["environment-impact-current"] +
-      newCertificate.Item["environment-impact-current"],
+      newCertificate["environment-impact-current"],
     "environment-impact-potential":
       currentAggregateData.Item["environment-impact-potential"] -
       oldCertificate.Item["environment-impact-potential"] +
-      newCertificate.Item["environment-impact-potential"],
+      newCertificate["environment-impact-potential"],
     "energy-consumption-current":
       currentAggregateData.Item["energy-consumption-current"] -
       oldCertificate.Item["energy-consumption-current"] +
-      newCertificate.Item["energy-consumption-current"],
+      newCertificate["energy-consumption-current"],
     "energy-consumption-potential":
       currentAggregateData.Item["energy-consumption-potential"] -
       oldCertificate.Item["energy-consumption-potential"] +
-      newCertificate.Item["energy-consumption-potential"],
+      newCertificate["energy-consumption-potential"],
     "low-energy-lighting":
       currentAggregateData.Item["low-energy-lighting"] -
       oldCertificate.Item["low-energy-lighting"] +
-      newCertificate.Item["low-energy-lighting"],
+      newCertificate["low-energy-lighting"],
     "hot-water-cost-potential":
       currentAggregateData.Item["hot-water-cost-potential"] -
       oldCertificate.Item["hot-water-cost-potential"] +
-      newCertificate.Item["hot-water-cost-potential"],
+      newCertificate["hot-water-cost-potential"],
   };
   aggregateData["current-energy-rating"] = await returnNewEnergyRating(
     aggregateData["current-energy-efficiency"]
@@ -360,85 +355,85 @@ const returnNewAggregateData = async (
     "current-energy-efficiency": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["current-energy-efficiency"]) +
-        Number(newCertificate.Item["current-energy-efficiency"])) /
+        Number(newCertificate["current-energy-efficiency"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "potential-energy-efficiency": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["potential-energy-efficiency"]) +
-        Number(newCertificate.Item["potential-energy-efficiency"])) /
+        Number(newCertificate["potential-energy-efficiency"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "lighting-cost-current": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["lighting-cost-current"]) +
-        Number(newCertificate.Item["lighting-cost-current"])) /
+        Number(newCertificate["lighting-cost-current"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "lighting-cost-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["lighting-cost-potential"]) +
-        Number(newCertificate.Item["lighting-cost-potential"])) /
+        Number(newCertificate["lighting-cost-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "co2-emissions-current": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["co2-emissions-current"]) +
-        Number(newCertificate.Item["co2-emissions-current"])) /
+        Number(newCertificate["co2-emissions-current"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "co2-emissions-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["co2-emissions-potential"]) +
-        Number(newCertificate.Item["co2-emissions-potential"])) /
+        Number(newCertificate["co2-emissions-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "heating-cost-current": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["heating-cost-current"]) +
-        Number(newCertificate.Item["heating-cost-current"])) /
+        Number(newCertificate["heating-cost-current"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "heating-cost-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["heating-cost-potential"]) +
-        Number(newCertificate.Item["heating-cost-potential"])) /
+        Number(newCertificate["heating-cost-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "environment-impact-current": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["environment-impact-current"]) +
-        Number(newCertificate.Item["environment-impact-current"])) /
+        Number(newCertificate["environment-impact-current"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "environment-impact-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["environment-impact-potential"]) +
-        Number(newCertificate.Item["environment-impact-potential"])) /
+        Number(newCertificate["environment-impact-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "energy-consumption-current": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["energy-consumption-current"]) +
-        Number(newCertificate.Item["energy-consumption-current"])) /
+        Number(newCertificate["energy-consumption-current"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "energy-consumption-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["energy-consumption-potential"]) +
-        Number(newCertificate.Item["energy-consumption-potential"])) /
+        Number(newCertificate["energy-consumption-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "low-energy-lighting": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["low-energy-lighting"]) +
-        Number(newCertificate.Item["low-energy-lighting"])) /
+        Number(newCertificate["low-energy-lighting"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
     "hot-water-cost-potential": (
       (oldNumberOfLmkKeysInLocalAuthority *
         Number(currentAggregateData.Item["hot-water-cost-potential"]) +
-        Number(newCertificate.Item["hot-water-cost-potential"])) /
+        Number(newCertificate["hot-water-cost-potential"])) /
       (oldNumberOfLmkKeysInLocalAuthority + 1)
     ).toString(),
   };
@@ -536,11 +531,11 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
    */
 
   // Get the lmk-key of the certificate
-  // console.log("Cert:", certificate);
-  const lmkKey = certificate.Item["lmk-key"];
+  console.log("Cert:", certificate);
+  const lmkKey = certificate["lmk-key"];
 
   // Get the local-authority of the certificate
-  const localAuthority = certificate.Item["local-authority"];
+  const localAuthority = certificate["local-authority"];
 
   // Determine if local-authority is in database
   const found = getAggregateDataOfLocalAuthority(localAuthority);
@@ -553,7 +548,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
         await getLocalAuthorityInformation(localAuthority)
       ).Item["lmkKeys"];
       if (lmkKeys.includes(lmkKey)) {
-        // CASE 2
+        // CASE 2: existing user updates epc data
         await updateAggregateDataOfExistingLocalAuthority(
           certificate,
           lmkKey,
@@ -561,7 +556,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           currentAggregateData
         );
       } else {
-        // CASE 1a
+        // CASE 1a: Local-authority exists already
         await addNewAggregateDataToExistingLocalAuthority(
           certificate,
           localAuthority,
@@ -571,12 +566,11 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
 
         // Add new lmkkey and propertyInfo to existing local authority in local-authorities table
         const newPropertyInfo = {
-          lat: certificate.Item["lat"],
-          lng: certificate.Item["lng"],
-          currentEnergyEfficiency:
-            certificate.Item["current-energy-efficiency"],
-          potentialEnergyEfficiency:
-            certificate.Item["potential-energy-efficiency"],
+          lmkKey: lmkKey,
+          lat: certificate["lat"],
+          lng: certificate["lng"],
+          currentEnergyEfficiency: certificate["current-energy-efficiency"],
+          potentialEnergyEfficiency: certificate["potential-energy-efficiency"],
         };
         console.log(
           "Adding new property info: ",
@@ -592,25 +586,34 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
       // Update the frequency of energy ratings in local-authorities table
       await updateFrequencyOfEnergyRating(localAuthority);
     } else {
+      // CASE 1b: Local-authority does not exist
       console.log(
         "Local-authority does not exist, creating new item in aggregate-data table"
       );
 
+      // Create new propertyInfo
+      const newPropertyInfo = {
+        lmkKey: lmkKey,
+        lat: certificate["lat"],
+        lng: certificate["lng"],
+        currentEnergyEfficiency: certificate["current-energy-efficiency"],
+        potentialEnergyEfficiency: certificate["potential-energy-efficiency"],
+      };
+
       // ADD new local-authority to local-authorities table
-      await addNewLocalAuthority(localAuthority, lmkKey);
+      await addNewLocalAuthority(
+        localAuthority,
+        lmkKey,
+        newPropertyInfo,
+        certificate["current-energy-rating"],
+        certificate["potential-energy-rating"]
+      );
 
       // Get the relevant data that we are interested in aggregating
       const aggregateData = await returnAggregateData(certificate);
 
       // Add new local-authority to aggregate-data table
       await addAggregateDataOfLocalAuthority(aggregateData);
-
-      // TODO: Add new attribute to local-authorities table of the frequency of the energy ratings of the new aggregated data
-      await addFrequencyOfEnergyRating(
-        localAuthority,
-        aggregateData["current-energy-rating"],
-        aggregateData["potential-energy-rating"]
-      );
     }
   });
 };

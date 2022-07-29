@@ -99,7 +99,7 @@ async function getUserById(id) {
   });
 }
 // Testing getUserById Function
-// const result = getUserById(1).then((res) => {
+// const result = getUserById(65).then((res) => {
 //   return new Promise((resolve, reject) => {
 //     (async () => {
 //       try {
@@ -174,7 +174,7 @@ async function deleteUserUsingEmail(email) {
   });
 }
 // Testing deleteUserUsingEmail Function
-// deleteUserUsingEmail("d@d");
+deleteUserUsingEmail("d@d");
 
 module.exports = {
   addNewUser,

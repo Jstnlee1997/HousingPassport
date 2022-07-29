@@ -44,24 +44,84 @@ const getLocalAuthorityInformation = async (localAuthority) => {
 //   console.log(result.Item);
 // });
 
+// Function to add new attribute of frequency of energy ratings to table
+const getFrequencyOfEnergyRating = (
+  currentEnergyRating,
+  potentialEnergyRating
+) => {
+  var frequencyOfCurrentEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+  var frequencyOfPotentialEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+  frequencyOfCurrentEnergyRatings[currentEnergyRating]++;
+  frequencyOfPotentialEnergyRatings[potentialEnergyRating]++;
+  return {
+    frequencyOfCurrentEnergyRatings: frequencyOfCurrentEnergyRatings,
+    frequencyOfPotentialEnergyRatings: frequencyOfPotentialEnergyRatings,
+  };
+};
+// Testing function getFrequencyOfEnergyRating
+// console.log(JSON.stringify(getFrequencyOfEnergyRating("A", "B")));
+
 // Function to add a new local-authority
-const addNewLocalAuthority = async (localAuthority, lmkKey) => {
+const addNewLocalAuthority = async (
+  localAuthority,
+  lmkKey,
+  propertyInfo,
+  currentEnergyRating,
+  potentialEnergyRating
+) => {
+  // Get frequency of energy ratings
+  const { frequencyOfCurrentEnergyRatings, frequencyOfPotentialEnergyRatings } =
+    getFrequencyOfEnergyRating(currentEnergyRating, potentialEnergyRating);
+
   const params = {
     TableName: TABLE_NAME,
     Item: {
       "local-authority": localAuthority,
       lmkKeys: [lmkKey],
+      propertiesInfo: [propertyInfo],
+      frequencyOfCurrentEnergyRatings: frequencyOfCurrentEnergyRatings,
+      frequencyOfPotentialEnergyRatings: frequencyOfPotentialEnergyRatings,
     },
   };
   console.log(
     "New local-authority added into local-authorities table: ",
     localAuthority
   );
+  console.log("Adding new property info: ", JSON.stringify(newPropertyInfo));
   // use client to call a put method
   return await dynamoClient.put(params).promise();
 };
 // Test function addNewLocalAuthority
-// addNewLocalAuthority("E09000013", "1573380469022017090821481343938953");
+// const testingPropertyInfo = {
+//   lmkKey: "1573380469022017090821481343938953",
+//   lat: 50,
+//   lng: -0.1,
+//   currentEnergyEfficiency: "10",
+//   potentialEnergyEfficiency: "5",
+// };
+// addNewLocalAuthority(
+//   "E09000014",
+//   "1573380469022017090821481343938953",
+//   testingPropertyInfo,
+//   "F",
+//   "F"
+// );
 
 // Function to add lmkKey and propertyInfo to existing local-authority
 const addLmkKeyAndPropertyInfoToExistingLocalAuthority = async (
@@ -4801,58 +4861,6 @@ const propertiesInfo = [
 ];
 // addAllPropertiesInfoToExistingLocalAuthority("E09000013", propertiesInfo);
 
-// Function to add new attribute of frequency of energy ratings to table
-const addFrequencyOfEnergyRating = async (
-  localAuthority,
-  currentEnergyRating,
-  potentialEnergyRating
-) => {
-  var frequencyOfCurrentEnergyRatings = {
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0,
-    E: 0,
-    F: 0,
-    G: 0,
-  };
-  var frequencyOfPotentialEnergyRatings = {
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0,
-    E: 0,
-    F: 0,
-    G: 0,
-  };
-  frequencyOfCurrentEnergyRatings[currentEnergyRating]++;
-  frequencyOfPotentialEnergyRatings[potentialEnergyRating]++;
-  console.log(
-    `Adding new frequency of current-energy-rating: ${JSON.stringify(
-      frequencyOfCurrentEnergyRatings
-    )} and potential energy rating ${JSON.stringify(
-      frequencyOfPotentialEnergyRatings
-    )}`
-  );
-
-  const params = {
-    TableName: TABLE_NAME,
-    Key: {
-      "local-authority": localAuthority,
-    },
-    UpdateExpression:
-      "set frequencyOfCurrentEnergyRatings = :x, frequencyOfPotentialEnergyRatings = :y",
-    ExpressionAttributeValues: {
-      ":x": frequencyOfCurrentEnergyRatings,
-      ":y": frequencyOfPotentialEnergyRatings,
-    },
-  };
-
-  await dynamoClient.update(params).promise();
-};
-// Testing function addFrequencyOfEnergyRating
-// addFrequencyOfEnergyRating("E09000013", "A", "B");
-
 // Function to return the new energy rating given the efficiency
 const returnNewEnergyRating = async (energyEfficiency) => {
   const energyEfficiencyInteger = Number(energyEfficiency);
@@ -4954,7 +4962,6 @@ module.exports = {
   getLocalAuthorityInformation,
   addNewLocalAuthority,
   addLmkKeyAndPropertyInfoToExistingLocalAuthority,
-  addFrequencyOfEnergyRating,
   returnNewEnergyRating,
   updateFrequencyOfEnergyRating,
 };

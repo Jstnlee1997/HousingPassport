@@ -9,9 +9,10 @@ const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 /* GET home page. */
 router
   .route("/")
-  .get(checkAuthenticated, (req, res, next) => {
+  .get(checkAuthenticated, async (req, res, next) => {
     // Get the userId from the session passport
     const userId = req.session.passport.user;
+    console.log(userId);
 
     // Get the lmk-key of the user
     getUserById(userId).then(async (result) => {
@@ -25,7 +26,7 @@ router
 
       /* Check if certificate exists in database, add in if it is not, else just retrieve it */
       const certificate = await getCertificateByLmkKey(lmkKey);
-      if (certificate.Item) {
+      if (typeof certificate !== "undefined") {
         // Certificate is in DB
         console.log("Certificate of this address is present in database");
         const recommendations = await (
@@ -33,13 +34,13 @@ router
         ).Items;
         res.render("index", {
           title: "Housing Passport",
-          certificate: certificate.Item,
+          certificate: certificate,
           // recommendations: JSON.stringify(recommendations, null, 4),
           recommendations: recommendations,
         });
       } else {
         // add certificate into database, AND add recomendations as well
-        console.log("Certificate of this address not present in database");
+        console.log("Certificate of this address is not present in database");
 
         // Add certificate by lmk-key first
         const certificate = await addCertificateByLmkKey(lmkKey);
@@ -53,7 +54,7 @@ router
 
         res.render("index", {
           title: "Housing Passport",
-          certificate: certificate.Item,
+          certificate: certificate,
           recommendations: await (
             await getRecommendationsByLmkKey(lmkKey)
           ).Items,

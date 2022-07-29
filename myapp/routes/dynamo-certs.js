@@ -29,25 +29,26 @@ const getCertificateByLmkKey = async (lmkKey) => {
       "lmk-key": lmkKey,
     },
   };
-  return await dynamoClient.get(params).promise();
+  return await (
+    await dynamoClient.get(params).promise()
+  ).Item;
 };
 
 const addCertificate = async (certificate) => {
   // Add latlng coordinates to the certificate
-  getLngLatCoordinates(certificate["address"], certificate["postcode"]).then(
-    async (res) => {
-      const { lat, lng } = res;
-      certificate["lat"] = lat;
-      certificate["lng"] = lng;
-
-      const params = {
-        TableName: TABLE_NAME,
-        Item: certificate,
-      };
-      // use client to call a put method
-      return await dynamoClient.put(params).promise();
-    }
+  const { lat, lng } = await getLngLatCoordinates(
+    certificate["address"],
+    certificate["postcode"]
   );
+  certificate["lat"] = lat;
+  certificate["lng"] = lng;
+
+  const params = {
+    TableName: TABLE_NAME,
+    Item: certificate,
+  };
+  // use client to call a put method
+  return await dynamoClient.put(params).promise();
 };
 
 // Testing function addCertificate
@@ -161,11 +162,11 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 };
 
 // Testing finding of certificate by lmk-key
-// const found = getCertificateByLmkKey("1573380469022017090821481343938953").then(
-//   (result) => {
-//     console.log(result);
-//   }
-// );
+// const found = getCertificateByLmkKey(
+//   "2260b55834987c7c91c0794e8ffc4e449bc88c360d7846eef5147507249da4b9"
+// ).then((result) => {
+//   console.log(result);
+// });
 
 async function addLongLatCoordinates(event, context) {
   let tableContents;
