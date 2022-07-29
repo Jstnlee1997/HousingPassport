@@ -24,7 +24,7 @@ const getLngLatCoordinates = async (address, postcode) => {
     return { lat: null, lng: null };
   }
 };
-// Testing function getLonLatCoordinates
+// Testing function getLngLatCoordinates
 // getLngLatCoordinates("94 Acer Apartments, Belvoir Square", "W12 7LU").then(
 //   async (res) => {
 //     // OUTPUTS: { lat: 51.485262, lng: -0.203158 }

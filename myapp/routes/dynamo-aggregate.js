@@ -3,7 +3,10 @@ const { getCertificateByLmkKey } = require("./dynamo-certs");
 const {
   addNewLocalAuthority,
   getLocalAuthorityInformation,
-  addLmkKeyToExistingLocalAuthority,
+  addLmkKeyAndPropertyInfoToExistingLocalAuthority,
+  returnNewEnergyRating,
+  addFrequencyOfEnergyRating,
+  updateFrequencyOfEnergyRating,
 } = require("./dynamo-local-authorities");
 const router = require("express").Router();
 require("dotenv").config();
@@ -260,33 +263,6 @@ const returnAggregateData = async (certificate) => {
 };
 // Testing function returnAggregateData
 // console.log(returnAggregateData(testCertificate));
-
-// Function to return the new energy rating given the efficiency
-const returnNewEnergyRating = async (energyEfficiency) => {
-  const energyEfficiencyInteger = Number(energyEfficiency);
-  switch (true) {
-    case energyEfficiencyInteger >= 92:
-      return "A";
-    case energyEfficiencyInteger >= 81:
-      return "B";
-    case energyEfficiencyInteger >= 69:
-      return "C";
-    case energyEfficiencyInteger >= 55:
-      return "D";
-    case energyEfficiencyInteger >= 39:
-      return "E";
-    case energyEfficiencyInteger >= 21:
-      return "F";
-    case energyEfficiencyInteger >= 1:
-      return "G";
-    default:
-      return "H"; // invalid
-  }
-};
-// Testing function returnNewEnergyRating
-// const newEnergyRating = returnNewEnergyRating("60").then((result) => {
-//   console.log(result);
-// });
 
 // Function to return updated aggregated data given a new certificate
 const returnUpdatedAggregateData = async (
@@ -554,9 +530,9 @@ const updateAggregateDataOfExistingLocalAuthority = async (
 const updateAggregateDataOfLocalAuthority = async (certificate) => {
   /* Update localAuthority aggregate data everytime:
    * 1) a new user registers
-   * 1a) Local-authority exists already -> addNewAggregateDataToExistingLocalAuthority
-   * 1b) Local-authority does not exist -> addAggregateDataOfLocalAuthority
-   * 2) existing user updates epc data -> updateAggregateDataOfExistingLocalAuthority
+   * CASE 1a) Local-authority exists already -> addNewAggregateDataToExistingLocalAuthority
+   * CASE 1b) Local-authority does not exist -> addAggregateDataOfLocalAuthority
+   * CASE 2) existing user updates epc data -> updateAggregateDataOfExistingLocalAuthority
    */
 
   // Get the lmk-key of the certificate
@@ -593,9 +569,28 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           lmkKeys.length
         );
 
-        // Add new lmkkey to existing local authority in local-authorities table
-        await addLmkKeyToExistingLocalAuthority(localAuthority, lmkKey);
+        // Add new lmkkey and propertyInfo to existing local authority in local-authorities table
+        const newPropertyInfo = {
+          lat: certificate.Item["lat"],
+          lng: certificate.Item["lng"],
+          currentEnergyEfficiency:
+            certificate.Item["current-energy-efficiency"],
+          potentialEnergyEfficiency:
+            certificate.Item["potential-energy-efficiency"],
+        };
+        console.log(
+          "Adding new property info: ",
+          JSON.stringify(newPropertyInfo)
+        );
+        await addLmkKeyAndPropertyInfoToExistingLocalAuthority(
+          localAuthority,
+          lmkKey,
+          newPropertyInfo
+        );
       }
+
+      // Update the frequency of energy ratings in local-authorities table
+      await updateFrequencyOfEnergyRating(localAuthority);
     } else {
       console.log(
         "Local-authority does not exist, creating new item in aggregate-data table"
@@ -609,6 +604,13 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
 
       // Add new local-authority to aggregate-data table
       await addAggregateDataOfLocalAuthority(aggregateData);
+
+      // TODO: Add new attribute to local-authorities table of the frequency of the energy ratings of the new aggregated data
+      await addFrequencyOfEnergyRating(
+        localAuthority,
+        aggregateData["current-energy-rating"],
+        aggregateData["potential-energy-rating"]
+      );
     }
   });
 };

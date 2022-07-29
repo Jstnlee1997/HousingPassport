@@ -63,15 +63,22 @@ const addNewLocalAuthority = async (localAuthority, lmkKey) => {
 // Test function addNewLocalAuthority
 // addNewLocalAuthority("E09000013", "1573380469022017090821481343938953");
 
-// Function to add lmkKey to existing local-authority
-const addLmkKeyToExistingLocalAuthority = async (localAuthority, lmkKey) => {
-  // Get array of existing lmkKeys
-  const lmkKeys = await (
+// Function to add lmkKey and propertyInfo to existing local-authority
+const addLmkKeyAndPropertyInfoToExistingLocalAuthority = async (
+  localAuthority,
+  lmkKey,
+  propertyInfo
+) => {
+  const localAuthorityInformation = await (
     await getLocalAuthorityInformation(localAuthority)
-  ).Item["lmkKeys"];
+  ).Item;
+  // Get array of existing lmkKeys and propertiesInfo
+  const lmkKeys = localAuthorityInformation["lmkKeys"];
+  const propertiesInfo = localAuthorityInformation["propertiesInfo"];
 
-  // Add new lmkKey to lmkKeys array
+  // Add new lmkKey and propertyInfo
   lmkKeys.push(lmkKey);
+  propertiesInfo.push(propertyInfo);
   // console.log("lmkKeys array: ", lmkKeys);
 
   const params = {
@@ -79,23 +86,25 @@ const addLmkKeyToExistingLocalAuthority = async (localAuthority, lmkKey) => {
     Key: {
       "local-authority": localAuthority,
     },
-    UpdateExpression: "set lmkKeys = :x",
+    UpdateExpression: "set lmkKeys = :x, propertiesInfo = :y",
     ExpressionAttributeValues: {
       ":x": lmkKeys,
+      ":y": propertiesInfo,
     },
   };
 
   await dynamoClient.update(params).promise();
 };
-// Testing function addLmkKeyToExistingLocalAuthority
-// addLmkKeyToExistingLocalAuthority("E09000013", "123");
+// Testing function addLmkKeyAndPropertyInfoToExistingLocalAuthority
+// const testingPropertyInfo = {lat: 50, lng: -0.1, currentEnergyEfficiency: "10", potentialEnergyEfficiency: "5"}
+// addLmkKeyAndPropertyInfoToExistingLocalAuthority("E09000013", "123", testingPropertyInfo);
 
 // Function to add propertyInfo to propertiesInfo of existing local-authority
 const addAllPropertiesInfoToExistingLocalAuthority = async (
   localAuthority,
   propertiesInfo
 ) => {
-  // Get array of existing lmkKeys
+  // Get all the propertiesInfo
   const currentPropertiesInfo = await (
     await getLocalAuthorityInformation(localAuthority)
   ).Item["propertiesInfo"];
@@ -4792,10 +4801,160 @@ const propertiesInfo = [
 ];
 // addAllPropertiesInfoToExistingLocalAuthority("E09000013", propertiesInfo);
 
+// Function to add new attribute of frequency of energy ratings to table
+const addFrequencyOfEnergyRating = async (
+  localAuthority,
+  currentEnergyRating,
+  potentialEnergyRating
+) => {
+  var frequencyOfCurrentEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+  var frequencyOfPotentialEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+  frequencyOfCurrentEnergyRatings[currentEnergyRating]++;
+  frequencyOfPotentialEnergyRatings[potentialEnergyRating]++;
+  console.log(
+    `Adding new frequency of current-energy-rating: ${JSON.stringify(
+      frequencyOfCurrentEnergyRatings
+    )} and potential energy rating ${JSON.stringify(
+      frequencyOfPotentialEnergyRatings
+    )}`
+  );
+
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "local-authority": localAuthority,
+    },
+    UpdateExpression:
+      "set frequencyOfCurrentEnergyRatings = :x, frequencyOfPotentialEnergyRatings = :y",
+    ExpressionAttributeValues: {
+      ":x": frequencyOfCurrentEnergyRatings,
+      ":y": frequencyOfPotentialEnergyRatings,
+    },
+  };
+
+  await dynamoClient.update(params).promise();
+};
+// Testing function addFrequencyOfEnergyRating
+// addFrequencyOfEnergyRating("E09000013", "A", "B");
+
+// Function to return the new energy rating given the efficiency
+const returnNewEnergyRating = async (energyEfficiency) => {
+  const energyEfficiencyInteger = Number(energyEfficiency);
+  switch (true) {
+    case energyEfficiencyInteger >= 92:
+      return "A";
+    case energyEfficiencyInteger >= 81:
+      return "B";
+    case energyEfficiencyInteger >= 69:
+      return "C";
+    case energyEfficiencyInteger >= 55:
+      return "D";
+    case energyEfficiencyInteger >= 39:
+      return "E";
+    case energyEfficiencyInteger >= 21:
+      return "F";
+    case energyEfficiencyInteger >= 1:
+      return "G";
+    default:
+      return "H"; // invalid
+  }
+};
+// Testing function returnNewEnergyRating
+// const newEnergyRating = returnNewEnergyRating("60").then((result) => {
+//   console.log(result);
+// });
+
+// Function to update frequencyOfEnergyRatings
+const updateFrequencyOfEnergyRating = async (localAuthority) => {
+  // Get all the propertiesInfo and account for the energy efficiencies
+  const propertiesInfo = await (
+    await getLocalAuthorityInformation(localAuthority)
+  ).Item["propertiesInfo"];
+
+  // Instantiate variable
+  var frequencyOfCurrentEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+  var frequencyOfPotentialEnergyRatings = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+  };
+
+  // Go through each property and increment the respective frequency of energy ratings
+  for (const propertyInfo of propertiesInfo) {
+    // Get the respective grade
+    const currentEnergyRating = await returnNewEnergyRating(
+      propertyInfo.currentEnergyEfficiency
+    );
+    const potentialEnergyRating = await returnNewEnergyRating(
+      propertyInfo.potentialEnergyEfficiency
+    );
+
+    // Increment frequencies
+    frequencyOfCurrentEnergyRatings[currentEnergyRating]++;
+    frequencyOfPotentialEnergyRatings[potentialEnergyRating]++;
+  }
+  console.log(
+    `Updated frequency of current-energy-rating: ${JSON.stringify(
+      frequencyOfCurrentEnergyRatings
+    )} and potential energy rating ${JSON.stringify(
+      frequencyOfPotentialEnergyRatings
+    )}`
+  );
+
+  // Update table
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "local-authority": localAuthority,
+    },
+    UpdateExpression:
+      "set frequencyOfCurrentEnergyRatings = :x, frequencyOfPotentialEnergyRatings = :y",
+    ExpressionAttributeValues: {
+      ":x": frequencyOfCurrentEnergyRatings,
+      ":y": frequencyOfPotentialEnergyRatings,
+    },
+  };
+
+  await dynamoClient.update(params).promise();
+};
+// Testing function updateFrequencyOfEnergyRating
+// updateFrequencyOfEnergyRating("E09000013");
+
 module.exports = {
   dynamoClient,
   getAllLocalAuthorities,
   getLocalAuthorityInformation,
   addNewLocalAuthority,
-  addLmkKeyToExistingLocalAuthority,
+  addLmkKeyAndPropertyInfoToExistingLocalAuthority,
+  addFrequencyOfEnergyRating,
+  returnNewEnergyRating,
+  updateFrequencyOfEnergyRating,
 };
