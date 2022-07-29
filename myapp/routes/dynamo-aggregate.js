@@ -349,7 +349,6 @@ const returnNewAggregateData = async (
    * newValue = (oldNumberOfLmkKeysInLocalAuthority * oldValue + certficateValue) / (oldNumberOfLmkKeysInLocalAuthority+1)
    * ENERGY RATINGS: -> returnNewEnergyRating
    */
-  // console.log("Currently: ", currentAggregateData);
   const aggregateData = {
     "local-authority": currentAggregateData.Item["local-authority"],
     "current-energy-efficiency": (
@@ -490,7 +489,7 @@ const addNewAggregateDataToExistingLocalAuthority = async (
     },
     Item: aggregateData,
   };
-  await dynamoClient.update(params).promise();
+  await dynamoClient.put(params).promise();
 };
 
 const updateAggregateDataOfExistingLocalAuthority = async (
@@ -518,7 +517,7 @@ const updateAggregateDataOfExistingLocalAuthority = async (
     },
     Item: aggregateData,
   };
-  await dynamoClient.update(params).promise();
+  await dynamoClient.put(params).promise();
 };
 
 // Function to update aggregate data of local-authority
@@ -531,7 +530,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
    */
 
   // Get the lmk-key of the certificate
-  console.log("Cert:", certificate);
+  // console.log("Cert:", certificate);
   const lmkKey = certificate["lmk-key"];
 
   // Get the local-authority of the certificate

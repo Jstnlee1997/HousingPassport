@@ -34,6 +34,13 @@ const getCertificateByLmkKey = async (lmkKey) => {
   ).Item;
 };
 
+// Testing finding of certificate by lmk-key
+// const found = getCertificateByLmkKey(
+//   "e2a198e1920ce4e5da1471d61e79656b564278202f30c8c1d96a28a00770eb2e"
+// ).then((result) => {
+//   console.log(result);
+// });
+
 const addCertificate = async (certificate) => {
   // Add latlng coordinates to the certificate
   const { lat, lng } = await getLngLatCoordinates(
@@ -154,18 +161,18 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      lmkKey,
+      "lmk-key": lmkKey,
     },
   };
   // use client ot call a delete method
   return await dynamoClient.delete(params).promise();
 };
 
-// Testing finding of certificate by lmk-key
-// const found = getCertificateByLmkKey(
-//   "2260b55834987c7c91c0794e8ffc4e449bc88c360d7846eef5147507249da4b9"
-// ).then((result) => {
-//   console.log(result);
+// Test deleteCertificateByLmkKey
+// const found = deleteCertificateByLmkKey(
+//   "27ddea68c8dddfd24bb13c298dbb22243ddef422427969946d0997915093e297"
+// ).then(async (res) => {
+//   console.log(res);
 // });
 
 async function addLongLatCoordinates(event, context) {
