@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const { getLonLatCoordinates, getLngLatCoordinates } = require("./open-cage");
+const { getLngLatCoordinates } = require("./open-cage");
 require("dotenv").config();
 
 // connection to AWS
@@ -33,12 +33,21 @@ const getCertificateByLmkKey = async (lmkKey) => {
 };
 
 const addCertificate = async (certificate) => {
-  const params = {
-    TableName: TABLE_NAME,
-    Item: certificate,
-  };
-  // use client to call a put method
-  return await dynamoClient.put(params).promise();
+  // Add latlng coordinates to the certificate
+  getLngLatCoordinates(certificate["address"], certificate["postcode"]).then(
+    async (res) => {
+      const { lat, lng } = res;
+      certificate["lat"] = lat;
+      certificate["lng"] = lng;
+
+      const params = {
+        TableName: TABLE_NAME,
+        Item: certificate,
+      };
+      // use client to call a put method
+      return await dynamoClient.put(params).promise();
+    }
+  );
 };
 
 // Testing function addCertificate
