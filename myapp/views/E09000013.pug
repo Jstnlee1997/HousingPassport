@@ -2323,16 +2323,20 @@ block content
 
           //- Calculate average of energy efficiencies
           const averageEfficiency = (Number(propertyInfo.potentialEnergyEfficiency) + Number(propertyInfo.currentEnergyEfficiency))/2
+          var icon;
           switch (true) {
             case averageEfficiency >= 69:
-              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseBlue}).bindPopup(popupContent).openPopup().addTo(map);
+              icon = houseBlue 
               break;
             case averageEfficiency >= 39:
-              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseYellow}).bindPopup(popupContent).openPopup().addTo(map);
+              icon = houseYellow  
               break;
             default:
-              L.marker([propertyInfo.lat, propertyInfo.lng], {icon: houseRed}).bindPopup(popupContent).openPopup().addTo(map);
+              icon = houseRed 
           }
+          
+          //- Make the marker
+          L.marker([propertyInfo.lat, propertyInfo.lng], {icon: icon}).bindPopup(popupContent).openPopup().addTo(map);
         }
 
         //- zoom the map to the polyline

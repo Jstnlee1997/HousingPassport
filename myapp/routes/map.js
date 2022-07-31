@@ -2287,10 +2287,23 @@ router.route("/").get((req, res, next) => {
 
   // Get all the local-authorities
   getAllLocalAuthorities().then(async (localAuthorities) => {
+    var aggregateDataOfLocalAuthorities = {};
+    // get all the aggregate data for each local-authority
+    for (const localAuthority of localAuthorities) {
+      aggregateDataOfLocalAuthorities[localAuthority] = await (
+        await getAggregateDataOfLocalAuthority(localAuthority)
+      ).Item;
+    }
+    console.log(
+      "Aggregate data of all the local-authorities: ",
+      JSON.stringify(aggregateDataOfLocalAuthorities)
+    );
+
     res.render("map", {
       title: "Map of London",
       localAuthorities: localAuthorities,
       latlongsOfLocalAuthorities: latlongsOfLocalAuthorities,
+      aggregateDataOfLocalAuthorities: aggregateDataOfLocalAuthorities,
     });
   });
 });
@@ -2306,7 +2319,7 @@ router.route("/:localAuthority").get((req, res, next) => {
       // There is an existing local-authority
       // TODO: Update with latest EPC data
       if ("propertiesInfo" in localAuthorityInformation.Item) {
-        // Coordinates of properties within this local-authority exist already
+        // Coordinates of all the properties within this local-authority exist already
         const propertiesInfo = localAuthorityInformation.Item["propertiesInfo"];
         res.render(localAuthority, {
           title: localAuthority,
@@ -2334,6 +2347,7 @@ router.route("/:localAuthority").get((req, res, next) => {
 
             // add latlong coordinates and the energy ratings
             const propertyInfo = {
+              lmkKey: certificate.Item["lmk-key"],
               lat: certificate.Item["lat"],
               lng: certificate.Item["lng"],
               currentEnergyEfficiency:

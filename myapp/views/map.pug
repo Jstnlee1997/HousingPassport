@@ -32,18 +32,38 @@ block content
         //- For each local-authority, plot boundary
         const localAuthorities = !{JSON.stringify(localAuthorities)}
         console.log(localAuthorities)
+        const aggregateDataOfLocalAuthorities = !{JSON.stringify(aggregateDataOfLocalAuthorities)}
+        console.log(aggregateDataOfLocalAuthorities)
         const latlongsOfLocalAuthorities = !{JSON.stringify(latlongsOfLocalAuthorities)}
         for (const localAuthority of localAuthorities) {
+          // Create popup content to display aggregated data for each local-authority
+          const popupContent = `Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
+                                Average Current Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-rating"]}<br>
+                                Average Current Energy Efficiency: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]}<br>
+                                Average Potential Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-rating"]}<br>
+                                Average Potential Energy Efficiency: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]}<br>
+                                <a id="link" href='/map/${localAuthority}'> Show further detail</a>`
+             
           // Get latlong coordinates of local-authority
           const latlongs = latlongsOfLocalAuthorities[localAuthority]
           console.log(latlongs)
 
+          // Vary color of polygon depending on the energy ratings
+          const averageEfficiency = (Number(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]) + Number(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]))/2
+          var color;
+          switch (true) {
+            case averageEfficiency >= 69:
+              color = 'blue'
+              break;
+            case averageEfficiency >= 39:
+              color = 'yellow'
+              break;
+            default:
+              color = 'red'
+          }
+
           //- Create a polygon boundary that uses the latlong coordinates
-          var polygon = L.polygon([].concat.apply([],latlongs), {color: 'red', className: localAuthority}).on('click', function(){onClick(this.options.className)}).addTo(map);
+          var polygon = L.polygon([].concat.apply([],latlongs), {color: color, className: localAuthority}).bindPopup(popupContent).openPopup().addTo(map);
         }
 
 
-        //- Create onclick function to redirect page of boroughs
-        function onClick(className) {
-          location.href = "/government/" + className;
-        }
