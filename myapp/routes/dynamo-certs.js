@@ -35,11 +35,13 @@ const getCertificateByLmkKey = async (lmkKey) => {
 };
 
 // Testing finding of certificate by lmk-key
-// const found = getCertificateByLmkKey(
-//   "e2a198e1920ce4e5da1471d61e79656b564278202f30c8c1d96a28a00770eb2e"
-// ).then((result) => {
-//   console.log(result);
-// });
+async function testGetCertificateByLmkKey() {
+  const certificate = await getCertificateByLmkKey(
+    "6529dbb2d788d187895a35c6db0e7263b53eddebc7cc0e0df3576e05ee761e8d"
+  );
+  console.log(certificate);
+}
+// testGetCertificateByLmkKey();
 
 const addCertificate = async (certificate) => {
   // Add latlng coordinates to the certificate
@@ -170,7 +172,7 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 
 // Test deleteCertificateByLmkKey
 // const found = deleteCertificateByLmkKey(
-//   "27ddea68c8dddfd24bb13c298dbb22243ddef422427969946d0997915093e297"
+//   "1573380469022017090821481343938953"
 // ).then(async (res) => {
 //   console.log(res);
 // });

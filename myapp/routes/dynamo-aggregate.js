@@ -273,11 +273,11 @@ const returnUpdatedAggregateData = async (
     "local-authority": currentAggregateData.Item["local-authority"],
     "current-energy-efficiency":
       currentAggregateData.Item["current-energy-efficiency"] -
-      oldCertificate.Item["current-energy-efficiency"] +
+      oldCertificate["current-energy-efficiency"] +
       newCertificate["current-energy-efficiency"],
     "potential-energy-efficiency":
       currentAggregateData.Item["potential-energy-efficiency"] -
-      oldCertificate.Item["potential-energy-efficiency"] +
+      oldCertificate["potential-energy-efficiency"] +
       newCertificate["potential-energy-efficiency"],
     "lighting-cost-current":
       currentAggregateData.Item["lighting-cost-current"] -
@@ -289,7 +289,7 @@ const returnUpdatedAggregateData = async (
       newCertificate["lighting-cost-potential"],
     "co2-emissions-current":
       currentAggregateData.Item["co2-emissions-current"] -
-      oldCertificate.Item["co2-emissions-current"] +
+      oldCertificate["co2-emissions-current"] +
       newCertificate["co2-emissions-current"],
     "co2-emissions-potential":
       currentAggregateData.Item["co2-emissions-potential"] -
@@ -297,35 +297,35 @@ const returnUpdatedAggregateData = async (
       newCertificate["co2-emissions-potential"],
     "heating-cost-current":
       currentAggregateData.Item["heating-cost-current"] -
-      oldCertificate.Item["heating-cost-current"] +
+      oldCertificate["heating-cost-current"] +
       newCertificate["heating-cost-current"],
     "heating-cost-potential":
       currentAggregateData.Item["heating-cost-potential"] -
-      oldCertificate.Item["heating-cost-potential"] +
+      oldCertificate["heating-cost-potential"] +
       newCertificate["heating-cost-potential"],
     "environment-impact-current":
       currentAggregateData.Item["environment-impact-current"] -
-      oldCertificate.Item["environment-impact-current"] +
+      oldCertificate["environment-impact-current"] +
       newCertificate["environment-impact-current"],
     "environment-impact-potential":
       currentAggregateData.Item["environment-impact-potential"] -
-      oldCertificate.Item["environment-impact-potential"] +
+      oldCertificate["environment-impact-potential"] +
       newCertificate["environment-impact-potential"],
     "energy-consumption-current":
       currentAggregateData.Item["energy-consumption-current"] -
-      oldCertificate.Item["energy-consumption-current"] +
+      oldCertificate["energy-consumption-current"] +
       newCertificate["energy-consumption-current"],
     "energy-consumption-potential":
       currentAggregateData.Item["energy-consumption-potential"] -
-      oldCertificate.Item["energy-consumption-potential"] +
+      oldCertificate["energy-consumption-potential"] +
       newCertificate["energy-consumption-potential"],
     "low-energy-lighting":
       currentAggregateData.Item["low-energy-lighting"] -
-      oldCertificate.Item["low-energy-lighting"] +
+      oldCertificate["low-energy-lighting"] +
       newCertificate["low-energy-lighting"],
     "hot-water-cost-potential":
       currentAggregateData.Item["hot-water-cost-potential"] -
-      oldCertificate.Item["hot-water-cost-potential"] +
+      oldCertificate["hot-water-cost-potential"] +
       newCertificate["hot-water-cost-potential"],
   };
   aggregateData["current-energy-rating"] = await returnNewEnergyRating(
@@ -334,6 +334,7 @@ const returnUpdatedAggregateData = async (
   aggregateData["potential-energy-rating"] = await returnNewEnergyRating(
     aggregateData["potential-energy-efficiency"]
   );
+  console.log(aggregateData);
   return aggregateData;
 };
 // TODO: WRITE TEST FOR FUNCTION returnUpdatedAggregateData
@@ -571,10 +572,10 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           currentEnergyEfficiency: certificate["current-energy-efficiency"],
           potentialEnergyEfficiency: certificate["potential-energy-efficiency"],
         };
-        console.log(
-          "Adding new property info: ",
-          JSON.stringify(newPropertyInfo)
-        );
+        // console.log(
+        //   "Adding new property info: ",
+        //   JSON.stringify(newPropertyInfo)
+        // );
         await addLmkKeyAndPropertyInfoToExistingLocalAuthority(
           localAuthority,
           lmkKey,

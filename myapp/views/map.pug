@@ -10,13 +10,8 @@ block content
     crossorigin="")
 
     style.
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      html, body, #map {
-        height: 100%;
-        width: 100%;
+      #map {
+        height: 600px;
       }
 
     h1= title 
@@ -39,9 +34,9 @@ block content
           // Create popup content to display aggregated data for each local-authority
           const popupContent = `Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
                                 Average Current Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-rating"]}<br>
-                                Average Current Energy Efficiency: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]}<br>
+                                Average Current Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]*100)/100}<br>
                                 Average Potential Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-rating"]}<br>
-                                Average Potential Energy Efficiency: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]}<br>
+                                Average Potential Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]*100)/100}<br>
                                 <a id="link" href='/map/${localAuthority}'> Show further detail</a>`
              
           // Get latlong coordinates of local-authority

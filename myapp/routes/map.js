@@ -2335,27 +2335,29 @@ router.route("/:localAuthority").get((req, res, next) => {
         // Go through each lmk-key and add latlong coordinates if valid
         for (const lmkKey of lmkKeys) {
           const certificate = await getCertificateByLmkKey(lmkKey);
-          if (certificate.Item && certificate.Item["lat"] !== null) {
+          if (
+            typeof certificate !== "undefined" &&
+            certificate["lat"] !== null
+          ) {
             // console.log(
             //   "lmk-key: " +
             //     lmkKey +
             //     " has lat: " +
-            //     certificate.Item["lat"] +
+            //     certificate["lat"] +
             //     " and long: " +
-            //     certificate.Item["lng"]
+            //     certificate["lng"]
             // );
 
             // add latlong coordinates and the energy ratings
             const propertyInfo = {
-              lmkKey: certificate.Item["lmk-key"],
-              lat: certificate.Item["lat"],
-              lng: certificate.Item["lng"],
-              currentEnergyEfficiency:
-                certificate.Item["current-energy-efficiency"],
+              lmkKey: certificate["lmk-key"],
+              lat: certificate["lat"],
+              lng: certificate["lng"],
+              currentEnergyEfficiency: certificate["current-energy-efficiency"],
               potentialEnergyEfficiency:
-                certificate.Item["potential-energy-efficiency"],
+                certificate["potential-energy-efficiency"],
             };
-            console.log(propertyInfo);
+            console.log(JSON.stringify(propertyInfo));
             propertiesInfo.push(propertyInfo);
           }
         }

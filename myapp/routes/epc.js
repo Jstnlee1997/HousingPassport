@@ -40,7 +40,7 @@ const seedDataBasedOnLocalAuthority = async () => {
     "https://epc.opendatacommunities.org/api/v1/domestic/search?local-authority=E09000013&size=1&from=";
 
   // create for loop that runs through from 0 to 30 million, in multiples of 5000
-  for (let i = 314; i < 1000; i += 1) {
+  for (let i = 1400; i < 1425; i += 1) {
     // Vary url for different pages
     try {
       const { data: certificates } = await axios.get(url + i, {

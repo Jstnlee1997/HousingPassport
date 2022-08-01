@@ -35,14 +35,14 @@ const addRecommendationsByLmkKey = async (lmkKey) => {
 
   // store recommendation into dynamoDB
   try {
-    // console.log(recommendations);
-    // addRecommendation(recommendation);
-    const recommendationPromises = recommendations["rows"].map(
-      (recommendation) => {
-        addRecommendation(recommendation);
-      }
-    );
-    await Promise.all(recommendationPromises);
+    if (typeof recommendations !== "undefined") {
+      const recommendationPromises = recommendations["rows"].map(
+        (recommendation) => {
+          addRecommendation(recommendation);
+        }
+      );
+      await Promise.all(recommendationPromises);
+    }
   } catch (err) {
     console.log(err);
   }
