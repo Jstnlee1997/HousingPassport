@@ -2335,6 +2335,5 @@ block content
           L.marker([propertyInfo.lat, propertyInfo.lng], {icon: icon}).bindPopup(popupContent).openPopup().addTo(map);
         }
 
-        //- zoom the map to the polyline
-        map.fitBounds(polyline.getBounds());
-
+        map.setMaxBounds(polyline.getBounds())
+        map.setMinZoom(11)

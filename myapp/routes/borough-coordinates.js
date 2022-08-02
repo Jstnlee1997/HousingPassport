@@ -1,7 +1,8 @@
 const { default: axios } = require("axios");
 const fs = require("fs");
+const readline = require("readline");
 
-const boroughMapURL = "https://www.openstreetmap.org/api/0.6/relation/184484";
+const boroughMapURL = "https://www.openstreetmap.org/api/0.6/relation/51793";
 
 const getAllWaysOfRelation = async () => {
   const res = await axios.get(boroughMapURL);
@@ -11,10 +12,14 @@ const getAllWaysOfRelation = async () => {
 const getAllNodesFromEachWay = async (way) => {
   const wayURL = "https://www.openstreetmap.org/api/0.6/way/" + way;
   const res = await axios.get(wayURL);
-  return res.data.elements[0].nodes.length;
+  console.log(
+    "Number of nodes in current Way: ",
+    res.data.elements[0].nodes.length
+  );
+  return res.data.elements[0].nodes;
 };
 
-// getAllNodesFromEachWay(972812225).then((res) => {
+// getAllNodesFromEachWay(899193881).then((res) => {
 //   console.log(res);
 // });
 
@@ -40,7 +45,7 @@ const returnLongLatFromRelation = async () => {
   // Go through each way and get all the nodes
   var allTheLongLatCoordinates = [];
   const nodes = await getAllNodesFromEachWay(ways[6]);
-  console.log("Nodes; ", nodes);
+  console.log("Nodes: ", nodes);
   for (const node of nodes) {
     const longLatCoordinates = await getAllLongLatFromEachNode(node);
     fs.appendFile(
@@ -57,6 +62,32 @@ const returnLongLatFromRelation = async () => {
   return allTheLongLatCoordinates;
 };
 
-// returnLongLatFromRelation().then(async (res) => {
-//   console.log(res);
-// });
+async function readBoroughCoordinatesIntoArray() {
+  var arr = [];
+  const filestream = fs.createReadStream(
+    "/Users/jstnl/GitHub/HousingPassport/myapp/public/borough-coordinates.txt"
+  );
+
+  const rl = readline.createInterface({
+    input: filestream,
+    crlfDelay: Infinity,
+  });
+
+  for await (const line of rl) {
+    arr.push(line.split(" ").map((x) => parseFloat(x)));
+  }
+
+  console.log(arr);
+  fs.writeFile(
+    "/Users/jstnl/GitHub/HousingPassport/myapp/public/resulting-coordinates.txt",
+    JSON.stringify(arr),
+    (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    }
+  );
+}
+
+// readBoroughCoordinatesIntoArray();
