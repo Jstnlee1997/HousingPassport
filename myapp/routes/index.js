@@ -67,7 +67,6 @@ router
     // obtain selected address
     const address = req.body.address;
 
-    /* TODO: save in table userId and their address */
     // Get the userId from the session passport
     const userId = req.session.passport.user;
     console.log("Current User ID: ", userId);
@@ -76,13 +75,17 @@ router
     const lmkKey = await getLmkKeyOfAddress(address);
 
     // Store address and lmk-key into user database
-    updateAddressAndLmkKeyUsingId(address, lmkKey, userId);
-    console.log(`New address is: ${address}, and lmk-key is: ${lmkKey}`);
+    try {
+      await updateAddressAndLmkKeyUsingId(address, lmkKey, userId);
+      console.log(`New address is: ${address}, and lmk-key is: ${lmkKey}`);
+      res.redirect("/");
+    } catch (err) {
+      // No 2 users can have the same lmk-key
+      console.log(err);
 
-    /* TODO: Make sure that no 2 users have the same lmk-key */
-
-    // Redirect to index page
-    res.redirect("/");
+      // Redirect to index page
+      res.redirect("/new-user");
+    }
   });
 
 /* LOGOUT */
@@ -118,7 +121,7 @@ function hasEpcCertificate(req, res, next) {
       // User has no EPC -> redirect to new user
       return res.redirect("/new-user");
     }
-    res.redirect("/");
+    res.redirect("/new-user");
   });
 }
 
