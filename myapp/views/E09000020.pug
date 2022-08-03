@@ -9,6 +9,8 @@ block content
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin="")
 
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js')
+
     style.
       #map {
         height: 600px;
@@ -17,6 +19,14 @@ block content
     h1 Map of Kensington and Chelsea
     button(type='button' value="Go back" onclick="location.href = '/map/'") Go Back to London Map
     #map
+
+    <br><br>
+    h1 Frequency of Current Energy Ratings
+    canvas(id="histogram1" position="relative" width="200" height = "100")
+    
+    <br><br>
+    h1 Frequency of Potential Energy Ratings
+    canvas(id="histogram2" position="relative" width="200" height = "100")
 
     script.
         //- Set up the map
@@ -1794,3 +1804,83 @@ block content
 
         map.setMaxBounds(polyline.getBounds())
         map.setMinZoom(11)
+
+        //- CHART for frequencyOfCurrentEnergyRatings
+        const frequencyOfCurrentEnergyRatings = !{JSON.stringify(frequencyOfCurrentEnergyRatings)}
+
+        const ctx1 = document.getElementById('histogram1').getContext('2d');
+        const chart1 = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+            datasets: [{
+              //- label: 'Frequency of Current Energy Ratings',
+              data: [frequencyOfCurrentEnergyRatings["A"], frequencyOfCurrentEnergyRatings["B"], frequencyOfCurrentEnergyRatings["C"], frequencyOfCurrentEnergyRatings["D"], frequencyOfCurrentEnergyRatings["E"], frequencyOfCurrentEnergyRatings["F"]],
+              backgroundColor: ['rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)'],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            legend: {
+              display: false 
+            }
+          }
+        })
+
+        //- CHART for frequencyOfPotentialEnergyRatings
+        const frequencyOfPotentialEnergyRatings = !{JSON.stringify(frequencyOfPotentialEnergyRatings)}
+
+        const ctx2 = document.getElementById('histogram2').getContext('2d');
+        const chart2 = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+            datasets: [{
+              //- label: 'Frequency of Current Energy Ratings',
+              data: [frequencyOfPotentialEnergyRatings["A"], frequencyOfPotentialEnergyRatings["B"], frequencyOfPotentialEnergyRatings["C"], frequencyOfPotentialEnergyRatings["D"], frequencyOfPotentialEnergyRatings["E"], frequencyOfPotentialEnergyRatings["F"]],
+              backgroundColor: ['rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)'],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            legend: {
+              display: false 
+            }
+          }
+        })
