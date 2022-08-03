@@ -78,6 +78,10 @@ async function getUserByEmail(email) {
 }
 // Testing getUserByEmail Function
 // const result = getUserByEmail("Justin@email.com").then((res) => {
+//   if (typeof res === "undefined") {
+//     console.log("User does not exist");
+//     return;
+//   }
 //   var user = res;
 //   var userId = res["id"];
 //   console.log(" User: ", user);

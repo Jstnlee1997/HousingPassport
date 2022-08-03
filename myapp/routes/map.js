@@ -4039,9 +4039,16 @@ router.route("/:localAuthority").get((req, res, next) => {
       if ("propertiesInfo" in localAuthorityInformation.Item) {
         // Coordinates of all the properties within this local-authority exist already
         const propertiesInfo = localAuthorityInformation.Item["propertiesInfo"];
+        // Pass in the frequencies of the energy ratings
+        const frequencyOfCurrentEnergyRatings =
+          localAuthorityInformation.Item["frequencyOfCurrentEnergyRatings"];
+        const frequencyOfPotentialEnergyRatings =
+          localAuthorityInformation.Item["frequencyOfPotentialEnergyRatings"];
         res.render(localAuthority, {
           title: localAuthority,
           propertiesInfo: propertiesInfo,
+          frequencyOfCurrentEnergyRatings: frequencyOfCurrentEnergyRatings,
+          frequencyOfPotentialEnergyRatings: frequencyOfPotentialEnergyRatings,
         });
       } else {
         // Get all the lmk-keys

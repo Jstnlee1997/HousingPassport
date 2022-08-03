@@ -39,11 +39,11 @@ block content
                                 Average Potential Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]*100)/100}<br>
                                 <a id="link" href='/map/${localAuthority}'> Show further detail</a>`
              
-          // Get latlong coordinates of local-authority
+          //- Get latlong coordinates of local-authority
           const latlongs = latlongsOfLocalAuthorities[localAuthority]
           console.log(latlongs)
 
-          // Vary color of polygon depending on the energy ratings
+          //- Vary color of polygon depending on the energy ratings
           const averageEfficiency = (Number(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]) + Number(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]))/2
           var color;
           switch (true) {
