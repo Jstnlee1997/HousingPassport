@@ -60,6 +60,31 @@ const addCertificate = async (certificate) => {
   return await dynamoClient.put(params).promise();
 };
 
+// Update certificate whenever user edits EPC data
+const updateCertificate = async (certificate) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Item: certificate,
+  };
+
+  return await dynamoClient.put(params).promise();
+};
+// Testing function updateCertificate
+// getCertificateByLmkKey("1573380469022017090821481343938953").then(
+//   async (res) => {
+//     console.log(res);
+//     res["extension-count"] = "0";
+//     console.log(res["extension-count"]);
+//     updateCertificate(res).then(async (res) => {
+//       getCertificateByLmkKey("1573380469022017090821481343938953").then(
+//         async (res) => {
+//           console.log(res);
+//         }
+//       );
+//     });
+//   }
+// );
+
 // Testing function addCertificate
 const fakeNewCertificate = {
   Item: {
@@ -238,5 +263,6 @@ module.exports = {
   getCertificates,
   getCertificateByLmkKey,
   addCertificate,
+  updateCertificate,
   deleteCertificateByLmkKey,
 };

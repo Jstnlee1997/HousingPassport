@@ -5,7 +5,7 @@ block content
   div(class="container epc-items")
     h2 EPC Data
     a(href="/edit-epc")
-      button(type="button" class="redirectbtn") Edit EPC Data
+      button(type="button" class="redirectbtn" style="background-color:blue") Edit EPC Data
       br
       br
     dl
@@ -36,20 +36,23 @@ block content
       if certificate['total-floor-area']
         dt Total Floor Area:
         dd #{certificate['total-floor-area']}
-      if certificate['current-energy-rating']
-        dt Current Energy rating:
-        dd #{certificate['current-energy-rating']}
-      if certificate['current-energy-efficiency']
-        dt Current Energy Efficiency:
-        dd #{certificate['current-energy-efficiency']}
+      if certificate['inspection-date']
+        dt Inspection Date:
+        dd #{certificate['inspection-date']}
+      dt Current Energy rating:
+      dd #{certificate['current-energy-rating']}
+      dt Current Energy Efficiency:
+      dd #{certificate['current-energy-efficiency']}
       dt Potential Energy Rating:
       dd #{certificate['potential-energy-rating']}
       dt Potential Energy Efficiency:
       dd #{certificate["potential-energy-efficiency"]}
-      dt Energy Consumption Current:
-      dd #{certificate['energy-consumption-current']}
-      dt Energy Consumption Potential:
-      dd #{certificate['energy-consumption-potential']}
+      if certificate['energy-consumption-current']
+        dt Energy Consumption Current:
+        dd #{certificate['energy-consumption-current']}
+      if certificate['energy-consumption-potential']
+        dt Energy Consumption Potential:
+        dd #{certificate['energy-consumption-potential']}
       if certificate['environment-impact-current']
         dt Environment Impact Current:
         dd #{certificate['environment-impact-current']}
@@ -119,24 +122,24 @@ block content
       if certificate['walls-env-eff']
         dt Walls Environment Efficiency:
         dd #{certificate['walls-env-eff']}
-      if certificate['dtghting-description']
+      if certificate['lighting-description']
         dt Lighting Description:
-        dd #{certificate['dtghting-description']}
-      if certificate['dtghting-cost-current']
+        dd #{certificate['lighting-description']}
+      if certificate['lighting-cost-current']
         dt Lighting Cost Current:
-        dd #{certificate['dtghting-cost-current']}
-      if certificate['dtghting-cost-potential']
+        dd #{certificate['lighting-cost-current']}
+      if certificate['lighting-cost-potential']
         dt Lighting Cost Potential:
-        dd #{certificate['dtghting-cost-potential']}
-      if certificate['dtghting-energy-eff']
+        dd #{certificate['lighting-cost-potential']}
+      if certificate['lighting-energy-eff']
         dt Lighting Energy Efficiency:
-        dd #{certificate['dtghting-energy-eff']}
-      if certificate["dtghting-env-eff"]
+        dd #{certificate['lighting-energy-eff']}
+      if certificate["lighting-env-eff"]
         dt Lighting Environment Efficiency:
-        dd #{certificate["dtghting-env-eff"]}
-      if certificate['low-energy-dtghting']
+        dd #{certificate["lighting-env-eff"]}
+      if certificate['low-energy-lighting']
         dt Low Energy Lighting:
-        dd #{certificate['low-energy-dtghting']}
+        dd #{certificate['low-energy-lighting']}
       if certificate['glazed-area']
         dt Glazed Area:
         dd #{certificate['glazed-area']}
@@ -158,9 +161,6 @@ block content
       if certificate['energy-tariff']
         dt Energy Tariff:
         dd #{certificate['energy-tariff']}
-      if certificate['inspection-date']
-        dt Inspection Date:
-        dd #{certificate['inspection-date']}
       br
 
   div(class="container smartmeter-items")
