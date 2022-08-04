@@ -4,6 +4,10 @@ block content
   h1= title
   div(class="container epc-items")
     h2 EPC Data
+    a(href="/edit-epc")
+      button(type="button" class="redirectbtn") Edit EPC Data
+      br
+      br
     dl
       dt Address: 
       dd #{certificate['address']}
