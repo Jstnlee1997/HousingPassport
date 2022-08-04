@@ -4044,7 +4044,7 @@ router.route("/:localAuthority").get((req, res, next) => {
           localAuthorityInformation.Item["frequencyOfCurrentEnergyRatings"];
         const frequencyOfPotentialEnergyRatings =
           localAuthorityInformation.Item["frequencyOfPotentialEnergyRatings"];
-        res.render(localAuthority, {
+        res.render("local-authorities/" + localAuthority, {
           title: localAuthority,
           propertiesInfo: propertiesInfo,
           frequencyOfCurrentEnergyRatings: frequencyOfCurrentEnergyRatings,

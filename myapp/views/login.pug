@@ -1,16 +1,18 @@
 extends layout
 
 block content
-    h1 Login 
     //- Output error if present
     if messages.error 
         h2 #{messages.error}
-    form(action="/login" method="POST")
-        p Email: 
-            input(type="email" name="email" value= "" required)
-        p Password: 
-            input(type="password" name="password" value= "" required)
-        input(type="submit" value="Login")
-    br
+    div(class="container")
+        form(action="/login" method="POST")
+            p <b>Email</b>: 
+                input(type="email" name="email" value= "" required)
+            p <b>Password</b>: 
+                input(type="password" name="password" value= "" required)
+            button(type="submit") Login
+        br
 
-    a(href="/register") Register here if you have not!
+    div(class="container")
+        a(href="/register")
+            button(type="button" class="redirectbtn") Register Here
