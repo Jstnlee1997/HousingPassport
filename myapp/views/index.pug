@@ -2,71 +2,170 @@ extends layout
 
 block content
   h1= title
-  section.epcItems 
-    h3 EPC Data
-    ul 
-      li Address: #{certificate['address']}
-      li Postcode: #{certificate['postcode']}
-      li Local Authority: #{certificate['local-authority-label']}
-      li Post Town: #{certificate['posttown']}
-      li County: #{certificate['county']}
-      li Construction Age Band: #{certificate['construction-age-band']}
-      li Property Type: #{certificate['property-type']}
-      li Transaction Type: #{certificate['transaction-type']}
-      li Built Form: #{certificate['built-form']}
-      li Total Floor Area: #{certificate['total-floor-area']}
-      li Current Energy rating: #{certificate['current-energy-rating']}
-      li Current Energy Efficiency: #{certificate['current-energy-efficiency']}
-      li Potential Energy Rating: #{certificate['potential-energy-rating']}
-      li Potential Energy Efficiency: #{certificate["potential-energy-efficiency"]}
-      li Energy Consumption Current: #{certificate['energy-consumption-current']}
-      li Energy Consumption Potential: #{certificate['energy-consumption-potential']}
-      li Environment Impact Current: #{certificate['environment-impact-current']}
-      li Environment Impact Potential: #{certificate['environment-impact-potential']}
-      li CO2 Emissions Current: #{certificate['co2-emissions-current']}
-      li CO2 Emission Current Per Floor Area: #{certificate['co2-emiss-curr-per-floor-area']}
-      li CO2 Emissions Potential: #{certificate['co2-emissions-potential']}
-      li Number Heated Rooms: #{certificate['number-heated-rooms']}
-      li Mainheat Description: #{certificate['mainheat-description']}
-      li Mainheat Energy Efficiency: #{certificate['mainheat-energy-eff']}
-      li Mainheat Environment Efficiency: #{certificate['mainheat-env-eff']}
-      li Main Fuel: #{certificate['main-fuel']}
-      li Heating Cost Current: #{certificate['heating-cost-current']}
-      li Heating Cost Potential: #{certificate['heating-cost-potential']}
-      li Hot Water Description: #{certificate['hotwater-description']}
-      li Hot Water Cost Curent: #{certificate['hot-water-cost-current']}
-      li Hot Water Cost Potential: #{certificate['hot-water-cost-potential']}
-      li Hot Water Energy Efficiency: #{certificate[ 'hot-water-energy-eff']}
-      li Hot Water Environment Efficiency: #{certificate['hot-water-env-eff']}
-      li Roof Description: #{certificate['roof-description']}
-      li Roof Energy Efficiency: #{certificate['roof-energy-eff']}
-      li Roof Environment Efficiency: #{certificate['roof-env-eff']}
-      li Walls Description: #{certificate['walls-description']}
-      li Walls Energy Efficiency: #{certificate['walls-energy-eff']}
-      li Walls Environment Efficiency: #{certificate['walls-env-eff']}
-      li Lighting Description: #{certificate['lighting-description']}
-      li Lighting Cost Current: #{certificate['lighting-cost-current']}
-      li Lighting Cost Potential: #{certificate['lighting-cost-potential']}
-      li Lighting Energy Efficiency: #{certificate['lighting-energy-eff']}
-      li Lighting Environment Efficiency: #{certificate["lighting-env-eff"]}
-      li Low Energy Lighting: #{certificate['low-energy-lighting']}
-      li Glazed Area: #{certificate['glazed-area']}
-      li Multi Glaze Proportion: #{certificate['multi-glaze-proportion']}
-      li Windows Description: #{certificate['windows-description']}
-      li Windows Energy Efficiency: #{certificate['windows-energy-eff']}
-      li Windows Environment Efficiency: #{certificate['windows-env-eff']}
-      li Mechanical Ventilation: #{certificate['mechanical-ventilation']}
-      li Energy Tariff: #{certificate['energy-tariff']}
-      li Inspection Date: #{certificate['inspection-date']}
+  div(class="container epc-items")
+    h2 EPC Data
+    dl
+      dt Address: 
+      dd #{certificate['address']}
+      dt Postcode: 
+      dd #{certificate['postcode']}
+      dt Local Authority:
+      dd #{certificate['local-authority-label']}
+      if certificate['posttown']
+        dt Post Town: 
+        dd #{certificate['posttown']}
+      if certificate['county']
+        dt County: 
+        dd #{certificate['county']}
+      if certificate['construction-age-band']
+        dt Construction Age Band:
+        dd #{certificate['construction-age-band']}
+      if certificate['property-type']
+        dt Property Type:
+        dd #{certificate['property-type']}
+      if certificate['transaction-type']
+        dt Transaction Type:
+        dd #{certificate['transaction-type']}
+      if certificate['built-form']
+        dt Built Form:
+        dd #{certificate['built-form']}
+      if certificate['total-floor-area']
+        dt Total Floor Area:
+        dd #{certificate['total-floor-area']}
+      if certificate['current-energy-rating']
+        dt Current Energy rating:
+        dd #{certificate['current-energy-rating']}
+      if certificate['current-energy-efficiency']
+        dt Current Energy Efficiency:
+        dd #{certificate['current-energy-efficiency']}
+      dt Potential Energy Rating:
+      dd #{certificate['potential-energy-rating']}
+      dt Potential Energy Efficiency:
+      dd #{certificate["potential-energy-efficiency"]}
+      dt Energy Consumption Current:
+      dd #{certificate['energy-consumption-current']}
+      dt Energy Consumption Potential:
+      dd #{certificate['energy-consumption-potential']}
+      if certificate['environment-impact-current']
+        dt Environment Impact Current:
+        dd #{certificate['environment-impact-current']}
+      if certificate['environment-impact-potential']
+        dt Environment Impact Potential:
+        dd #{certificate['environment-impact-potential']}
+      if certificate['co2-emissions-current']
+        dt CO2 Emissions Current:
+        dd #{certificate['co2-emissions-current']}
+      if certificate['co2-emiss-curr-per-floor-area']
+        dt CO2 Emission Current Per Floor Area:
+        dd #{certificate['co2-emiss-curr-per-floor-area']}
+      if certificate['co2-emissions-potential']
+        dt CO2 Emissions Potential:
+        dd #{certificate['co2-emissions-potential']}
+      if certificate['number-heated-rooms']
+        dt Number Heated Rooms:
+        dd #{certificate['number-heated-rooms']}
+      if certificate['mainheat-description']
+        dt Mainheat Description:
+        dd #{certificate['mainheat-description']}
+      if certificate['mainheat-energy-eff']
+        dt Mainheat Energy Efficiency:
+        dd #{certificate['mainheat-energy-eff']}
+      if certificate['mainheat-env-eff']
+        dt Mainheat Environment Efficiency:
+        dd #{certificate['mainheat-env-eff']}
+      if certificate['main-fuel']
+        dt Main Fuel:
+        dd #{certificate['main-fuel']}
+      if certificate['heating-cost-current']
+        dt Heating Cost Current:
+        dd #{certificate['heating-cost-current']}
+      if certificate['heating-cost-potential']
+        dt Heating Cost Potential:
+        dd #{certificate['heating-cost-potential']}
+      if certificate['hotwater-description']
+        dt Hot Water Description:
+        dd #{certificate['hotwater-description']}
+      if certificate['hot-water-cost-current']
+        dt Hot Water Cost Curent:
+        dd #{certificate['hot-water-cost-current']}
+      if certificate['hot-water-cost-potential']
+        dt Hot Water Cost Potential:
+        dd #{certificate['hot-water-cost-potential']}
+      if certificate['hot-water-energy-eff']
+        dt Hot Water Energy Efficiency:
+        dd #{certificate['hot-water-energy-eff']}
+      if certificate['hot-water-env-eff']
+        dt Hot Water Environment Efficiency:
+        dd #{certificate['hot-water-env-eff']}
+      if certificate['roof-description']
+        dt Roof Description:
+        dd #{certificate['roof-description']}
+      if certificate['roof-energy-eff']
+        dt Roof Energy Efficiency:
+        dd #{certificate['roof-energy-eff']}
+      if certificate['roof-env-eff']
+        dt Roof Environment Efficiency:
+        dd #{certificate['roof-env-eff']}
+      if certificate['walls-description']
+        dt Walls Description:
+        dd #{certificate['walls-description']}
+      if certificate['walls-energy-eff']
+        dt Walls Energy Efficiency:
+        dd #{certificate['walls-energy-eff']}
+      if certificate['walls-env-eff']
+        dt Walls Environment Efficiency:
+        dd #{certificate['walls-env-eff']}
+      if certificate['dtghting-description']
+        dt Lighting Description:
+        dd #{certificate['dtghting-description']}
+      if certificate['dtghting-cost-current']
+        dt Lighting Cost Current:
+        dd #{certificate['dtghting-cost-current']}
+      if certificate['dtghting-cost-potential']
+        dt Lighting Cost Potential:
+        dd #{certificate['dtghting-cost-potential']}
+      if certificate['dtghting-energy-eff']
+        dt Lighting Energy Efficiency:
+        dd #{certificate['dtghting-energy-eff']}
+      if certificate["dtghting-env-eff"]
+        dt Lighting Environment Efficiency:
+        dd #{certificate["dtghting-env-eff"]}
+      if certificate['low-energy-dtghting']
+        dt Low Energy Lighting:
+        dd #{certificate['low-energy-dtghting']}
+      if certificate['glazed-area']
+        dt Glazed Area:
+        dd #{certificate['glazed-area']}
+      if certificate['multi-glaze-proportion']
+        dt Multi Glaze Proportion:
+        dd #{certificate['multi-glaze-proportion']}
+      if certificate['windows-description']
+        dt Windows Description:
+        dd #{certificate['windows-description']}
+      if certificate['windows-energy-eff']
+        dt Windows Energy Efficiency:
+        dd #{certificate['windows-energy-eff']}
+      if certificate['windows-env-eff']
+        dt Windows Environment Efficiency:
+        dd #{certificate['windows-env-eff']}
+      if certificate['mechanical-ventilation']
+        dt Mechanical Ventilation:
+        dd #{certificate['mechanical-ventilation']}
+      if certificate['energy-tariff']
+        dt Energy Tariff:
+        dd #{certificate['energy-tariff']}
+      if certificate['inspection-date']
+        dt Inspection Date:
+        dd #{certificate['inspection-date']}
       br
 
-  section.smartItems 
-    h3 Smart Meter Data 
+  div(class="container smartmeter-items")
+    h2 Smart Meter Data 
     br
     
   if recommendations
-    section.recommendationItems 
-      h3 Retrofitting Suggestions 
+  div(class="container recommendation-items")
+      h2 Retrofitting Suggestions 
       table 
         thead 
           tr 
@@ -79,6 +178,6 @@ block content
               td #{recommendation["improvement-id-text"]}
               td #{recommendation["indicative-cost"]}
               td #{recommendation["improvement-id"]}
-  
-  form(action="/logout?_method=DELETE" method="POST")
-    input(type="submit" value="Log Out")
+  div(class="container")
+    form(action="/logout?_method=DELETE" method="POST")
+      button(type="submit" class="redirectbtn") Logout
