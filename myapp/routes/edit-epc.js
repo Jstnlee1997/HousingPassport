@@ -40,10 +40,10 @@ router
     });
 
     /* Update the energy-ratings depending on the energy-efficiencies */
-    certificate["current-energy-rating"] = returnNewEnergyRating(
+    certificate["current-energy-rating"] = await returnNewEnergyRating(
       certificate["current-energy-efficiency"]
     );
-    certificate["potential-energy-rating"] = returnNewEnergyRating(
+    certificate["potential-energy-rating"] = await returnNewEnergyRating(
       certificate["potential-energy-efficiency"]
     );
     console.log("Newly edited epc-certificate: ", certificate);
@@ -55,7 +55,7 @@ router
       await updateCertificate(certificate);
     });
 
-    res.send("Good job!");
+    res.redirect("/");
   });
 
 module.exports = router;
