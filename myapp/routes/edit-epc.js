@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { checkAuthenticated } = require(".");
 const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 const { getCertificateByLmkKey, updateCertificate } = require("./dynamo-certs");
+const { returnNewEnergyRating } = require("./dynamo-local-authorities");
 const { getUserById } = require("./rds-users");
 
 router
@@ -37,6 +38,14 @@ router
     Object.entries(req.body).forEach((item) => {
       certificate[item[0]] = item[1];
     });
+
+    /* Update the energy-ratings depending on the energy-efficiencies */
+    certificate["current-energy-rating"] = returnNewEnergyRating(
+      certificate["current-energy-efficiency"]
+    );
+    certificate["potential-energy-rating"] = returnNewEnergyRating(
+      certificate["potential-energy-efficiency"]
+    );
     console.log("Newly edited epc-certificate: ", certificate);
 
     /* Update aggregate data before updating epc-certificate */
