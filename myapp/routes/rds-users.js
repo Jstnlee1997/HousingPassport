@@ -178,7 +178,7 @@ async function deleteUserUsingEmail(email) {
   });
 }
 // Testing deleteUserUsingEmail Function
-// deleteUserUsingEmail("d@d");
+// deleteUserUsingEmail("b@b");
 
 module.exports = {
   addNewUser,

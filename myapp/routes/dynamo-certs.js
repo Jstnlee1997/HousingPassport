@@ -191,16 +191,15 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
       "lmk-key": lmkKey,
     },
   };
+  console.log("Deleting certificate with lmk-key: ", lmkKey);
   // use client ot call a delete method
   return await dynamoClient.delete(params).promise();
 };
 
 // Test deleteCertificateByLmkKey
-// const found = deleteCertificateByLmkKey(
-//   "1573380469022017090821481343938953"
-// ).then(async (res) => {
-//   console.log(res);
-// });
+// deleteCertificateByLmkKey(
+//   "900ff1d428c5183bf60ab558614e3ee2bd082afa93bb0afb3319b1df59a427f0"
+// );
 
 async function addLongLatCoordinates(event, context) {
   let tableContents;

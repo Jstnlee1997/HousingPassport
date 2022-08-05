@@ -1,0 +1,129 @@
+extends layout
+block content 
+    div(class="container")
+      form(action="/edit-epc" method="POST")
+        div(hidden)
+          input(type="text" name='lmk-key' value=certificate['lmk-key'])
+        div(class="row")
+          div(class="column") Current Energy rating:
+            input(type="text" name='current-energy-rating' value=certificate['current-energy-rating'] required)
+          div(class="column") Current Energy Efficiency:
+            input(type="text" name='current-energy-efficiency' value=certificate['current-energy-efficiency'] required)
+        div(class="row")
+          div(class="column") Potential Energy rating:
+            input(type="text" name='potential-energy-rating' value=certificate['potential-energy-rating'] required)
+          div(class="column") Potential Energy Efficiency:
+            input(type="text" name='potential-energy-efficiency' value=certificate['potential-energy-efficiency'] required)
+        div(class="row")
+          div(class="column") Construction Age Band:
+            input(type="text" name='construction-age-band' value=certificate['construction-age-band'])
+          div(class="column") Property Type:
+            input(type="text" name='property-type' value=certificate['property-type'])
+        div(class="row")
+          div(class="column") Transaction Type:
+            input(type="text" name='transaction-type' value=certificate['transaction-type'])
+          div(class="column") Built Form:
+            input(type="text" name='built-form' value=certificate['built-form'])
+        div(class="row")
+          div(class="column") Total Floor Area:
+            input(type="text" name='total-floor-area' value=certificate['total-floor-area'])
+          div(class="column") Inspection Date:
+            input(type="text" name='inspection-date' value=certificate['inspection-date'])
+        div(class="row")
+          div(class="column") Energy Consumption Current:
+            input(type="text" name='energy-consumption-current' value=certificate['energy-consumption-current'])
+          div(class="column") Energy Consumption Potential:
+            input(type="text" name='energy-consumption-potential' value=certificate['energy-consumption-potential'])
+        div(class="row")
+          div(class="column") Environment Impact Current:
+            input(type="text" name='environment-impact-current' value=certificate['environment-impact-current'])
+          div(class="column") Environment Impact Potential:
+            input(type="text" name='environment-impact-potential' value=certificate['environment-impact-potential'])
+        div(class="row")
+          div(class="column") CO2 Emissions Current:
+            input(type="text" name='co2-emissions-current' value=certificate['co2-emissions-current'])
+          div(class="column") CO2 Emission Current Per Floor Area:
+            input(type="text" name='co2-emiss-curr-per-floor-area' value=certificate['co2-emiss-curr-per-floor-area'])
+        div(class="row")
+          div(class="column") CO2 Emissions Potential:
+            input(type="text" name='co2-emissions-potential' value=certificate['co2-emissions-potential'])
+          div(class="column") Number Heated Rooms:
+            input(type="text" name='number-heated-rooms' value=certificate['number-heated-rooms'])
+        div(class="row")
+          div(class="column") Mainheat Description:
+            input(type="text" name='mainheat-description' value=certificate['mainheat-description'])
+          div(class="column") Mainheat Energy Efficiency:
+            input(type="text" name='mainheat-energy-eff' value=certificate['mainheat-energy-eff'])
+        div(class="row")
+          div(class="column") Mainheat Environment Efficiency:
+            input(type="text" name='mainheat-env-eff' value=certificate['mainheat-env-eff'])
+          div(class="column") Main Fuel:
+            input(type="text" name='main-fuel' value=certificate['main-fuel'])
+        div(class="row")
+          div(class="column") Heating Cost Current:
+            input(type="text" name='heating-cost-current' value=certificate['heating-cost-current'])
+          div(class="column") Heating Cost Potential:
+            input(type="text" name='heating-cost-potential' value=certificate['heating-cost-potential'])
+        div(class="row")
+          div(class="column") Hot Water Description:
+            input(type="text" name='hotwater-description' value=certificate['hotwater-description'])
+          div(class="column") Hot Water Cost Curent:
+            input(type="text" name='hot-water-cost-current' value=certificate['hot-water-cost-current'])
+        div(class="row")
+          div(class="column") Hot Water Cost Potential:
+            input(type="text" name='hot-water-cost-potential' value=certificate['hot-water-cost-potential'])
+          div(class="column") Hot Water Energy Efficiency:
+            input(type="text" name='hot-water-energy-eff' value=certificate['hot-water-energy-eff'])
+        div(class="row")
+          div(class="column") Hot Water Environment Efficiency:
+            input(type="text" name='hot-water-env-eff' value=certificate['hot-water-env-eff'])
+          div(class="column") Roof Description:
+            input(type="text" name='roof-description' value=certificate['roof-description'])
+        div(class="row")
+          div(class="column") Roof Energy Efficiency:
+            input(type="text" name='roof-energy-eff' value=certificate['roof-energy-eff'])
+          div(class="column") Roof Environment Efficiency:
+            input(type="text" name='roof-env-eff' value=certificate['roof-env-eff'])
+        div(class="row")
+          div(class="column") Walls Description:
+            input(type="text" name='walls-description' value=certificate['walls-description'])
+          div(class="column") Walls Energy Efficiency:
+            input(type="text" name='walls-energy-eff' value=certificate['walls-energy-eff'])
+        div(class="row")
+          div(class="column") Walls Environment Efficiency:
+            input(type="text" name='walls-env-eff' value=certificate['walls-env-eff'])
+          div(class="column") Lighting Description:
+            input(type="text" name='lighting-description' value=certificate['lighting-description'])
+        div(class="row")
+          div(class="column") Lighting Cost Current:
+            input(type="text" name='lighting-cost-current' value=certificate['lighting-cost-current'])
+          div(class="column") Lighting Cost Potential:
+            input(type="text" name='lighting-cost-potential' value=certificate['lighting-cost-potential'])
+        div(class="row")
+          div(class="column") Lighting Energy Efficiency:
+            input(type="text" name='lighting-energy-eff' value=certificate['lighting-energy-eff'])
+          div(class="column") Lighting Environment Efficiency:
+            input(type="text" name='lighting-env-eff' value=certificate['lighting-env-eff'])
+        div(class="row")
+          div(class="column") Low Energy Lighting:
+            input(type="text" name='low-energy-lighting' value=certificate['low-energy-lighting'])
+          div(class="column") Glazed Area:
+            input(type="text" name='glazed-area' value=certificate['glazed-area'])
+        div(class="row")
+          div(class="column") Multi Glaze Proportion:
+            input(type="text" name='multi-glaze-proportion' value=certificate['multi-glaze-proportion'])
+          div(class="column") Windows Description:
+            input(type="text" name='windows-description' value=certificate['windows-description'])
+        div(class="row")
+          div(class="column") Windows Energy Efficiency:
+            input(type="text" name='windows-energy-eff' value=certificate['windows-energy-eff'])
+          div(class="column") Windows Environment Efficiency:
+            input(type="text" name='windows-env-eff' value=certificate['windows-env-eff'])
+        div(class="row")
+          div(class="column") Mechanical Ventilation:
+            input(type="text" name='mechanical-ventilation' value=certificate['mechanical-ventilation'])
+          div(class="column") Energy Tariff:
+            input(type="text" name='energy-tariff' value=certificate['energy-tariff'])
+
+            
+        button(type="submit" value=certificate['lmk-key']) Save EPC Data

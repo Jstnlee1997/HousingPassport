@@ -29,7 +29,7 @@ const getAllLocalAuthorities = async () => {
 //   console.log(res);
 // });
 
-// Function to get list of lmkKeys from local-authority
+// Function to get all the information for a given local-authority
 const getLocalAuthorityInformation = async (localAuthority) => {
   const params = {
     TableName: TABLE_NAME,
@@ -6758,6 +6758,48 @@ const returnNewEnergyRating = async (energyEfficiency) => {
 //   console.log(result);
 // });
 
+// Function to update ONE propertyInfo
+const updatePropertyInfo = async (
+  localAuthority,
+  lmkKey,
+  newCurrentEnergyEfficiency,
+  newPotentialEnergyEfficiency
+) => {
+  // Scan through and find the propertyInfo that matches the lmk-key
+  const propertiesInfo = await await (
+    await getLocalAuthorityInformation(localAuthority)
+  ).Item["propertiesInfo"];
+  for (const propertyInfo of propertiesInfo) {
+    if (propertyInfo["lmkKey"] === lmkKey) {
+      console.log("Old propertyInfo: ", JSON.stringify(propertyInfo));
+      propertyInfo["currentEnergyEfficiency"] = newCurrentEnergyEfficiency;
+      propertyInfo["potentialEnergyEfficiency"] = newPotentialEnergyEfficiency;
+      break;
+    }
+  }
+
+  // Update table
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "local-authority": localAuthority,
+    },
+    UpdateExpression: "set propertiesInfo = :x",
+    ExpressionAttributeValues: {
+      ":x": propertiesInfo,
+    },
+  };
+
+  await dynamoClient.update(params).promise();
+};
+// Testing function updatePropertyInfo
+// updatePropertyInfo(
+//   "E09000020",
+//   "e2a198e1920ce4e5da1471d61e79656b564278202f30c8c1d96a28a00770eb2e",
+//   "1",
+//   "80"
+// );
+
 // Function to update frequencyOfEnergyRatings
 const updateFrequencyOfEnergyRating = async (localAuthority) => {
   // Get all the propertiesInfo and account for the energy efficiencies
@@ -6833,5 +6875,6 @@ module.exports = {
   addNewLocalAuthority,
   addLmkKeyAndPropertyInfoToExistingLocalAuthority,
   returnNewEnergyRating,
+  updatePropertyInfo,
   updateFrequencyOfEnergyRating,
 };
