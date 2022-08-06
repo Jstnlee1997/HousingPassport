@@ -340,7 +340,7 @@ const checkEnvironmentImpactPotential = () => {
 const checkEnergyConsumptionCurrent = () => {
   var valid = false;
   const min = "1",
-    max = "100";
+    max = "1000";
 
   const energyConsumptionCurrent = energyConsumptionCurrentE.value.trim();
 
@@ -364,7 +364,7 @@ const checkEnergyConsumptionCurrent = () => {
 const checkEnergyConsumptionPotential = () => {
   var valid = false;
   const min = "1",
-    max = "100";
+    max = "1000";
 
   const energyConsumptionPotential = energyConsumptionPotentialE.value.trim();
 
