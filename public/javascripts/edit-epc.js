@@ -34,7 +34,6 @@ const hotWaterCostPotentialE = document.querySelector(
 const form = document.querySelector("#edit-epc-form");
 
 form.addEventListener("submit", function (e) {
-  console.log("I got here");
   // validate fields
   const isCurrentEnergyEfficiency = checkCurrentEnergyEfficiency();
   const isPotentialEnergyEfficiency = checkPotentialEnergyEfficiency();
