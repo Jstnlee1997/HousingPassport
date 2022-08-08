@@ -35,7 +35,6 @@ app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(flash());
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -48,6 +47,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(methodOverride("_method"));
 app.use(function (req, res, next) {
   res.locals.user = req.user;
