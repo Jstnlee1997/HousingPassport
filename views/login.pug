@@ -1,18 +1,18 @@
 extends layout
 
 block content
-    //- Output error if present
-    if messages.error 
-        h2 #{messages.error}
-    div(class="container")
-        form(action="/login" method="POST")
-            p <b>Email</b>: 
-                input(type="email" name="email" value= "" required)
-            p <b>Password</b>: 
-                input(type="password" name="password" value= "" required)
-            button(type="submit") Login
-        br
+  //- Output error if present
+  if messages.error 
+    h2 #{messages.error}
+  div(class="container")
+    form(action="/login" method="POST")
+      label(name="email") <b>Email: </b> 
+      input(type="email" name="email" value= "" required)
+      label(name="password") <b>Password: </b> 
+      input(type="password" name="password" value= "" required)
+      button(type="submit") Login
+    br
 
-    div(class="container")
-        a(href="/register")
-            button(type="button" class="redirectbtn") Register Here
+  div(class="container")
+    a(href="/register")
+      button(type="button" class="redirectbtn") Register Here

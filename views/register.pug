@@ -1,17 +1,17 @@
 extends layout
 
 block content
-    div(class="container")
-        form(action="/register" method="POST")
-            p <b>Name</b>: 
-                input(type="text" name="name" value= "" required)
-            p <b>Email</b>: 
-                input(type="email" name="email" value= "" required)
-            p <b>Password</b>: 
-                input(type="password" name="password" value= "" required)
-            button(type="submit") Register
-        br
+  div(class="container")
+    form(action="/register" method="POST")
+      label(for="name") <b>Name: </b>
+      input(type="text" name="name" value= "" required)
+      label(for="email") <b>Email: </b> 
+      input(type="email" name="email" value= "" required)
+      label(for="password") <b>Password: </b> 
+      input(type="password" name="password" value= "" required)
+      button(type="submit") Register
+    br
 
-    div(class="container")
-        a(href="/login")
-            button(type="button" class="redirectbtn") Login Here with Existing Account
+  div(class="container")
+    a(href="/login")
+      button(type="button" class="redirectbtn") Login Here with Existing Account

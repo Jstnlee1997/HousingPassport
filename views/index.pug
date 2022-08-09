@@ -5,7 +5,7 @@ block content
   div(class="container epc-items")
     h2 EPC Data
     a(href="/edit-epc")
-      button(type="button" class="redirectbtn" style="background-color:blue") Edit EPC Data
+      button(type="button" class="editbtn") Edit EPC Data
       br
       br
     dl
@@ -178,19 +178,22 @@ block content
     
   if recommendations
     div(class="container recommendation-items")
-        h2 Retrofitting Suggestions 
-        table 
-          thead 
+      h2 Retrofitting Suggestions 
+      button(type="button" class="editbtn") Edit Suggestions
+      br
+      br
+      table 
+        thead 
+          tr 
+            th Improvement Description 
+            th Cost 
+            th Improvement ID 
+        tbody 
+          each recommendation in recommendations 
             tr 
-              th Improvement Description 
-              th Cost 
-              th Improvement ID 
-          tbody 
-            each recommendation in recommendations 
-              tr 
-                td #{recommendation["improvement-id-text"]}
-                td #{recommendation["indicative-cost"]}
-                td #{recommendation["improvement-id"]}
+              td #{recommendation["improvement-id-text"]}
+              td #{recommendation["indicative-cost"]}
+              td #{recommendation["improvement-id"]}
   div(class="container")
     form(action="/logout?_method=DELETE" method="POST")
       button(type="submit" class="redirectbtn") Logout
