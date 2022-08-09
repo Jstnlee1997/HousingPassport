@@ -163,25 +163,34 @@ block content
         dd #{certificate['energy-tariff']}
       br
 
-  div(class="container smartmeter-items")
-    h2 Smart Meter Data 
-    br
+  if smartMeterInformation
+    div(class="container smart-meter-items")
+      h2 Smart Meter Data 
+      dl 
+        dt Smart Meter Serial Number: 
+        dd #{smartMeterInformation['smartMeterSerialNumber']}
+        dt Interval Start:
+        dd #{smartMeterInformation['intervalStart']}
+        dt Electricty Consumption:
+        dd #{smartMeterInformation['electricityConsumption']} kWh
+        dt Gas Consumption:
+        dd #{smartMeterInformation['gasConsumption']} kWh
     
   if recommendations
-  div(class="container recommendation-items")
-      h2 Retrofitting Suggestions 
-      table 
-        thead 
-          tr 
-            th Improvement Description 
-            th Cost 
-            th Improvement ID 
-        tbody 
-          each recommendation in recommendations 
+    div(class="container recommendation-items")
+        h2 Retrofitting Suggestions 
+        table 
+          thead 
             tr 
-              td #{recommendation["improvement-id-text"]}
-              td #{recommendation["indicative-cost"]}
-              td #{recommendation["improvement-id"]}
+              th Improvement Description 
+              th Cost 
+              th Improvement ID 
+          tbody 
+            each recommendation in recommendations 
+              tr 
+                td #{recommendation["improvement-id-text"]}
+                td #{recommendation["indicative-cost"]}
+                td #{recommendation["improvement-id"]}
   div(class="container")
     form(action="/logout?_method=DELETE" method="POST")
       button(type="submit" class="redirectbtn") Logout

@@ -5,6 +5,8 @@ const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
 const { getRecommendationsByLmkKey } = require("./dynamo-recos");
 const { addRecommendationsByLmkKey } = require("./recommendation");
 const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
+const { getSmartMeterInformation } = require("./dynamo-smart-meter");
+const { smart } = require("@babel/template");
 
 /* GET home page. */
 router
@@ -29,13 +31,19 @@ router
       if (typeof certificate !== "undefined") {
         // Certificate is in DB
         console.log("Certificate of this address is present in database");
+
+        // Get the recommendations for this property
         const recommendations = await (
           await getRecommendationsByLmkKey(lmkKey)
         ).Items;
+
+        // Get the smart meter data if applicable
+        const smartMeterInformation = await getSmartMeterInformation(lmkKey);
+
         res.render("index", {
           title: "Housing Passport",
           certificate: certificate,
-          // recommendations: JSON.stringify(recommendations, null, 4),
+          smartMeterInformation: smartMeterInformation,
           recommendations: recommendations,
         });
       } else {

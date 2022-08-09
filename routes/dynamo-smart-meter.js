@@ -29,8 +29,20 @@ const getSmartMeterInformation = async (lmkKey) => {
       "lmk-key": lmkKey,
     },
   };
-  return await dynamoClient.get(params).promise();
+  return await (
+    await dynamoClient.get(params).promise()
+  ).Item;
 };
+// Testing function getSmartMeterInformation
+// getSmartMeterInformation("1573380469022017090821481343938953").then(
+//   async (res) => {
+//     if (res) {
+//       console.log("Smart meter information: ", res);
+//     } else {
+//       console.log("No smart-meter information for this lmk-key");
+//     }
+//   }
+// );
 
 module.exports = {
   dynamoClient,

@@ -1,4 +1,3 @@
-const { result } = require("lodash");
 const { getCertificateByLmkKey } = require("./dynamo-certs");
 const {
   getSmartMeterInformation,
@@ -12,8 +11,8 @@ router
   .get((req, res, next) => {
     // Check if there is existing smart-meter in database
     getSmartMeterInformation(req.params.lmkKey).then(async (result) => {
-      if (result.Item) {
-        res.send(result.Item);
+      if (result) {
+        res.send(result);
       } else {
         res
           .status(404)
@@ -24,9 +23,9 @@ router
   .post((req, res, next) => {
     const lmkKey = req.params.lmkKey;
     const smartMeterSerialNumber = req.body.smartMeterSerialNumber;
-    const intervalStart = req.body.intervalStart;
+    const intervalStart = new Date(req.body.intervalStart).toString();
     const electricityConsumption = req.body.electricityConsumption;
-    const gasConsumption = req.body.electricityConsumption;
+    const gasConsumption = req.body.gasConsumption;
     const smartMeterInformation = {
       "lmk-key": lmkKey,
       smartMeterSerialNumber: smartMeterSerialNumber,
@@ -37,7 +36,7 @@ router
 
     // Check if there is existing smart-meter in database
     getSmartMeterInformation(lmkKey).then(async (result) => {
-      if (result.Item) {
+      if (result) {
         // Update existing smart-meter information
         await addSmartMeter(smartMeterInformation);
         res.status(200)
