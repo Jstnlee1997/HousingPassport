@@ -6,7 +6,6 @@ const { getRecommendationsByLmkKey } = require("./dynamo-recos");
 const { addRecommendationsByLmkKey } = require("./recommendation");
 const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
 const { getSmartMeterInformation } = require("./dynamo-smart-meter");
-const { smart } = require("@babel/template");
 
 /* GET home page. */
 router
