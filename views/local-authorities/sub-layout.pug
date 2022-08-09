@@ -56,8 +56,15 @@ block content
         //- Add all the markers of the propertiesInfo
         for (const propertyInfo of propertiesInfo) {
           //- Create popup content to display energy information for each household
-          const popupContent = `Current Energy Efficiency: ${propertyInfo.currentEnergyEfficiency}<br>
+          var popupContent = `Current Energy Efficiency: ${propertyInfo.currentEnergyEfficiency}<br>
                                 Potential Energy Efficiency: ${propertyInfo.potentialEnergyEfficiency}`
+
+          // Add recommendations if they are present
+          if (propertyInfo.recommendations) {
+            for (let recommendation = 0; recommendation < propertyInfo.recommendations.Items.length; recommendation++) {
+              popupContent += `<br> Retrofit Suggestion ${recommendation+1}: ${propertyInfo.recommendations.Items[recommendation]['improvement-id-text']}`
+            }
+          }
 
           //- Calculate average of energy efficiencies
           const averageEfficiency = (Number(propertyInfo.potentialEnergyEfficiency) + Number(propertyInfo.currentEnergyEfficiency))/2

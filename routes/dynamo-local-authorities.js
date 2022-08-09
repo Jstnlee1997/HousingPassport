@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const { getRecommendationsByLmkKey } = require("./dynamo-recos");
 require("dotenv").config();
 
 // connection to AWS
@@ -103,7 +104,7 @@ const addNewLocalAuthority = async (
     "New local-authority added into local-authorities table: ",
     localAuthority
   );
-  // console.log("Adding new property info: ", JSON.stringify(propertyInfo));
+  console.log("Adding new property info: ", JSON.stringify(propertyInfo));
   // use client to call a put method
   return await dynamoClient.put(params).promise();
 };
@@ -6867,6 +6868,68 @@ const updateFrequencyOfEnergyRating = async (localAuthority) => {
 };
 // Testing function updateFrequencyOfEnergyRating
 // updateFrequencyOfEnergyRating("E09000013");
+
+// Function to ONE OFF add all recommendations
+const addRecommendationsToPropertiesInfo = async (localAuthority) => {
+  // Get all the lmkKeys of the localAuthority
+  const localAuthorityInformation = await getLocalAuthorityInformation(
+    localAuthority
+  );
+  const lmkKeys = localAuthorityInformation.Item["lmkKeys"];
+  var propertiesInfo = localAuthorityInformation.Item["propertiesInfo"];
+
+  // Loop through each lmk-key
+  for (const lmkKey of lmkKeys.slice(899, 900)) {
+    // Get all the recommendations for each lmk-key
+    const recommendations = await getRecommendationsByLmkKey(lmkKey);
+
+    // Get the respective propertyInfo
+    for (var propertyInfo of propertiesInfo) {
+      if (propertyInfo["lmkKey"] === lmkKey) {
+        // Add all the recommendations to the propertyInfo
+        var newRecommendations = {};
+        var items = [];
+        for (const recommendation of recommendations.Items) {
+          // ONLY abstract relevant information to reduce storage space
+          var tempRecommendation = {};
+          tempRecommendation["improvement-item"] =
+            recommendation["improvement-item"];
+          tempRecommendation["indicative-cost"] =
+            recommendation["indicative-cost"];
+          tempRecommendation["improvement-id"] =
+            recommendation["improvement-id"];
+          tempRecommendation["improvement-id-text"] =
+            recommendation["improvement-id-text"];
+
+          items.push(tempRecommendation);
+        }
+        newRecommendations["Items"] = items;
+        // console.log("New Recommendation: ", JSON.stringify(newRecommendations));
+        propertyInfo["recommendations"] = newRecommendations;
+        // console.log(
+        //   `Lmk-key: ${lmkKey} has new propertyInfo: ${JSON.stringify(
+        //     propertyInfo
+        //   )}`
+        // );
+      }
+    }
+  }
+  // Update propertiesInfo in local-authorities table
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "local-authority": localAuthority,
+    },
+    UpdateExpression: "set propertiesInfo = :x",
+    ExpressionAttributeValues: {
+      ":x": propertiesInfo,
+    },
+  };
+
+  await dynamoClient.update(params).promise();
+  console.log("Finished updating propertiesInfo successfully!");
+};
+// addRecommendationsToPropertiesInfo("E09000013");
 
 module.exports = {
   dynamoClient,

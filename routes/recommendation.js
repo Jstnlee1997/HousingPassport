@@ -20,6 +20,7 @@ const getRecommendationsByLmkKey = async (lmkKey) => {
     })
     .then((res) => {
       if (res.data) {
+        console.log();
         return res.data;
       }
     })
@@ -65,7 +66,9 @@ router.route("/:lmkKey").get((req, res, next) => {
 });
 
 // Test getting recommendation using input lmk-key
-// getRecommendationsByLmkKey("1520005522332017021617435193978006");
+// getRecommendationsByLmkKey(
+//   "6529dbb2d788d187895a35c6db0e7263b53eddebc7cc0e0df3576e05ee761e8d"
+// );
 
 // Test addRecommendationsByLmkKey to add all recommendations for a given lmk-key
 // addRecommendationsByLmkKey("1573380469022017090821481343938953");

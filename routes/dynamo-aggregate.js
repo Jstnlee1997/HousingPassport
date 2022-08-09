@@ -8,6 +8,7 @@ const {
   updateFrequencyOfEnergyRating,
   updatePropertyInfo,
 } = require("./dynamo-local-authorities");
+const { getRecommendationsByLmkKey } = require("./dynamo-recos");
 const router = require("express").Router();
 require("dotenv").config();
 
@@ -623,6 +624,9 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
             lmkKeys.length
           );
 
+          // Get recommendations of the property
+          const recommendations = await getRecommendationsByLmkKey(lmkKey);
+
           // Add new lmkkey and propertyInfo to existing local authority in local-authorities table
           const newPropertyInfo = {
             lmkKey: lmkKey,
@@ -631,6 +635,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
             currentEnergyEfficiency: certificate["current-energy-efficiency"],
             potentialEnergyEfficiency:
               certificate["potential-energy-efficiency"],
+            recommendations: recommendations,
           };
           // console.log(
           //   "Adding new property info: ",
@@ -651,6 +656,9 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           "Local-authority does not exist, creating new item in aggregate-data table"
         );
 
+        // Get recommendations of the property
+        const recommendations = await getRecommendationsByLmkKey(lmkKey);
+
         // Create new propertyInfo
         const newPropertyInfo = {
           lmkKey: lmkKey,
@@ -658,6 +666,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           lng: certificate["lng"],
           currentEnergyEfficiency: certificate["current-energy-efficiency"],
           potentialEnergyEfficiency: certificate["potential-energy-efficiency"],
+          recommendations: recommendations,
         };
 
         // ADD new local-authority to local-authorities table

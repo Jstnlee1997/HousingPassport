@@ -93,11 +93,11 @@ const deleteRecommendationByLmkKey = async (lmkKey, improvementId) => {
 // );
 
 // Test getRecommendationsByLmkKey function
-// const found = getRecommendationsByLmkKey(recommendation["lmk-key"]).then(
-//   (result) => {
-//     console.log(result);
-//   }
-// );
+// getRecommendationsByLmkKey(
+//   "6529dbb2d788d187895a35c6db0e7263b53eddebc7cc0e0df3576e05ee761e8d"
+// ).then((res) => {
+//   console.log(res.Items.slice(0, 2));
+// });
 
 // Test getRecommendationByLmkKeyAndImprovementId function
 // const found = getRecommendationByLmkKeyAndImprovementId(
