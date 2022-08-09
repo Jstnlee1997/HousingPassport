@@ -19,6 +19,7 @@ var loginRouter = require("./routes/login");
 var aggregateRouter = require("./routes/dynamo-aggregate");
 var mapRouter = require("./routes/map");
 var editEpcRouter = require("./routes/edit-epc");
+var smartMeterRouter = require("./routes/smart-meter");
 var initializePassport = require("./routes/passport-config");
 // Need to be able to find user and return an USER object
 initializePassport(passport);
@@ -60,6 +61,7 @@ app.use("/login", loginRouter);
 app.use("/aggregate", aggregateRouter.router);
 app.use("/map", mapRouter);
 app.use("/edit-epc", editEpcRouter);
+app.use("/smart-meter", smartMeterRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
