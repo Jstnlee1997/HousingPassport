@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const { checkAuthenticated } = require(".");
-const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
-const { getCertificateByLmkKey, updateCertificate } = require("./dynamo-certs");
+const {
+  updateAggregateDataOfLocalAuthority,
+} = require("./dynamo-aggregate-data");
+const {
+  getCertificateByLmkKey,
+  updateCertificate,
+} = require("./dynamo-epc-certificates");
 const { returnNewEnergyRating } = require("./dynamo-local-authorities");
 const { getUserById } = require("./rds-users");
 
@@ -26,7 +31,7 @@ router
       });
     });
   })
-  .post(async (req, res, next) => {
+  .post(checkAuthenticated, async (req, res, next) => {
     console.log("New EPC data: ", req.body);
     // Get the lmk-key and local-authoritiy of the user
     const lmkKey = req.body["lmk-key"];

@@ -1,5 +1,5 @@
-const { getAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
-const { getCertificateByLmkKey } = require("./dynamo-certs");
+const { getAggregateDataOfLocalAuthority } = require("./dynamo-aggregate-data");
+const { getCertificateByLmkKey } = require("./dynamo-epc-certificates");
 const {
   getLocalAuthorityInformation,
   getAllLocalAuthorities,

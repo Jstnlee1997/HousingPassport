@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const { getRecommendationsByLmkKey } = require("./dynamo-recos");
+const { getRecommendationsByLmkKey } = require("./dynamo-epc-recommendations");
 require("dotenv").config();
 
 // connection to AWS

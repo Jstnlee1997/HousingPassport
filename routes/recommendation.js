@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
-const { deleteCertificateByLmkKey } = require("./dynamo-certs");
-const { addRecommendation } = require("./dynamo-recos");
+const { addRecommendation } = require("./dynamo-epc-recommendations");
 require("dotenv").config();
 
 // Variables to authenticate energy epc account
@@ -50,14 +49,6 @@ const addRecommendationsByLmkKey = async (lmkKey) => {
   }
 };
 
-// Function to delete a recommendation by lmk-key and improvementID
-const deleteRecommendationByLmkKeyAndImprovementId = async (
-  lmkKey,
-  improvementId
-) => {
-  return await deleteCertificateByLmkKey(lmkKey, improvementId);
-};
-
 /* GET all recommendations given an lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
   // console.log(req.params);
@@ -85,5 +76,4 @@ router.route("/:lmkKey").get((req, res, next) => {
 module.exports = {
   router,
   addRecommendationsByLmkKey,
-  deleteRecommendationByLmkKeyAndImprovementId,
 };

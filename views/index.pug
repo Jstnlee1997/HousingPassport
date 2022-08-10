@@ -164,28 +164,46 @@ block content
         dt Gas Consumption:
         dd #{smartMeterInformation['gasConsumption']} kWh
     
-  if recommendations
+  if recommendations.length > 0
     div(class="container recommendation-items")
       h2 Retrofitting Suggestions 
       button(type="button" id="toggleSuggestions" class="editbtn") Edit Suggestions
       br
       br
+      form(name="save-suggestions-form" action="/completed-recommendation" method="POST")
+        table 
+          thead 
+            tr 
+              th Improvement Description 
+              th Cost 
+              th Improvement ID 
+              th(class="editSuggestions") Completed
+          tbody 
+            each recommendation in recommendations 
+              tr 
+                td #{recommendation["improvement-id-text"]}
+                td #{recommendation["indicative-cost"]}
+                td #{recommendation["improvement-id"]}
+                td(class="editSuggestions")
+                  input(type="radio" name="completedRecommendation" value=recommendation["improvement-id"])
+        input(name="lmkKey" value=certificate["lmk-key"] hidden)
+        button(type="submit" class="editSuggestions") Save Completed Suggestion
+
+  if completedRecommendations.length > 0
+    div(class="container completed-recommendation-items")
+      h2 Retrofitting Completions 
       table 
         thead 
           tr 
             th Improvement Description 
             th Cost 
             th Improvement ID 
-            th(class="editSuggestions") Completed
         tbody 
-          each recommendation in recommendations 
+          each completedRecommendation in completedRecommendations 
             tr 
-              td #{recommendation["improvement-id-text"]}
-              td #{recommendation["indicative-cost"]}
-              td #{recommendation["improvement-id"]}
-              td(class="editSuggestions")
-                input(type="checkbox" name="recommendationCheckBoxes" value=recommendation["improvement-id"])
-      button(type="submit" class="editSuggestions" id="saveSuggestionsBtn" value=certificate["lmk-key"]) Save Completed Suggestions 
+              td #{completedRecommendation["improvement-id-text"]}
+              td #{completedRecommendation["indicative-cost"]}
+              td #{completedRecommendation["improvement-id"]}
 
   div(class="container")
     form(action="/logout?_method=DELETE" method="POST")

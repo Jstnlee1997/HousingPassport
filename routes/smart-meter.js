@@ -1,4 +1,4 @@
-const { getCertificateByLmkKey } = require("./dynamo-certs");
+const { getCertificateByLmkKey } = require("./dynamo-epc-certificates");
 const {
   getSmartMeterInformation,
   addSmartMeter,
@@ -20,7 +20,7 @@ router
       }
     });
   })
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     const lmkKey = req.params.lmkKey;
     const smartMeterSerialNumber = req.body.smartMeterSerialNumber;
     const intervalStart = new Date(req.body.intervalStart).toString();

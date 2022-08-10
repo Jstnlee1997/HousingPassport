@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const axios = require("axios");
-const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
-const { addCertificate, getCertificateByLmkKey } = require("./dynamo-certs");
+const {
+  updateAggregateDataOfLocalAuthority,
+} = require("./dynamo-aggregate-data");
+const {
+  addCertificate,
+  getCertificateByLmkKey,
+} = require("./dynamo-epc-certificates");
 const { addRecommendationsByLmkKey } = require("./recommendation");
 
 // Variables to authenticate energy epc account

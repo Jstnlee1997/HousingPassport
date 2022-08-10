@@ -1,29 +1,21 @@
 const elToggle = document.querySelector("#toggleSuggestions");
 const elContent = document.querySelectorAll(".editSuggestions");
-const saveSuggestionsBtn = document.querySelector("#saveSuggestionsBtn");
+const currentBtnColor = elToggle.style.backgroundColor;
 
 // Toggle visibility of elements upon clicking of "Edit Suggestions" button
 elToggle.addEventListener("click", function () {
+  // Change html of elToggle
+  elToggle.innerHTML === "Edit Suggestions"
+    ? (elToggle.innerHTML = "Cancel Action")
+    : (elToggle.innerHTML = "Edit Suggestions");
+  // Change colour of elToggle
+
+  elToggle.style.backgroundColor === "red"
+    ? (elToggle.style.backgroundColor = currentBtnColor)
+    : (elToggle.style.backgroundColor = "red");
+
+  // Toggle display of other elements
   elContent.forEach((element) => {
     element.classList.toggle("editSuggestions");
   });
-});
-
-// Send post request to remove completed suggestions
-saveSuggestionsBtn.addEventListener("click", async (_) => {
-  const lmkKey = saveSuggestionsBtn.value;
-  const checkedBoxes = document.querySelectorAll(
-    "input[name=recommendationCheckBoxes]:checked"
-  );
-  // console.log(checkedBoxes);
-  for (const checkBox of checkedBoxes) {
-    improvementIds.push(checkBox.value);
-    const improvementId = checkBox.value;
-    // Delete the recommendation from the epc-recommendations table
-    // await deleteRecommendationByLmkKeyAndImprovementId(lmkKey, improvementId);
-    // console.log(
-    //   "Completed retrofitting suggestion with Improvement ID: ",
-    //   improvementId
-    // );
-  }
 });

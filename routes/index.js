@@ -1,11 +1,16 @@
 const router = require("express").Router();
 const { getLmkKeyOfAddress, addCertificateByLmkKey } = require("./epc");
-const { getCertificateByLmkKey } = require("./dynamo-certs");
+const { getCertificateByLmkKey } = require("./dynamo-epc-certificates");
 const { getUserById, updateAddressAndLmkKeyUsingId } = require("./rds-users");
-const { getRecommendationsByLmkKey } = require("./dynamo-recos");
+const { getRecommendationsByLmkKey } = require("./dynamo-epc-recommendations");
 const { addRecommendationsByLmkKey } = require("./recommendation");
-const { updateAggregateDataOfLocalAuthority } = require("./dynamo-aggregate");
+const {
+  updateAggregateDataOfLocalAuthority,
+} = require("./dynamo-aggregate-data");
 const { getSmartMeterInformation } = require("./dynamo-smart-meter");
+const {
+  getCompletedRecommendationsByLmkKey,
+} = require("./dynamo-epc-completed-recommendations");
 
 /* GET home page. */
 router
@@ -31,19 +36,25 @@ router
         // Certificate is in DB
         console.log("Certificate of this address is present in database");
 
+        // Get the smart meter data if applicable
+        const smartMeterInformation = await getSmartMeterInformation(lmkKey);
+
         // Get the recommendations for this property
         const recommendations = await (
           await getRecommendationsByLmkKey(lmkKey)
         ).Items;
 
-        // Get the smart meter data if applicable
-        const smartMeterInformation = await getSmartMeterInformation(lmkKey);
+        // Get the completed recommendations for this property
+        const completedRecommendations = await (
+          await getCompletedRecommendationsByLmkKey(lmkKey)
+        ).Items;
 
         res.render("index", {
           title: "Housing Passport",
           certificate: certificate,
           smartMeterInformation: smartMeterInformation,
           recommendations: recommendations,
+          completedRecommendations: completedRecommendations,
         });
       } else {
         // add certificate into database, AND add recomendations as well
@@ -65,12 +76,15 @@ router
           recommendations: await (
             await getRecommendationsByLmkKey(lmkKey)
           ).Items,
+          completedRecommendations: await (
+            await getCompletedRecommendationsByLmkKey(lmkKey)
+          ).Items,
         });
       }
     });
   })
   // user has identified their address
-  .post(async (req, res, next) => {
+  .post(checkAuthenticated, async (req, res, next) => {
     // obtain selected address
     const address = req.body.address;
 
