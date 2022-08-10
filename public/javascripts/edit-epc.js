@@ -14,22 +14,13 @@ const co2EmissionsPotentialE = document.querySelector(
 );
 const heatingCostCurrentE = document.querySelector("#heating-cost-current");
 const heatingCostPotentialE = document.querySelector("#heating-cost-potential");
-const environmentImpactCurrentE = document.querySelector(
-  "#environment-impact-current"
-);
-const environmentImpactPotentialE = document.querySelector(
-  "#environment-impact-potential"
-);
 const energyConsumptionCurrentE = document.querySelector(
   "#energy-consumption-current"
 );
 const energyConsumptionPotentialE = document.querySelector(
   "#energy-consumption-potential"
 );
-const lowEnergyLightingE = document.querySelector("#low-energy-lighting");
-const hotWaterCostPotentialE = document.querySelector(
-  "#hot-water-cost-potential"
-);
+const multiGlazeProportionE = document.querySelector("#multi-glaze-proportion");
 
 const form = document.querySelector("#edit-epc-form");
 
@@ -38,33 +29,19 @@ form.addEventListener("submit", function (e) {
   const isCurrentEnergyEfficiency = checkCurrentEnergyEfficiency();
   const isPotentialEnergyEfficiency = checkPotentialEnergyEfficiency();
   const isLightingCostCurrent = checkLightingCostCurrent();
-  const isLightingCostPotential = checkLightingCostPotential();
   const isCo2EmissionsCurrent = checkCo2EmissionsCurrent();
-  const isCo2EmissionsPotential = checkCo2EmissionsPotential();
   const isHeatingCostCurrent = checkHeatingCostCurrent();
-  const isHeatingCostPotential = checkHeatingCostPotential();
-  const isEnvironmentImpactCurrent = checkEnvironmentImpactCurrent();
-  const isEnvironmentImpactPotential = checkEnvironmentImpactPotential();
   const isEnergyConsumptionCurrent = checkEnergyConsumptionCurrent();
-  const isEnergyConsumptionPotential = checkEnergyConsumptionPotential();
-  const isLowEnergyLighting = checkLowEnergyLighting();
-  const isHotWaterCostPotential = checkHotWaterCostPotential();
+  const isMultiGlazeProportion = checkMultiGlazeProportion();
 
   const isValid =
     isCurrentEnergyEfficiency &&
     isPotentialEnergyEfficiency &&
     isLightingCostCurrent &&
-    isLightingCostPotential &&
     isCo2EmissionsCurrent &&
-    isCo2EmissionsPotential &&
     isHeatingCostCurrent &&
-    isHeatingCostPotential &&
-    isEnvironmentImpactCurrent &&
-    isEnvironmentImpactPotential &&
     isEnergyConsumptionCurrent &&
-    isEnergyConsumptionPotential &&
-    isLowEnergyLighting &&
-    isHotWaterCostPotential;
+    isMultiGlazeProportion;
 
   if (!isValid) {
     // Prevent form from being sent by cancelling the event
@@ -81,8 +58,11 @@ const isLengthBetween = (length, min, max) =>
 const isValueBetween = (value, min, max) =>
   Number(value) < Number(min) || Number(value) > Number(max) ? false : true;
 
-const isMoreThanPotential = (value, potential) =>
-  Number(value) < Number(potential) ? false : true;
+const isMoreThanOrEqualToPotential = (value, potential) =>
+  Number(value) >= Number(potential) ? true : false;
+
+const isLessThanOrEqualToPotential = (value, potential) =>
+  Number(value) <= Number(potential) ? true : false;
 
 /* Functions to show error/success */
 const showError = (input, message) => {
@@ -165,6 +145,7 @@ const checkLightingCostCurrent = () => {
     max = "1000";
 
   const lightingCostCurrent = lightingCostCurrentE.value.trim();
+  const lightingCostPotential = lightingCostPotentialE.value.trim();
 
   if (!isRequired(lightingCostCurrent)) {
     showError(lightingCostCurrentE, "Lighting cost current cannot be blank.");
@@ -173,32 +154,15 @@ const checkLightingCostCurrent = () => {
       lightingCostCurrentE,
       `Lighting cost current must be between ${min} and ${max}`
     );
+  } else if (
+    !isMoreThanOrEqualToPotential(lightingCostCurrent, lightingCostPotential)
+  ) {
+    showError(
+      lightingCostCurrentE,
+      `Lighting cost current cannot be less than its potential`
+    );
   } else {
     showSuccess(lightingCostCurrentE);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkLightingCostPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "1000";
-
-  const lightingCostPotential = lightingCostPotentialE.value.trim();
-
-  if (!isRequired(lightingCostPotential)) {
-    showError(
-      lightingCostPotentialE,
-      "Lighting cost potential cannot be blank."
-    );
-  } else if (!isValueBetween(lightingCostPotential, min, max)) {
-    showError(
-      lightingCostPotentialE,
-      `Lighting cost potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(lightingCostPotentialE);
     valid = true;
   }
   return valid;
@@ -225,36 +189,13 @@ const checkCo2EmissionsCurrent = () => {
   return valid;
 };
 
-const checkCo2EmissionsPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "100";
-
-  const co2EmissionsPotential = co2EmissionsPotentialE.value.trim();
-
-  if (!isRequired(co2EmissionsPotential)) {
-    showError(
-      co2EmissionsPotentialE,
-      "CO2 emissions potential cannot be blank."
-    );
-  } else if (!isValueBetween(co2EmissionsPotential, min, max)) {
-    showError(
-      co2EmissionsPotentialE,
-      `CO2 emissions potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(co2EmissionsPotentialE);
-    valid = true;
-  }
-  return valid;
-};
-
 const checkHeatingCostCurrent = () => {
   var valid = false;
   const min = "1",
     max = "1000";
 
   const heatingCostCurrent = heatingCostCurrentE.value.trim();
+  const heatingCostPotential = heatingCostPotentialE.value.trim();
 
   if (!isRequired(heatingCostCurrent)) {
     showError(heatingCostCurrentE, "Heating cost current cannot be blank.");
@@ -263,53 +204,15 @@ const checkHeatingCostCurrent = () => {
       heatingCostCurrentE,
       `Heating cost current must be between ${min} and ${max}`
     );
+  } else if (
+    !isMoreThanOrEqualToPotential(heatingCostCurrent, heatingCostPotential)
+  ) {
+    showError(
+      heatingCostCurrentE,
+      `Heating cost current cannot be more than its potential`
+    );
   } else {
     showSuccess(heatingCostCurrentE);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkHeatingCostPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "1000";
-
-  const heatingCostPotential = heatingCostPotentialE.value.trim();
-
-  if (!isRequired(heatingCostPotential)) {
-    showError(heatingCostPotentialE, "Heating cost potential cannot be blank.");
-  } else if (!isValueBetween(heatingCostPotential, min, max)) {
-    showError(
-      heatingCostPotentialE,
-      `Heating cost potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(heatingCostPotentialE);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkEnvironmentImpactCurrent = () => {
-  var valid = false;
-  const min = "1",
-    max = "100";
-
-  const environmentImpactCurrent = environmentImpactCurrentE.value.trim();
-
-  if (!isRequired(environmentImpactCurrent)) {
-    showError(
-      environmentImpactCurrentE,
-      "Environment impact current cannot be blank."
-    );
-  } else if (!isValueBetween(environmentImpactCurrent, min, max)) {
-    showError(
-      environmentImpactCurrentE,
-      `Environment impact current must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(environmentImpactCurrentE);
     valid = true;
   }
   return valid;
@@ -334,7 +237,10 @@ const checkEnergyConsumptionCurrent = () => {
       `Energy consumption current must be between ${min} and ${max}`
     );
   } else if (
-    !isMoreThanPotential(energyConsumptionCurrent, energyConsumptionPotential)
+    !isMoreThanOrEqualToPotential(
+      energyConsumptionCurrent,
+      energyConsumptionPotential
+    )
   ) {
     showError(
       energyConsumptionCurrentE,
@@ -347,46 +253,22 @@ const checkEnergyConsumptionCurrent = () => {
   return valid;
 };
 
-const checkLowEnergyLighting = () => {
+const checkMultiGlazeProportion = () => {
   var valid = false;
   const min = "1",
     max = "100";
 
-  const lowEnergyLighting = lowEnergyLightingE.value.trim();
+  const multiGlazeProportion = multiGlazeProportionE.value.trim();
 
-  if (!isRequired(lowEnergyLighting)) {
-    showError(lowEnergyLightingE, "Low energy lighting cannot be blank.");
-  } else if (!isValueBetween(lowEnergyLighting, min, max)) {
+  if (!isRequired(multiGlazeProportion)) {
+    showError(multiGlazeProportionE, "Multi Glaze Proportion cannot be blank.");
+  } else if (!isValueBetween(multiGlazeProportion, min, max)) {
     showError(
-      lowEnergyLightingE,
-      `Low energy lighting must be between ${min} and ${max}`
+      multiGlazeProportionE,
+      `Multi Glaze Proportion must be between ${min} and ${max}`
     );
   } else {
-    showSuccess(lowEnergyLightingE);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkHotWaterCostPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "1000";
-
-  const hotWaterCostPotential = hotWaterCostPotentialE.value.trim();
-
-  if (!isRequired(hotWaterCostPotential)) {
-    showError(
-      hotWaterCostPotentialE,
-      "Hot water cost potential cannot be blank."
-    );
-  } else if (!isValueBetween(hotWaterCostPotential, min, max)) {
-    showError(
-      hotWaterCostPotentialE,
-      `Hot water cost potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(hotWaterCostPotentialE);
+    showSuccess(multiGlazeProportionE);
     valid = true;
   }
   return valid;
@@ -418,38 +300,17 @@ form.addEventListener("input", (e) => {
     case "lighting-cost-current":
       checkLightingCostCurrent();
       break;
-    case "lighting-cost-potential":
-      checkLightingCostPotential();
-      break;
     case "co2-emissions-current":
       checkCo2EmissionsCurrent();
-      break;
-    case "co2-emissions-potential":
-      checkCo2EmissionsPotential();
       break;
     case "heating-cost-current":
       checkHeatingCostCurrent();
       break;
-    case "heating-cost-potential":
-      checkHeatingCostPotential();
-      break;
-    case "environment-impact-current":
-      checkEnvironmentImpactCurrent();
-      break;
-    case "environment-impact-potential":
-      checkEnvironmentImpactPotential();
-      break;
     case "energy-consumption-current":
       checkEnergyConsumptionCurrent();
       break;
-    case "energy-consumption-potential":
-      checkEnergyConsumptionPotential();
-      break;
-    case "low-energy-lighting":
-      checkLowEnergyLighting();
-      break;
-    case "hot-water-cost-potential":
-      checkHotWaterCostPotential();
+    case "multi-glaze-proportion":
+      checkMultiGlazeProportion();
       break;
   }
 });
