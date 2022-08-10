@@ -154,11 +154,10 @@ router.route("/:lmkKey").get((req, res, next) => {
   // console.log(req.params);
 
   // check if there is an lmk-key in the database
-  const found = getCertificateByLmkKey(req.params.lmkKey);
-  found.then((result) => {
+  getCertificateByLmkKey(req.params.lmkKey).then((result) => {
     // Display the epc certificate if valid
-    if (result.Item) {
-      res.send(result["Item"]);
+    if (result) {
+      res.send(result);
     } else {
       res.status(404).send("There is no certificate by the given lmk-key");
     }

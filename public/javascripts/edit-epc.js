@@ -255,7 +255,7 @@ const checkEnergyConsumptionCurrent = () => {
 
 const checkMultiGlazeProportion = () => {
   var valid = false;
-  const min = "1",
+  const min = "0",
     max = "100";
 
   const multiGlazeProportion = multiGlazeProportionE.value.trim();
