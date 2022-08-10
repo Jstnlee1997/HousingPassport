@@ -9,7 +9,6 @@ const {
   updateEnergyInfoOfProperty,
 } = require("./dynamo-local-authorities");
 const { getRecommendationsByLmkKey } = require("./dynamo-epc-recommendations");
-const router = require("express").Router();
 require("dotenv").config();
 
 // connection to AWS
@@ -691,7 +690,6 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
 // updateAggregateDataOfLocalAuthority(fakeNewCertificate);
 
 module.exports = {
-  router,
   dynamoClient,
   getAggregateDataOfLocalAuthority,
   updateAggregateDataOfLocalAuthority,
