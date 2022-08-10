@@ -155,6 +155,10 @@ th, td {
   text-align: center;
 }
 
+.editSuggestions {
+  display: none;
+}
+
 /* Edit-epc styles */
 /* Create two equal columns that floats next to each other */
 .column {

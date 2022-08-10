@@ -7,51 +7,35 @@ block content
         label(for='lmk-key')
         input(type="text" name='lmk-key' value=certificate['lmk-key'])
       div(class="row")
+        div(class="column form-field") 
+          label(for='current-energy-efficiency') Current Energy Score:
+          input(type="text" name='current-energy-efficiency' id='current-energy-efficiency' value=certificate['current-energy-efficiency'] disabled)
+          small 
         div(class="column form-field")
-          label(for='current-energy-rating') Current Energy rating:
+          label(for='current-energy-rating') Current Energy Rating:
           input(type="text" name='current-energy-rating' value=certificate['current-energy-rating'] disabled)
-        div(class="column form-field") 
-          label(for='current-energy-efficiency') Current Energy Efficiency:
-          input(type="text" name='current-energy-efficiency' id='current-energy-efficiency' value=certificate['current-energy-efficiency'])
-          small 
       div(class="row")
         div(class="column form-field") 
-          label(for='potential-energy-rating') Potential Energy rating:
+          label(for='potential-energy-efficiency') Potential Energy Score:
+          input(type="text" name='potential-energy-efficiency' id='potential-energy-efficiency' value=certificate['potential-energy-efficiency'] disabled)
+          small 
+        div(class="column form-field") 
+          label(for='potential-energy-rating') Potential Energy Rating:
           input(type="text" name='potential-energy-rating' value=certificate['potential-energy-rating'] disabled)
-        div(class="column form-field") 
-          label(for='potential-energy-efficiency') Potential Energy Efficiency:
-          input(type="text" name='potential-energy-efficiency' id='potential-energy-efficiency' value=certificate['potential-energy-efficiency'])
-          small 
       div(class="row")
         div(class="column form-field") 
-          label(for='construction-age-band') Construction Age Band:
-          input(type="text" name='construction-age-band' value=certificate['construction-age-band'])
-        div(class="column form-field")
-          label(for='property-type') Property Type:
-          input(type="text" name='property-type' value=certificate['property-type'])
-      div(class="row")
-        div(class="column form-field")
-          label(for='transaction-type') Transaction Type:
-          input(type="text" name='transaction-type' value=certificate['transaction-type'])
-        div(class="column form-field")
-          label(for='built-form') Built Form:
-          input(type="text" name='built-form' value=certificate['built-form'])
-      div(class="row")
-        div(class="column form-field")
-          label(for='total-floor-area') Total Floor Area:
-          input(type="text" name='total-floor-area' value=certificate['total-floor-area'])
-        div(class="column form-field")
-          label(for='inspection-date') Inspection Date:
-          input(type="text" name='inspection-date' value=certificate['inspection-date'])
-      div(class="row")
-        div(class="column form-field") 
-          label(for='energy-consumption-current') Energy Consumption Current:
+          label(for='energy-consumption-current') 
+            | Energy Consumption Current (kWh/m
+            sup 2
+            | ) 
           input(type="text" name='energy-consumption-current' id='energy-consumption-current' value=certificate['energy-consumption-current'])
           small 
         div(class="column form-field") 
-          label(for='energy-consumption-potential') Energy Consumption Potential:
-          input(type="text" name='energy-consumption-potential' id='energy-consumption-potential' value=certificate['energy-consumption-potential'])
-          small 
+          label(for='energy-consumption-potential') 
+            | Energy Consumption Potential (kWh/m
+            sup 2
+            | )
+          input(type="text" name='energy-consumption-potential' id='energy-consumption-potential' value=certificate['energy-consumption-potential'] disabled)
       div(class="row")
         div(class="column form-field")
           label(for='environment-impact-current') Environment Impact Current:
@@ -59,24 +43,16 @@ block content
           small 
         div(class="column form-field")
           label(for='environment-impact-potential') Environment Impact Potential:
-          input(type="text" name='environment-impact-potential' id='environment-impact-potential' value=certificate['environment-impact-potential'])
+          input(type="text" name='environment-impact-potential' id='environment-impact-potential' value=certificate['environment-impact-potential'] disabled)
           small 
       div(class="row")
         div(class="column form-field")
-          label(for='co2-emissions-current') CO2 Emissions Current:
+          label(for='co2-emissions-current') CO2 Emissions Current (tonnes/yr):
           input(type="text" name='co2-emissions-current' id='co2-emissions-current' value=certificate['co2-emissions-current'])
           small 
         div(class="column form-field")
-          label(for='co2-emiss-curr-per-floor-area') CO2 Emission Current Per Floor Area:
-          input(type="text" name='co2-emiss-curr-per-floor-area' value=certificate['co2-emiss-curr-per-floor-area'])
-      div(class="row")
-        div(class="column form-field")
-          label(for='co2-emissions-potential') CO2 Emissions Potential:
-          input(type="text" name='co2-emissions-potential' id='co2-emissions-potential' value=certificate['co2-emissions-potential'])
-          small 
-        div(class="column form-field")
-          label(for='number-heated-rooms') Number Heated Rooms:
-          input(type="text" name='number-heated-rooms' value=certificate['number-heated-rooms'])
+          label(for='co2-emissions-potential') CO2 Emissions Potential (tonnes/yr):
+          input(type="text" name='co2-emissions-potential' id='co2-emissions-potential' value=certificate['co2-emissions-potential'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='mainheat-description') Mainheat Description:
@@ -181,13 +157,6 @@ block content
         div(class="column form-field")
           label(for='windows-env-eff') Windows Environment Efficiency:
           input(type="text" name='windows-env-eff' value=certificate['windows-env-eff'])
-      div(class="row")
-        div(class="column form-field") 
-          label(for='mechanical-ventilation') Mechanical Ventilation:
-          input(type="text" name='mechanical-ventilation' value=certificate['mechanical-ventilation'])
-        div(class="column form-field") 
-          label(for='energy-tariff') Energy Tariff:
-          input(type="text" name='energy-tariff' value=certificate['energy-tariff'])
           
       button(type="submit" value=certificate['lmk-key']) Save EPC Data
 

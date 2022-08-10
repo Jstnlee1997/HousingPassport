@@ -1,5 +1,4 @@
 extends layout
-
 block content
   h1= title
   div(class="container epc-items")
@@ -35,24 +34,28 @@ block content
         dd #{certificate['built-form']}
       if certificate['total-floor-area']
         dt Total Floor Area:
-        dd #{certificate['total-floor-area']}
+        dd #{certificate['total-floor-area']} m
+          sup 2
+      if certificate['energy-tariff']
+        dt Energy Tariff:
+        dd #{certificate['energy-tariff']}
       if certificate['inspection-date']
         dt Inspection Date:
         dd #{certificate['inspection-date']}
-      dt Current Energy rating:
+      dt Current Energy Rating:
       dd #{certificate['current-energy-rating']}
-      dt Current Energy Efficiency:
+      dt Current Energy Score:
       dd #{certificate['current-energy-efficiency']}
       dt Potential Energy Rating:
       dd #{certificate['potential-energy-rating']}
-      dt Potential Energy Efficiency:
+      dt Potential Energy Score:
       dd #{certificate["potential-energy-efficiency"]}
       if certificate['energy-consumption-current']
         dt Energy Consumption Current:
-        dd #{certificate['energy-consumption-current']}
+        dd #{certificate['energy-consumption-current']} kWh/year
       if certificate['energy-consumption-potential']
         dt Energy Consumption Potential:
-        dd #{certificate['energy-consumption-potential']}
+        dd #{certificate['energy-consumption-potential']} kWh/year
       if certificate['environment-impact-current']
         dt Environment Impact Current:
         dd #{certificate['environment-impact-current']}
@@ -61,16 +64,10 @@ block content
         dd #{certificate['environment-impact-potential']}
       if certificate['co2-emissions-current']
         dt CO2 Emissions Current:
-        dd #{certificate['co2-emissions-current']}
-      if certificate['co2-emiss-curr-per-floor-area']
-        dt CO2 Emission Current Per Floor Area:
-        dd #{certificate['co2-emiss-curr-per-floor-area']}
+        dd #{certificate['co2-emissions-current']} tonnes/year
       if certificate['co2-emissions-potential']
         dt CO2 Emissions Potential:
-        dd #{certificate['co2-emissions-potential']}
-      if certificate['number-heated-rooms']
-        dt Number Heated Rooms:
-        dd #{certificate['number-heated-rooms']}
+        dd #{certificate['co2-emissions-potential']} tonnes/year
       if certificate['mainheat-description']
         dt Mainheat Description:
         dd #{certificate['mainheat-description']}
@@ -85,19 +82,19 @@ block content
         dd #{certificate['main-fuel']}
       if certificate['heating-cost-current']
         dt Heating Cost Current:
-        dd #{certificate['heating-cost-current']}
+        dd £#{certificate['heating-cost-current']} /year
       if certificate['heating-cost-potential']
         dt Heating Cost Potential:
-        dd #{certificate['heating-cost-potential']}
+        dd £#{certificate['heating-cost-potential']} /year
       if certificate['hotwater-description']
         dt Hot Water Description:
         dd #{certificate['hotwater-description']}
       if certificate['hot-water-cost-current']
         dt Hot Water Cost Curent:
-        dd #{certificate['hot-water-cost-current']}
+        dd £#{certificate['hot-water-cost-current']} /year
       if certificate['hot-water-cost-potential']
         dt Hot Water Cost Potential:
-        dd #{certificate['hot-water-cost-potential']}
+        dd £#{certificate['hot-water-cost-potential']} /year
       if certificate['hot-water-energy-eff']
         dt Hot Water Energy Efficiency:
         dd #{certificate['hot-water-energy-eff']}
@@ -127,10 +124,10 @@ block content
         dd #{certificate['lighting-description']}
       if certificate['lighting-cost-current']
         dt Lighting Cost Current:
-        dd #{certificate['lighting-cost-current']}
+        dd £#{certificate['lighting-cost-current']} /year
       if certificate['lighting-cost-potential']
         dt Lighting Cost Potential:
-        dd #{certificate['lighting-cost-potential']}
+        dd £#{certificate['lighting-cost-potential']} /year
       if certificate['lighting-energy-eff']
         dt Lighting Energy Efficiency:
         dd #{certificate['lighting-energy-eff']}
@@ -139,13 +136,13 @@ block content
         dd #{certificate["lighting-env-eff"]}
       if certificate['low-energy-lighting']
         dt Low Energy Lighting:
-        dd #{certificate['low-energy-lighting']}
+        dd #{certificate['low-energy-lighting']}%
       if certificate['glazed-area']
         dt Glazed Area:
         dd #{certificate['glazed-area']}
       if certificate['multi-glaze-proportion']
         dt Multi Glaze Proportion:
-        dd #{certificate['multi-glaze-proportion']}
+        dd #{certificate['multi-glaze-proportion']}%
       if certificate['windows-description']
         dt Windows Description:
         dd #{certificate['windows-description']}
@@ -158,9 +155,6 @@ block content
       if certificate['mechanical-ventilation']
         dt Mechanical Ventilation:
         dd #{certificate['mechanical-ventilation']}
-      if certificate['energy-tariff']
-        dt Energy Tariff:
-        dd #{certificate['energy-tariff']}
       br
 
   if smartMeterInformation
@@ -179,7 +173,7 @@ block content
   if recommendations
     div(class="container recommendation-items")
       h2 Retrofitting Suggestions 
-      button(type="button" class="editbtn") Edit Suggestions
+      button(type="button" id="toggleSuggestions" class="editbtn") Edit Suggestions
       br
       br
       table 
@@ -188,12 +182,20 @@ block content
             th Improvement Description 
             th Cost 
             th Improvement ID 
+            th(class="editSuggestions") Completed
         tbody 
           each recommendation in recommendations 
             tr 
               td #{recommendation["improvement-id-text"]}
               td #{recommendation["indicative-cost"]}
               td #{recommendation["improvement-id"]}
+              td(class="editSuggestions")
+                input(type="checkbox" name="recommendationCheckBoxes" value=recommendation["improvement-id"])
+      button(type="submit" class="editSuggestions" id="saveSuggestionsBtn" value=certificate["lmk-key"]) Save Completed Suggestions 
+
   div(class="container")
     form(action="/logout?_method=DELETE" method="POST")
       button(type="submit" class="redirectbtn") Logout
+
+  //- script(src="recommendation")
+  script(src="/javascripts/index.js")

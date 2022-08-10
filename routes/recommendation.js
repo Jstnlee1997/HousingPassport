@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
+const { deleteCertificateByLmkKey } = require("./dynamo-certs");
 const { addRecommendation } = require("./dynamo-recos");
 require("dotenv").config();
 
@@ -49,6 +50,14 @@ const addRecommendationsByLmkKey = async (lmkKey) => {
   }
 };
 
+// Function to delete a recommendation by lmk-key and improvementID
+const deleteRecommendationByLmkKeyAndImprovementId = async (
+  lmkKey,
+  improvementId
+) => {
+  return await deleteCertificateByLmkKey(lmkKey, improvementId);
+};
+
 /* GET all recommendations given an lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
   // console.log(req.params);
@@ -73,4 +82,8 @@ router.route("/:lmkKey").get((req, res, next) => {
 // Test addRecommendationsByLmkKey to add all recommendations for a given lmk-key
 // addRecommendationsByLmkKey("1573380469022017090821481343938953");
 
-module.exports = { router, addRecommendationsByLmkKey };
+module.exports = {
+  router,
+  addRecommendationsByLmkKey,
+  deleteRecommendationByLmkKeyAndImprovementId,
+};

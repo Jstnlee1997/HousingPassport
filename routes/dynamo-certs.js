@@ -197,9 +197,7 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 };
 
 // Test deleteCertificateByLmkKey
-// deleteCertificateByLmkKey(
-//   "900ff1d428c5183bf60ab558614e3ee2bd082afa93bb0afb3319b1df59a427f0"
-// );
+// deleteCertificateByLmkKey("688958059312011101217142998999994");
 
 async function addLongLatCoordinates(event, context) {
   let tableContents;

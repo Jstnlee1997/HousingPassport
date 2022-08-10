@@ -81,6 +81,9 @@ const isLengthBetween = (length, min, max) =>
 const isValueBetween = (value, min, max) =>
   Number(value) < Number(min) || Number(value) > Number(max) ? false : true;
 
+const isMoreThanPotential = (value, potential) =>
+  Number(value) < Number(potential) ? false : true;
+
 /* Functions to show error/success */
 const showError = (input, message) => {
   // get the form-field element
@@ -312,36 +315,13 @@ const checkEnvironmentImpactCurrent = () => {
   return valid;
 };
 
-const checkEnvironmentImpactPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "100";
-
-  const environmentImpactPotential = environmentImpactPotentialE.value.trim();
-
-  if (!isRequired(environmentImpactPotential)) {
-    showError(
-      environmentImpactPotentialE,
-      "Environment impact potential cannot be blank."
-    );
-  } else if (!isValueBetween(environmentImpactPotential, min, max)) {
-    showError(
-      environmentImpactPotentialE,
-      `Environment impact potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(environmentImpactPotentialE);
-    valid = true;
-  }
-  return valid;
-};
-
 const checkEnergyConsumptionCurrent = () => {
   var valid = false;
   const min = "1",
     max = "1000";
 
   const energyConsumptionCurrent = energyConsumptionCurrentE.value.trim();
+  const energyConsumptionPotential = energyConsumptionPotentialE.value.trim();
 
   if (!isRequired(energyConsumptionCurrent)) {
     showError(
@@ -353,32 +333,15 @@ const checkEnergyConsumptionCurrent = () => {
       energyConsumptionCurrentE,
       `Energy consumption current must be between ${min} and ${max}`
     );
+  } else if (
+    !isMoreThanPotential(energyConsumptionCurrent, energyConsumptionPotential)
+  ) {
+    showError(
+      energyConsumptionCurrentE,
+      `Energy consumption current cannot be less than its potential`
+    );
   } else {
     showSuccess(energyConsumptionCurrentE);
-    valid = true;
-  }
-  return valid;
-};
-
-const checkEnergyConsumptionPotential = () => {
-  var valid = false;
-  const min = "1",
-    max = "1000";
-
-  const energyConsumptionPotential = energyConsumptionPotentialE.value.trim();
-
-  if (!isRequired(energyConsumptionPotential)) {
-    showError(
-      energyConsumptionPotentialE,
-      "Energy consumption potential cannot be blank."
-    );
-  } else if (!isValueBetween(energyConsumptionPotential, min, max)) {
-    showError(
-      energyConsumptionPotentialE,
-      `Energy consumption potential must be between ${min} and ${max}`
-    );
-  } else {
-    showSuccess(energyConsumptionPotentialE);
     valid = true;
   }
   return valid;
