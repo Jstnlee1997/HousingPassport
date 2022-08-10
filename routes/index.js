@@ -65,6 +65,8 @@ router
         // Add recommendations next
         await addRecommendationsByLmkKey(lmkKey);
 
+        /* No need to check for smart meter information since it can't be added in at this point */
+
         // Add certificate to local-authority table
         updateAggregateDataOfLocalAuthority(
           await getCertificateByLmkKey(lmkKey)
