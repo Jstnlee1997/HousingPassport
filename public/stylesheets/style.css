@@ -87,7 +87,7 @@ input[type=email], input[type=password], input[type=text] {
 /* Set a style for all buttons */
 button {
   background-color: #04AA6D;
-  color: white;
+  color: black;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
