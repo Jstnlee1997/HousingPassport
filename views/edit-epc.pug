@@ -1,115 +1,115 @@
 extends layout
+block append metas 
+  meta(name="description" content="User is attempting to edit their respective EPC data")
 
 block content 
   div(class="container")
     form(name="edit-epc-form" id="edit-epc-form" action="/edit-epc" method="POST")
       div(hidden)
         label(for='lmk-key')
-        input(type="text" name='lmk-key' value=certificate['lmk-key'])
+          input(type="text" name='lmk-key' value=certificate['lmk-key'])
       div(class="row")
         div(class="column form-field") 
           label(for='current-energy-efficiency') Current Energy Score:
-          input(type="text" name='current-energy-efficiency' id='current-energy-efficiency' value=certificate['current-energy-efficiency'] disabled)
-          small 
+            input(type="text" name='current-energy-efficiency' id='current-energy-efficiency' value=certificate['current-energy-efficiency'] disabled)
         div(class="column form-field")
           label(for='current-energy-rating') Current Energy Rating:
-          input(type="text" name='current-energy-rating' value=certificate['current-energy-rating'] disabled)
+            input(type="text" name='current-energy-rating' value=certificate['current-energy-rating'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='potential-energy-efficiency') Potential Energy Score:
-          input(type="text" name='potential-energy-efficiency' id='potential-energy-efficiency' value=certificate['potential-energy-efficiency'] disabled)
-          small 
+            input(type="text" name='potential-energy-efficiency' id='potential-energy-efficiency' value=certificate['potential-energy-efficiency'] disabled)
         div(class="column form-field") 
           label(for='potential-energy-rating') Potential Energy Rating:
-          input(type="text" name='potential-energy-rating' value=certificate['potential-energy-rating'] disabled)
+            input(type="text" name='potential-energy-rating' value=certificate['potential-energy-rating'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='energy-consumption-current') 
             | Energy Consumption Current (kWh/m
             sup 2
             | ) 
-          input(type="text" name='energy-consumption-current' id='energy-consumption-current' value=certificate['energy-consumption-current'])
-          small 
+            input(type="text" name='energy-consumption-current' id='energy-consumption-current' value=certificate['energy-consumption-current'])
+            small 
         div(class="column form-field") 
           label(for='energy-consumption-potential') 
             | Energy Consumption Potential (kWh/m
             sup 2
             | )
-          input(type="text" name='energy-consumption-potential' id='energy-consumption-potential' value=certificate['energy-consumption-potential'] disabled)
+            input(type="text" name='energy-consumption-potential' id='energy-consumption-potential' value=certificate['energy-consumption-potential'] disabled)
       div(class="row")
         div(class="column form-field")
           label(for='co2-emissions-current') CO2 Emissions Current (tonnes/year):
-          input(type="text" name='co2-emissions-current' id='co2-emissions-current' value=certificate['co2-emissions-current'])
-          small 
+            input(type="text" name='co2-emissions-current' id='co2-emissions-current' value=certificate['co2-emissions-current'])
+            small 
         div(class="column form-field")
           label(for='co2-emissions-potential') CO2 Emissions Potential (tonnes/year):
-          input(type="text" name='co2-emissions-potential' id='co2-emissions-potential' value=certificate['co2-emissions-potential'] disabled)
+            input(type="text" name='co2-emissions-potential' id='co2-emissions-potential' value=certificate['co2-emissions-potential'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='mainheat-description') Mainheat Description:
-          input(type="text" name='mainheat-description' value=certificate['mainheat-description'])
+            input(type="text" name='mainheat-description' value=certificate['mainheat-description'])
         div(class="column form-field") 
           label(for='mainheat-energy-eff') Mainheat Energy Efficiency:
-          input(type="text" name='mainheat-energy-eff' value=certificate['mainheat-energy-eff'] disabled)
+            input(type="text" name='mainheat-energy-eff' value=certificate['mainheat-energy-eff'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='heating-cost-current') Heating Cost Current (£/year):
-          input(type="text" name='heating-cost-current' id='heating-cost-current' value=certificate['heating-cost-current'])
-          small 
+            input(type="text" name='heating-cost-current' id='heating-cost-current' value=certificate['heating-cost-current'])
+            small 
         div(class="column form-field") 
           label(for='heating-cost-potential') Heating Cost Potential (£/year):
-          input(type="text" name='heating-cost-potential' id='heating-cost-potential' value=certificate['heating-cost-potential'] disabled)
+            input(type="text" name='heating-cost-potential' id='heating-cost-potential' value=certificate['heating-cost-potential'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='hotwater-description') Hot Water Description:
-          input(type="text" name='hotwater-description' value=certificate['hotwater-description'])
+            input(type="text" name='hotwater-description' value=certificate['hotwater-description'])
         div(class="column form-field") 
           label(for='hot-water-energy-eff') Hot Water Energy Efficiency:
-          input(type="text" name='hot-water-energy-eff' value=certificate['hot-water-energy-eff'] disabled)
+            input(type="text" name='hot-water-energy-eff' value=certificate['hot-water-energy-eff'] disabled)
       div(class="row")
         div(class="column form-field")
           label(for='roof-description') Roof Description:
-          input(type="text" name='roof-description' value=certificate['roof-description'])
+            input(type="text" name='roof-description' value=certificate['roof-description'])
         div(class="column form-field")
           label(for='roof-energy-eff') Roof Energy Efficiency:
-          input(type="text" name='roof-energy-eff' value=certificate['roof-energy-eff'] disabled)
+            input(type="text" name='roof-energy-eff' value=certificate['roof-energy-eff'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='walls-description') Walls Description:
-          input(type="text" name='walls-description' value=certificate['walls-description'])
+            input(type="text" name='walls-description' value=certificate['walls-description'])
         div(class="column form-field")
           label(for='walls-energy-eff') Walls Energy Efficiency:
-          input(type="text" name='walls-energy-eff' value=certificate['walls-energy-eff'] disabled)
+            input(type="text" name='walls-energy-eff' value=certificate['walls-energy-eff'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='lighting-description') Lighting Description:
-          input(type="text" name='lighting-description' value=certificate['lighting-description'])
+            input(type="text" name='lighting-description' value=certificate['lighting-description'])
         div(class="column form-field") 
           label(for='lighting-energy-eff') Lighting Energy Efficiency:
-          input(type="text" name='lighting-energy-eff' value=certificate['lighting-energy-eff'] disabled)
+            input(type="text" name='lighting-energy-eff' value=certificate['lighting-energy-eff'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='lighting-cost-current') Lighting Cost Current (£/year):
-          input(type="text" name='lighting-cost-current' id='lighting-cost-current' value=certificate['lighting-cost-current'])
-          small 
+            input(type="text" name='lighting-cost-current' id='lighting-cost-current' value=certificate['lighting-cost-current'])
+            small 
         div(class="column form-field") 
           label(for='lighting-cost-potential') Lighting Cost Potential (£/year):
-          input(type="text" name='lighting-cost-potential' id='lighting-cost-potential' value=certificate['lighting-cost-potential'] disabled)
+            input(type="text" name='lighting-cost-potential' id='lighting-cost-potential' value=certificate['lighting-cost-potential'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='multi-glaze-proportion') Multi Glaze Proportion (%):
-          input(type="text" name='multi-glaze-proportion' id='multi-glaze-proportion' value=certificate['multi-glaze-proportion'])
-          small 
+            input(type="text" name='multi-glaze-proportion' id='multi-glaze-proportion' value=certificate['multi-glaze-proportion'])
+            small 
         div(class="column form-field")
           label(for='glazed-area') Glazed Area:
-          input(type="text" name='glazed-area' value=certificate['glazed-area'] disabled)
+            input(type="text" name='glazed-area' value=certificate['glazed-area'] disabled)
       div(class="row")
         div(class="column form-field") 
           label(for='windows-description') Windows Description:
-          input(type="text" name='windows-description' value=certificate['windows-description'])
+            input(type="text" name='windows-description' value=certificate['windows-description'])
         div(class="column form-field") 
           label(for='windows-energy-eff') Windows Energy Efficiency:
-          input(type="text" name='windows-energy-eff' value=certificate['windows-energy-eff'] disabled)
+            input(type="text" name='windows-energy-eff' value=certificate['windows-energy-eff'] disabled)
           
       button(type="submit" value=certificate['lmk-key']) Save EPC Data
 

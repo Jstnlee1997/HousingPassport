@@ -6,7 +6,9 @@ const router = require("express").Router();
 router
   .route("/")
   .get(checkNotAuthenticated, (req, res, next) => {
-    res.render("login");
+    res.render("login", {
+      title: "Login",
+    });
   })
   .post(
     checkNotAuthenticated,

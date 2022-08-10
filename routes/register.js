@@ -6,7 +6,9 @@ const { addNewUser } = require("./rds-users");
 router
   .route("/")
   .get(checkNotAuthenticated, (req, res, next) => {
-    res.render("register");
+    res.render("register", {
+      title: "Register",
+    });
   })
   .post(checkNotAuthenticated, async (req, res, next) => {
     try {

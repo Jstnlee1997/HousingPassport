@@ -13,7 +13,9 @@ router.route("/").get(checkAuthenticated, (req, res) => {
       // User has EPC -> redirect to index page
       return res.redirect("/");
     }
-    res.render("new-user/new-user");
+    res.render("new-user/new-user", {
+      title: "New User",
+    });
   });
 });
 
@@ -41,6 +43,7 @@ router.route("/postcode").get(checkAuthenticated, async (req, res, next) => {
     });
     // render the new form with all the addresses
     res.render("new-user/postcode", {
+      title: postcode,
       addresses: addresses.sort(),
       postcode: postcode,
     });

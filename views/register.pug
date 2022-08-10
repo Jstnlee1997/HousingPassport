@@ -1,14 +1,16 @@
 extends layout
+block append metas 
+  meta(name="description" content="This is the page for new users to register.")
 
 block content
   div(class="container")
     form(action="/register" method="POST")
       label(for="name") <b>Name: </b>
-      input(type="text" name="name" value= "" required)
+        input(type="text" name="name" value= "" required)
       label(for="email") <b>Email: </b> 
-      input(type="email" name="email" value= "" required)
+        input(type="email" name="email" value= "" required)
       label(for="password") <b>Password: </b> 
-      input(type="password" name="password" value= "" required)
+        input(type="password" name="password" value= "" required)
       button(type="submit") Register
     br
 

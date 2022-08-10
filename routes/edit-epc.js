@@ -27,6 +27,7 @@ router
       /* Get certificate from database */
       const certificate = await getCertificateByLmkKey(lmkKey);
       res.render("edit-epc", {
+        title: "Edit-epc",
         certificate: certificate,
       });
     });

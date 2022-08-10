@@ -1,4 +1,6 @@
 extends ../layout
+block append metas 
+  meta(name="description" content="New user will select address from corresponding postal code")
 
 block content 
   h1 Please select your address for postal code: #{postcode}
@@ -7,6 +9,6 @@ block content
       each val in addresses 
         li
           label(for="address") #{val}
-          input(type="radio" name="address" value=val)
+            input(type="radio" name="address" value=val)
         br  
     input(type="submit")

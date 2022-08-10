@@ -1,61 +1,62 @@
 extends layout
+block append metas 
+  meta(name="description" content="This is the map of London")
 
 block append scripts 
-    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-    crossorigin="")
+  link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+  integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+  crossorigin="")
 
-    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-    crossorigin="")
+  script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+  integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+  crossorigin="")
 
 block content
+  h1= title 
+  #map
 
-    h1= title 
-    #map
+  script.
+    var map = L.map('map').setView([51.509865, -0.118092], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-    script.
-        var map = L.map('map').setView([51.509865, -0.118092], 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '© OpenStreetMap'
-        }).addTo(map);
+    //- For each local-authority, plot boundary
+    const localAuthorities = !{JSON.stringify(localAuthorities)}
+    console.log(localAuthorities)
+    const aggregateDataOfLocalAuthorities = !{JSON.stringify(aggregateDataOfLocalAuthorities)}
+    console.log(aggregateDataOfLocalAuthorities)
+    const latlongsOfLocalAuthorities = !{JSON.stringify(latlongsOfLocalAuthorities)}
+    for (const localAuthority of localAuthorities) {
+      // Create popup content to display aggregated data for each local-authority
+      const popupContent = `Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
+                            Average Current Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-rating"]}<br>
+                            Average Current Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]*100)/100}<br>
+                            Average Potential Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-rating"]}<br>
+                            Average Potential Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]*100)/100}<br>
+                            <a id="link" href='/map/${localAuthority}'> Show further detail</a>`
+          
+      //- Get latlong coordinates of local-authority
+      const latlongs = latlongsOfLocalAuthorities[localAuthority]
+      console.log(latlongs)
 
-        //- For each local-authority, plot boundary
-        const localAuthorities = !{JSON.stringify(localAuthorities)}
-        console.log(localAuthorities)
-        const aggregateDataOfLocalAuthorities = !{JSON.stringify(aggregateDataOfLocalAuthorities)}
-        console.log(aggregateDataOfLocalAuthorities)
-        const latlongsOfLocalAuthorities = !{JSON.stringify(latlongsOfLocalAuthorities)}
-        for (const localAuthority of localAuthorities) {
-          // Create popup content to display aggregated data for each local-authority
-          const popupContent = `Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
-                                Average Current Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-rating"]}<br>
-                                Average Current Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]*100)/100}<br>
-                                Average Potential Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-rating"]}<br>
-                                Average Potential Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]*100)/100}<br>
-                                <a id="link" href='/map/${localAuthority}'> Show further detail</a>`
-             
-          //- Get latlong coordinates of local-authority
-          const latlongs = latlongsOfLocalAuthorities[localAuthority]
-          console.log(latlongs)
+      //- Vary color of polygon depending on the energy ratings
+      const averageEfficiency = (Number(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]) + Number(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]))/2
+      var color;
+      switch (true) {
+        case averageEfficiency >= 69:
+          color = 'blue'
+          break;
+        case averageEfficiency >= 39:
+          color = 'yellow'
+          break;
+        default:
+          color = 'red'
+      }
 
-          //- Vary color of polygon depending on the energy ratings
-          const averageEfficiency = (Number(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]) + Number(aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-efficiency"]))/2
-          var color;
-          switch (true) {
-            case averageEfficiency >= 69:
-              color = 'blue'
-              break;
-            case averageEfficiency >= 39:
-              color = 'yellow'
-              break;
-            default:
-              color = 'red'
-          }
-
-          //- Create a polygon boundary that uses the latlong coordinates
-          var polygon = L.polygon([].concat.apply([],latlongs), {color: color, className: localAuthority}).bindPopup(popupContent).openPopup().addTo(map);
-        }
+      //- Create a polygon boundary that uses the latlong coordinates
+      var polygon = L.polygon([].concat.apply([],latlongs), {color: color, className: localAuthority}).bindPopup(popupContent).openPopup().addTo(map);
+    }
 
 

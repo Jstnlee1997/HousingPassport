@@ -1,4 +1,6 @@
 extends layout
+block append metas 
+  meta(name="description" content="This is the login page.")
 
 block content
   //- Output error if present
@@ -7,9 +9,9 @@ block content
   div(class="container")
     form(action="/login" method="POST")
       label(name="email") <b>Email: </b> 
-      input(type="email" name="email" value= "" required)
+        input(type="email" name="email" value= "" required)
       label(name="password") <b>Password: </b> 
-      input(type="password" name="password" value= "" required)
+        input(type="password" name="password" value= "" required)
       button(type="submit") Login
     br
 
