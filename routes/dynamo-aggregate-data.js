@@ -6,7 +6,7 @@ const {
   addLmkKeyAndPropertyInfoToExistingLocalAuthority,
   returnNewEnergyRating,
   updateFrequencyOfEnergyRating,
-  updatePropertyInfo,
+  updateEnergyInfoOfProperty,
 } = require("./dynamo-local-authorities");
 const { getRecommendationsByLmkKey } = require("./dynamo-epc-recommendations");
 const router = require("express").Router();
@@ -609,7 +609,7 @@ const updateAggregateDataOfLocalAuthority = async (certificate) => {
           );
 
           // update propertyInfo of the updated epc-data
-          await updatePropertyInfo(
+          await updateEnergyInfoOfProperty(
             localAuthority,
             lmkKey,
             certificate["current-energy-efficiency"],

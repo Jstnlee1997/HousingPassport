@@ -6759,8 +6759,8 @@ const returnNewEnergyRating = async (energyEfficiency) => {
 //   console.log(result);
 // });
 
-// Function to update ONE propertyInfo
-const updatePropertyInfo = async (
+// Function to update energy efficiencies of a propertyInfo
+const updateEnergyInfoOfProperty = async (
   localAuthority,
   lmkKey,
   newCurrentEnergyEfficiency,
@@ -6793,13 +6793,61 @@ const updatePropertyInfo = async (
 
   await dynamoClient.update(params).promise();
 };
-// Testing function updatePropertyInfo
-// updatePropertyInfo(
+// Testing function updateEnergyInfoOfProperty
+// updateEnergyInfoOfProperty(
 //   "E09000020",
 //   "e2a198e1920ce4e5da1471d61e79656b564278202f30c8c1d96a28a00770eb2e",
 //   "1",
 //   "80"
 // );
+
+// Function to update recommendations of a property
+const updateRecommendationsInfoOfProperty = async (localAuthority, lmkKey) => {
+  // Scan through and find the propertyInfo that matches the lmk-key
+  const propertiesInfo = await await (
+    await getLocalAuthorityInformation(localAuthority)
+  ).Item["propertiesInfo"];
+  for (const propertyInfo of propertiesInfo) {
+    if (propertyInfo["lmkKey"] === lmkKey) {
+      // Get the recommendation
+      const recommendations = await getRecommendationsByLmkKey(lmkKey);
+      var newRecommendations = {};
+      var items = [];
+      for (const recommendation of recommendations.Items) {
+        // ONLY abstract relevant information to reduce storage space
+        var tempRecommendation = {};
+        tempRecommendation["improvement-item"] =
+          recommendation["improvement-item"];
+        tempRecommendation["indicative-cost"] =
+          recommendation["indicative-cost"];
+        tempRecommendation["improvement-id"] = recommendation["improvement-id"];
+        tempRecommendation["improvement-id-text"] =
+          recommendation["improvement-id-text"];
+
+        items.push(tempRecommendation);
+      }
+      newRecommendations["Items"] = items;
+      // console.log("New Recommendation: ", JSON.stringify(newRecommendations));
+      propertyInfo["recommendations"] = newRecommendations;
+      console.log("New recommendations of propery: ", newRecommendations);
+      break;
+    }
+  }
+
+  // Update table
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      "local-authority": localAuthority,
+    },
+    UpdateExpression: "set propertiesInfo = :x",
+    ExpressionAttributeValues: {
+      ":x": propertiesInfo,
+    },
+  };
+
+  await dynamoClient.update(params).promise();
+};
 
 // Function to update frequencyOfEnergyRatings
 const updateFrequencyOfEnergyRating = async (localAuthority) => {
@@ -6938,6 +6986,7 @@ module.exports = {
   addNewLocalAuthority,
   addLmkKeyAndPropertyInfoToExistingLocalAuthority,
   returnNewEnergyRating,
-  updatePropertyInfo,
+  updateEnergyInfoOfProperty,
+  updateRecommendationsInfoOfProperty,
   updateFrequencyOfEnergyRating,
 };

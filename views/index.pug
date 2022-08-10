@@ -187,6 +187,7 @@ block content
                 td(class="editSuggestions")
                   input(type="radio" name="completedRecommendation" value=recommendation["improvement-id"])
         input(name="lmkKey" value=certificate["lmk-key"] hidden)
+        input(name="localAuthority" value=certificate["local-authority"] hidden)
         button(type="submit" class="editSuggestions") Save Completed Suggestion
 
   if completedRecommendations.length > 0
