@@ -13,6 +13,10 @@ block append scripts
 
   script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js')
 
+  //- Stylesheet and Script for Legend
+  link(rel="stylesheet" href="/stylesheets/leaflet.legend.css")
+  script(type="text/javascript" src="/javascripts/leaflet.legend.js")
+
 block content
   block title 
   block map-content
@@ -21,7 +25,7 @@ block content
     <br><br>
 
     h1 Frequency of Current Energy Ratings
-    canvas(id="histogram1" position="relative" width="200" height = "100")
+    canvas(id="histogram1" position="relative" width="40vw" height = "20vh")
     
     <br><br>
     h1 Frequency of Potential Energy Ratings
@@ -53,6 +57,7 @@ block content
       })
 
       const propertiesInfo = !{JSON.stringify(propertiesInfo)};
+      const totalNumberOfProperties = propertiesInfo.length;
       console.log("Properties Info: ", propertiesInfo)
 
       //- Add all the markers of the propertiesInfo
@@ -63,8 +68,9 @@ block content
 
         // Add recommendations if they are present
         if (propertyInfo.recommendations) {
+          popupContent += "<br><br>Retrofit Suggestion:"
           for (let recommendation = 0; recommendation < propertyInfo.recommendations.Items.length; recommendation++) {
-            popupContent += `<br> Retrofit Suggestion ${recommendation+1}: ${propertyInfo.recommendations.Items[recommendation]['improvement-id-text']}`
+            popupContent += `<br> ${recommendation+1}) ${propertyInfo.recommendations.Items[recommendation]['improvement-id-text']}`
           }
         }
 
@@ -86,6 +92,28 @@ block content
         L.marker([propertyInfo.lat, propertyInfo.lng], {icon: icon}).bindPopup(popupContent).openPopup().addTo(map);
       }
 
+      // Create legend
+      L.control.Legend({
+        position: "bottomleft",
+        legends: [
+          {
+            label: "Energy Grade: A-C",
+            type: "image",
+            url: "/images/house-blue.png"
+          },
+          {
+            label: "Energy Grade: D-E",
+            type: "image",
+            url: "/images/house-yellow.png"
+          },
+          {
+            label: "Energy Grade: F-G",
+            type: "image",
+            url: "/images/house-red.png"
+          }
+          ]
+      }).addTo(map); 
+
       //- CHART for frequencyOfCurrentEnergyRatings
       const frequencyOfCurrentEnergyRatings = !{JSON.stringify(frequencyOfCurrentEnergyRatings)}
 
@@ -93,25 +121,40 @@ block content
       const chart1 = new Chart(ctx1, {
         type: 'bar',
         data: {
-          labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+          labels: [`A (${Math.round((frequencyOfCurrentEnergyRatings["A"]/totalNumberOfProperties*100))}%)`,
+                  `B (${Math.round((frequencyOfCurrentEnergyRatings["B"]/totalNumberOfProperties*100))}%)`,
+                  `C (${Math.round((frequencyOfCurrentEnergyRatings["C"]/totalNumberOfProperties*100))}%)`,
+                  `D (${Math.round((frequencyOfCurrentEnergyRatings["D"]/totalNumberOfProperties*100))}%)`,
+                  `E (${Math.round((frequencyOfCurrentEnergyRatings["E"]/totalNumberOfProperties*100))}%)`,
+                  `F (${Math.round((frequencyOfCurrentEnergyRatings["F"]/totalNumberOfProperties*100))}%)`,
+                  `G (${Math.round((frequencyOfCurrentEnergyRatings["G"]/totalNumberOfProperties*100))}%)`,
+          ],
           datasets: [{
             //- label: 'Frequency of Current Energy Ratings',
-            data: [frequencyOfCurrentEnergyRatings["A"], frequencyOfCurrentEnergyRatings["B"], frequencyOfCurrentEnergyRatings["C"], frequencyOfCurrentEnergyRatings["D"], frequencyOfCurrentEnergyRatings["E"], frequencyOfCurrentEnergyRatings["F"]],
+            data: [frequencyOfCurrentEnergyRatings["A"], 
+                    frequencyOfCurrentEnergyRatings["B"],
+                    frequencyOfCurrentEnergyRatings["C"],
+                    frequencyOfCurrentEnergyRatings["D"], 
+                    frequencyOfCurrentEnergyRatings["E"], 
+                    frequencyOfCurrentEnergyRatings["F"],
+                    frequencyOfCurrentEnergyRatings["G"]],
             backgroundColor: ['rgba(255, 99, 132, 0.2)',
                               'rgba(255, 159, 64, 0.2)',
                               'rgba(255, 205, 86, 0.2)',
                               'rgba(75, 192, 192, 0.2)',
                               'rgba(54, 162, 235, 0.2)',
-                              'rgba(153, 102, 255, 0.2)'],
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(201, 203, 207, 0.2)'],
             borderColor: [
               'rgb(255, 99, 132)',
               'rgb(255, 159, 64)',
               'rgb(255, 205, 86)',
               'rgb(75, 192, 192)',
               'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)'
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)',
             ],
-            borderWidth: 1
+            borderWidth: 1,
           }]
         },
         options: {
@@ -133,23 +176,39 @@ block content
       const chart2 = new Chart(ctx2, {
         type: 'bar',
         data: {
-          labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+          labels: [`A (${Math.round((frequencyOfPotentialEnergyRatings["A"]/totalNumberOfProperties*100))}%)`,
+                  `B (${Math.round((frequencyOfPotentialEnergyRatings["B"]/totalNumberOfProperties*100))}%)`,
+                  `C (${Math.round((frequencyOfPotentialEnergyRatings["C"]/totalNumberOfProperties*100))}%)`,
+                  `D (${Math.round((frequencyOfPotentialEnergyRatings["D"]/totalNumberOfProperties*100))}%)`,
+                  `E (${Math.round((frequencyOfPotentialEnergyRatings["E"]/totalNumberOfProperties*100))}%)`,
+                  `F (${Math.round((frequencyOfPotentialEnergyRatings["F"]/totalNumberOfProperties*100))}%)`,
+                  `G (${Math.round((frequencyOfPotentialEnergyRatings["G"]/totalNumberOfProperties*100))}%)`,
+          ],
           datasets: [{
             //- label: 'Frequency of Current Energy Ratings',
-            data: [frequencyOfPotentialEnergyRatings["A"], frequencyOfPotentialEnergyRatings["B"], frequencyOfPotentialEnergyRatings["C"], frequencyOfPotentialEnergyRatings["D"], frequencyOfPotentialEnergyRatings["E"], frequencyOfPotentialEnergyRatings["F"]],
+            data: [frequencyOfPotentialEnergyRatings["A"], 
+                  frequencyOfPotentialEnergyRatings["B"], 
+                  frequencyOfPotentialEnergyRatings["C"], 
+                  frequencyOfPotentialEnergyRatings["D"], 
+                  frequencyOfPotentialEnergyRatings["E"], 
+                  frequencyOfPotentialEnergyRatings["F"],
+                  frequencyOfPotentialEnergyRatings["G"]],
             backgroundColor: ['rgba(255, 99, 132, 0.2)',
                               'rgba(255, 159, 64, 0.2)',
                               'rgba(255, 205, 86, 0.2)',
                               'rgba(75, 192, 192, 0.2)',
                               'rgba(54, 162, 235, 0.2)',
-                              'rgba(153, 102, 255, 0.2)'],
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(201, 203, 207, 0.2)'],
+
             borderColor: [
               'rgb(255, 99, 132)',
               'rgb(255, 159, 64)',
               'rgb(255, 205, 86)',
               'rgb(75, 192, 192)',
               'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)'
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)',
             ],
             borderWidth: 1
           }]
