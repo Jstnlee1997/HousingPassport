@@ -24,13 +24,14 @@ block content
     button(type='button' value="Go back" onclick="location.href = '/map/'") Go Back to London Map
     <br><br>
 
-    h1 Frequency of Current Energy Ratings
-    canvas(id="histogram1" position="relative" width="40vw" height = "20vh")
+    h1 Frequency of Energy Ratings
+    div(class="container")
+      div(class="row")
+        div(class="column")
+          canvas(id="histogram1" position="relative" width="40vw" height = "20vh")
+        div(class="column")
+          canvas(id="histogram2" position="relative" width="200" height = "100")
     
-    <br><br>
-    h1 Frequency of Potential Energy Ratings
-    canvas(id="histogram2" position="relative" width="200" height = "100")
-
     script.
       //- Set up map
       var map = L.map("map").setView([51.493625, -0.224947], 13);
@@ -130,7 +131,7 @@ block content
                   `G (${Math.round((frequencyOfCurrentEnergyRatings["G"]/totalNumberOfProperties*100))}%)`,
           ],
           datasets: [{
-            //- label: 'Frequency of Current Energy Ratings',
+            label: 'Frequency of Current Energy Ratings',
             data: [frequencyOfCurrentEnergyRatings["A"], 
                     frequencyOfCurrentEnergyRatings["B"],
                     frequencyOfCurrentEnergyRatings["C"],
@@ -164,7 +165,7 @@ block content
             }
           },
           legend: {
-            display: false 
+            display: true 
           }
         }
       })
@@ -185,7 +186,7 @@ block content
                   `G (${Math.round((frequencyOfPotentialEnergyRatings["G"]/totalNumberOfProperties*100))}%)`,
           ],
           datasets: [{
-            //- label: 'Frequency of Current Energy Ratings',
+            label: 'Frequency of Potential Energy Ratings',
             data: [frequencyOfPotentialEnergyRatings["A"], 
                   frequencyOfPotentialEnergyRatings["B"], 
                   frequencyOfPotentialEnergyRatings["C"], 
@@ -220,7 +221,7 @@ block content
             }
           },
           legend: {
-            display: false 
+            display: true 
           }
         }
       })
