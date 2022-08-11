@@ -7,26 +7,28 @@ const {
 const router = require("express").Router();
 
 router
-  .route("/:lmkKey/:serialNumber")
+  .route("/")
   .get((req, res, next) => {
     // Check if there is existing smart-meter in database
-    getSmartMeterInformation(req.params.lmkKey, req.params.serialNumber).then(
-      async (result) => {
-        if (result) {
-          res.send(result);
-        } else {
-          res
-            .status(404)
-            .send(
-              "There is no smart meter information by the given lmk-key and serial-number"
-            );
-        }
+    console.log(req.query);
+    getSmartMeterInformation(
+      req.query["lmk-key"],
+      req.query["serial-number"]
+    ).then(async (result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        res
+          .status(404)
+          .send(
+            "There is no smart meter information by the given lmk-key and serial-number"
+          );
       }
-    );
+    });
   })
   .post(async (req, res, next) => {
-    const lmkKey = req.params.lmkKey;
-    const serialNumber = req.params.serialNumber;
+    const lmkKey = req.body.lmkKey;
+    const serialNumber = req.body.serialNumber;
     const intervalStart = new Date(req.body.intervalStart).toString();
     const electricityConsumption = req.body.electricityConsumption;
     const gasConsumption = req.body.gasConsumption;
