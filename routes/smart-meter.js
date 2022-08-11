@@ -7,41 +7,45 @@ const {
 const router = require("express").Router();
 
 router
-  .route("/:lmkKey")
+  .route("/:lmkKey/:serialNumber")
   .get((req, res, next) => {
     // Check if there is existing smart-meter in database
-    getSmartMeterInformation(req.params.lmkKey).then(async (result) => {
-      if (result) {
-        res.send(result);
-      } else {
-        res
-          .status(404)
-          .send("There is no smart meter information by the given lmk-key");
+    getSmartMeterInformation(req.params.lmkKey, req.params.serialNumber).then(
+      async (result) => {
+        if (result) {
+          res.send(result);
+        } else {
+          res
+            .status(404)
+            .send(
+              "There is no smart meter information by the given lmk-key and serial-number"
+            );
+        }
       }
-    });
+    );
   })
   .post(async (req, res, next) => {
     const lmkKey = req.params.lmkKey;
-    const smartMeterSerialNumber = req.body.smartMeterSerialNumber;
+    const serialNumber = req.params.serialNumber;
     const intervalStart = new Date(req.body.intervalStart).toString();
     const electricityConsumption = req.body.electricityConsumption;
     const gasConsumption = req.body.gasConsumption;
     const smartMeterInformation = {
       "lmk-key": lmkKey,
-      smartMeterSerialNumber: smartMeterSerialNumber,
+      "serial-number": serialNumber,
       intervalStart: intervalStart,
       electricityConsumption: electricityConsumption,
       gasConsumption: gasConsumption,
     };
 
     // Check if there is existing smart-meter in database
-    getSmartMeterInformation(lmkKey).then(async (result) => {
+    getSmartMeterInformation(lmkKey, serialNumber).then(async (result) => {
       if (result) {
         // Update existing smart-meter information
         await addSmartMeter(smartMeterInformation);
         res.status(200)
           .send(`Updating existing smart meter with lmk-key: ${lmkKey}
-            Serial Number: ${smartMeterSerialNumber}
+            Serial Number: ${serialNumber}
             Interval Start: ${intervalStart}
             Electricity Consumption: ${electricityConsumption}
             Gas Consumption: ${gasConsumption}`);
@@ -52,7 +56,7 @@ router
             // Add new smart-meter into database
             await addSmartMeter(smartMeterInformation);
             res.status(200).send(`New smart meter saved with lmk-key: ${lmkKey}
-              Serial Number: ${smartMeterSerialNumber}
+              Serial Number: ${serialNumber}
               Interval Start: ${intervalStart}
               Electricity Consumption: ${electricityConsumption}
               Gas Consumption: ${gasConsumption}`);

@@ -22,11 +22,12 @@ const addSmartMeter = async (smartMeterInformation) => {
 };
 
 // Function to get smart meter information using lmk-key
-const getSmartMeterInformation = async (lmkKey) => {
+const getSmartMeterInformation = async (lmkKey, serialNumber) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
       "lmk-key": lmkKey,
+      "serial-number": serialNumber,
     },
   };
   return await (
@@ -34,7 +35,7 @@ const getSmartMeterInformation = async (lmkKey) => {
   ).Item;
 };
 // Testing function getSmartMeterInformation
-// getSmartMeterInformation("1573380469022017090821481343938953").then(
+// getSmartMeterInformation("1573380469022017090821481343938953", "2000024512368").then(
 //   async (res) => {
 //     if (res) {
 //       console.log("Smart meter information: ", res);
