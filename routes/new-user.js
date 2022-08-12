@@ -35,6 +35,12 @@ router.route("/postcode").get(checkAuthenticated, async (req, res, next) => {
     // Get the postcode from the request and get all the relevant addresses
     const postcode = req.query.postcode;
     const response = await getCertificatesOfPostCode(postcode);
+    if (Object.keys(response).length === 0) {
+      console.log(response.length);
+      // No addresses under given postcode
+      console.log("Invalid postcode");
+      return res.redirect("/");
+    }
     var addresses = [];
 
     // Add all the addresses with the same postcode

@@ -118,6 +118,8 @@ const getCertificatesOfPostCode = async (postcode) => {
       // console.log(res.status);
       if (res.data) {
         return res.data["rows"];
+      } else {
+        return {};
       }
     })
     .catch((err) => {
