@@ -86,6 +86,7 @@ router
         res.render("index", {
           title: "Housing Passport",
           certificate: certificate,
+          smartMeterInformation: [], // No smartmeter information at this point
           recommendations: await (
             await getRecommendationsByLmkKey(lmkKey)
           ).Items,

@@ -55,7 +55,6 @@ router
     console.log("Newly edited epc-certificate: ", certificate);
 
     /* Update aggregate data before updating epc-certificate */
-    const localAuthority = certificate["local-authority"];
     updateAggregateDataOfLocalAuthority(certificate).then(async (res) => {
       /* Update epc-certificate table */
       await updateCertificate(certificate);

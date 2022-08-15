@@ -68,7 +68,8 @@ block content
     const latlongsOfLocalAuthorities = !{JSON.stringify(latlongsOfLocalAuthorities)}
     for (const localAuthority of localAuthorities) {
       // Create popup content to display aggregated data for each local-authority
-      const popupContent = `Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
+      const popupContent = `Local Region: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority-label"]}<br>
+                            Local Authority: ${aggregateDataOfLocalAuthorities[localAuthority]["local-authority"]}<br>
                             Average Current Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["current-energy-rating"]}<br>
                             Average Current Energy Efficiency: ${Math.round(aggregateDataOfLocalAuthorities[localAuthority]["current-energy-efficiency"]*100)/100}<br>
                             Average Potential Energy Rating: ${aggregateDataOfLocalAuthorities[localAuthority]["potential-energy-rating"]}<br>
