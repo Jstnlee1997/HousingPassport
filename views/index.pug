@@ -157,17 +157,21 @@ block content
   if smartMeterInformation.length > 0
     div(class="container smart-meter-items")
       h2 Smart Meter Data 
-      each smartMeter in smartMeterInformation
-        br
-        dl 
-          dt Smart Meter Serial Number: 
-          dd #{smartMeter['serial-number']}
-          dt Interval Start:
-          dd #{smartMeter['intervalStart']}
-          dt Electricty Consumption:
-          dd #{smartMeter['electricityConsumption']} kWh
-          dt Gas Consumption:
-          dd #{smartMeter['gasConsumption']} kWh
+      table 
+        thead 
+          tr 
+            th Serial Number
+            th Electricity Consumption (kWh) 
+            th Gas Consumption (kWh)
+            th Measurement Interval
+        tbody 
+          each smartMeter in smartMeterInformation
+            tr 
+              td #{smartMeter['serial-number']}
+              td #{smartMeter['electricityConsumption']}
+              td #{smartMeter['gasConsumption']}
+              td #{smartMeter['intervalStart']}
+      br
     
   if recommendations.length > 0
     div(class="container recommendation-items")
