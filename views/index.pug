@@ -154,18 +154,20 @@ block content
         dd #{certificate['mechanical-ventilation']}
       br
 
-  if smartMeterInformation
+  if smartMeterInformation.length > 0
     div(class="container smart-meter-items")
       h2 Smart Meter Data 
-      dl 
-        dt Smart Meter Serial Number: 
-        dd #{smartMeterInformation['smartMeterSerialNumber']}
-        dt Interval Start:
-        dd #{smartMeterInformation['intervalStart']}
-        dt Electricty Consumption:
-        dd #{smartMeterInformation['electricityConsumption']} kWh
-        dt Gas Consumption:
-        dd #{smartMeterInformation['gasConsumption']} kWh
+      each smartMeter in smartMeterInformation
+        br
+        dl 
+          dt Smart Meter Serial Number: 
+          dd #{smartMeter['serial-number']}
+          dt Interval Start:
+          dd #{smartMeter['intervalStart']}
+          dt Electricty Consumption:
+          dd #{smartMeter['electricityConsumption']} kWh
+          dt Gas Consumption:
+          dd #{smartMeter['gasConsumption']} kWh
     
   if recommendations.length > 0
     div(class="container recommendation-items")

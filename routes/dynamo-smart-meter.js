@@ -21,8 +21,33 @@ const addSmartMeter = async (smartMeterInformation) => {
   return await dynamoClient.put(params).promise();
 };
 
-// Function to get smart meter information using lmk-key
-const getSmartMeterInformation = async (lmkKey, serialNumber) => {
+// Function to get all the smart meter information using lmk-key
+const getSmartMeterInformationByLmkKey = async (lmkKey) => {
+  const params = {
+    TableName: TABLE_NAME,
+    ExpressionAttributeNames: {
+      "#lk": "lmk-key",
+    },
+    ExpressionAttributeValues: {
+      ":lk": lmkKey,
+    },
+    KeyConditionExpression: "#lk = :lk",
+  };
+  // console.log(params);
+  return await dynamoClient.query(params).promise();
+};
+// Testing function getSmartMeterInformationByLmkKey
+// getSmartMeterInformationByLmkKey("1573380469022017090821481343938953").then(
+//   async (res) => {
+//     console.log(res);
+//   }
+// );
+
+// Function to get smart meter information using lmk-key and serialNumber
+const getSmartMeterInformationByLmkKeyAndSerialNumber = async (
+  lmkKey,
+  serialNumber
+) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
@@ -34,8 +59,8 @@ const getSmartMeterInformation = async (lmkKey, serialNumber) => {
     await dynamoClient.get(params).promise()
   ).Item;
 };
-// Testing function getSmartMeterInformation
-// getSmartMeterInformation("1573380469022017090821481343938953", "2000024512368").then(
+// Testing function getSmartMeterInformationByLmkKeyAndSerialNumber
+// getSmartMeterInformationByLmkKeyAndSerialNumber("1573380469022017090821481343938953", "2000024512368").then(
 //   async (res) => {
 //     if (res) {
 //       console.log("Smart meter information: ", res);
@@ -48,5 +73,6 @@ const getSmartMeterInformation = async (lmkKey, serialNumber) => {
 module.exports = {
   dynamoClient,
   addSmartMeter,
-  getSmartMeterInformation,
+  getSmartMeterInformationByLmkKey,
+  getSmartMeterInformationByLmkKeyAndSerialNumber,
 };

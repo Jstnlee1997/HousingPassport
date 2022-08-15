@@ -1,6 +1,6 @@
 const { getCertificateByLmkKey } = require("./dynamo-epc-certificates");
 const {
-  getSmartMeterInformation,
+  getSmartMeterInformationByLmkKeyAndSerialNumber,
   addSmartMeter,
 } = require("./dynamo-smart-meter");
 
@@ -11,7 +11,7 @@ router
   .get((req, res, next) => {
     // Check if there is existing smart-meter in database
     console.log(req.query);
-    getSmartMeterInformation(
+    getSmartMeterInformationByLmkKeyAndSerialNumber(
       req.query["lmk-key"],
       req.query["serial-number"]
     ).then(async (result) => {
@@ -41,38 +41,41 @@ router
     };
 
     // Check if there is existing smart-meter in database
-    getSmartMeterInformation(lmkKey, serialNumber).then(async (result) => {
-      if (result) {
-        // Update existing smart-meter information
-        await addSmartMeter(smartMeterInformation);
-        res.status(200)
-          .send(`Updating existing smart meter with lmk-key: ${lmkKey}
+    getSmartMeterInformationByLmkKeyAndSerialNumber(lmkKey, serialNumber).then(
+      async (result) => {
+        if (result) {
+          // Update existing smart-meter information
+          await addSmartMeter(smartMeterInformation);
+          res.status(200)
+            .send(`Updating existing smart meter with lmk-key: ${lmkKey}
             Serial Number: ${serialNumber}
             Interval Start: ${intervalStart}
             Electricity Consumption: ${electricityConsumption}
             Gas Consumption: ${gasConsumption}`);
-      } else {
-        // Check that there is an existing epc-certificate in database
-        getCertificateByLmkKey(lmkKey).then(async (result) => {
-          if (result) {
-            // Add new smart-meter into database
-            await addSmartMeter(smartMeterInformation);
-            res.status(200).send(`New smart meter saved with lmk-key: ${lmkKey}
+        } else {
+          // Check that there is an existing epc-certificate in database
+          getCertificateByLmkKey(lmkKey).then(async (result) => {
+            if (result) {
+              // Add new smart-meter into database
+              await addSmartMeter(smartMeterInformation);
+              res.status(200)
+                .send(`New smart meter saved with lmk-key: ${lmkKey}
               Serial Number: ${serialNumber}
               Interval Start: ${intervalStart}
               Electricity Consumption: ${electricityConsumption}
               Gas Consumption: ${gasConsumption}`);
-          } else {
-            // No epc-certificate present
-            res
-              .status(404)
-              .send(
-                "There is no EPC Certificate to add smart meter information to"
-              );
-          }
-        });
+            } else {
+              // No epc-certificate present
+              res
+                .status(404)
+                .send(
+                  "There is no EPC Certificate to add smart meter information to"
+                );
+            }
+          });
+        }
       }
-    });
+    );
   });
 
 module.exports = router;
