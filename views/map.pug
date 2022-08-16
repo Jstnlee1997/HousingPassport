@@ -2,12 +2,14 @@ extends layout
 block append metas 
   meta(name="description" content="This is the map of London")
 
-block append scripts 
-
 block content
   link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
   crossorigin="")
+
+  h1= title 
+  div(class="map-wrapper")
+    #map
 
   script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
@@ -16,10 +18,6 @@ block content
   //- Stylesheet and Script for Legend
   link(rel="stylesheet" href="/stylesheets/leaflet.legend.css")
   script(type="text/javascript" src="/javascripts/leaflet.legend.js")
-  
-  h1= title 
-  div(class="map-wrapper")
-    #map
 
   script.
     var map = L.map('map').setView([51.509865, -0.118092], 12);

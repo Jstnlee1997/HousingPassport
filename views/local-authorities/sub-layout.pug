@@ -2,24 +2,12 @@ extends ../layout
 block append metas 
   meta(name="description" content="Local Authority Map")
 
-block append scripts 
-  
-
 block content
   link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
   crossorigin="")
 
-  script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-  integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-  crossorigin="")
 
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js')
-
-  //- Stylesheet and Script for Legend
-  link(rel="stylesheet" href="/stylesheets/leaflet.legend.css")
-  script(type="text/javascript" src="/javascripts/leaflet.legend.js")
-  
   block title 
   block map-content
     div(class="map-wrapper")
@@ -34,6 +22,18 @@ block content
           canvas(id="histogram1" position="relative" width="40vw" height = "20vh")
         div(class="column")
           canvas(id="histogram2" position="relative" width="200" height = "100")
+
+    //- Script for Leaflet.js
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin="")
+    
+    //- Script for Chart.js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js')
+
+    //- Stylesheet and Script for Legend
+    link(rel="stylesheet" href="/stylesheets/leaflet.legend.css")
+    script(type="text/javascript" src="/javascripts/leaflet.legend.js")
     
     script.
       //- Set up map
