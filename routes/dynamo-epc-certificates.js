@@ -199,6 +199,7 @@ const deleteCertificateByLmkKey = async (lmkKey) => {
 // Test deleteCertificateByLmkKey
 // deleteCertificateByLmkKey("688958059312011101217142998999994");
 
+// Function to add longlat coordinates to all epc-certificates
 async function addLongLatCoordinates(event, context) {
   let tableContents;
   try {
@@ -242,6 +243,43 @@ async function addLongLatCoordinates(event, context) {
   return response;
 }
 
+// Function to add Last Updated to all epc-certificates
+async function addUpdatedAtToAllCertificates(event, context) {
+  let tableContents;
+  try {
+    // get items from dynamo
+    const params = { TableName: TABLE_NAME };
+    tableContents = await scanDB(params);
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+  let calls = [];
+  tableContents.slice(1200, 1400).forEach(function (value) {
+    const timestamp = Date.now();
+    console.log(timestamp);
+    let params = {
+      TableName: TABLE_NAME,
+      Key: {
+        "lmk-key": value["lmk-key"],
+      },
+      UpdateExpression: "SET updatedAt = :ua",
+      ExpressionAttributeValues: {
+        ":ua": timestamp,
+      },
+    };
+    calls.push(dynamoClient.update(params).promise());
+  });
+  let response;
+  try {
+    response = await Promise.all(calls);
+  } catch (err) {
+    console.log(err);
+  }
+  return response;
+}
+// addUpdatedAtToAllCertificates();
+
 async function scanDB(params) {
   let dynamoContents = [];
   let items;
@@ -252,8 +290,6 @@ async function scanDB(params) {
   } while (typeof items.LastEvaluatedKey != "undefined");
   return dynamoContents;
 }
-
-// addLongLatCoordinates();
 
 module.exports = {
   dynamoClient,

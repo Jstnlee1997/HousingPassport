@@ -152,7 +152,10 @@ block content
       if certificate['mechanical-ventilation']
         dt Mechanical Ventilation:
         dd #{certificate['mechanical-ventilation']}
+      dt Last Updated: 
+      dd #{new Date(certificate['updatedAt']).getDate()}/#{new Date(certificate['updatedAt']).getMonth()+1}/#{new Date(certificate['updatedAt']).getFullYear()}
       br
+      
 
   if smartMeterInformation.length > 0
     div(class="container smart-meter-items")
