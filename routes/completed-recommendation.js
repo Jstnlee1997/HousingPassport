@@ -1,5 +1,8 @@
 const { checkAuthenticated } = require(".");
 const {
+  updateLastUpdatedOfCertificateByLmkKey,
+} = require("./dynamo-epc-certificates");
+const {
   addCompletedRecommendation,
 } = require("./dynamo-epc-completed-recommendations");
 const {
@@ -40,6 +43,9 @@ router.route("/").post(checkAuthenticated, async (req, res, next) => {
 
   // Update propertyInfo of property
   await updateRecommendationsInfoOfProperty(localAuthority, lmkKey);
+
+  // updatedAt should be Date.now()
+  await updateLastUpdatedOfCertificateByLmkKey(lmkKey);
 
   console.log("Succesfully completed a recommendation");
 

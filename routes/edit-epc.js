@@ -52,6 +52,9 @@ router
     certificate["potential-energy-rating"] = await returnNewEnergyRating(
       certificate["potential-energy-efficiency"]
     );
+
+    /* updatedAt attribute should change */
+    certificate["updatedAt"] = Date.now();
     console.log("Newly edited epc-certificate: ", certificate);
 
     /* Update aggregate data before updating epc-certificate */

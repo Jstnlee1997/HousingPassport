@@ -184,6 +184,22 @@ const fakeNewCertificate = {
 };
 // addCertificate(fakeNewCertificate.Item);
 
+const updateLastUpdatedOfCertificateByLmkKey = async (lmkKey) => {
+  // Get the certificate
+  const certificate = await getCertificateByLmkKey(lmkKey);
+  const oldTimestamp = certificate.updatedAt;
+  // Edit the updatedAt attribute
+  const newTimestamp = Date.now();
+  certificate.updatedAt = newTimestamp;
+
+  console.log(
+    `Previous timestamp: ${oldTimestamp}, new timestamp: ${newTimestamp}`
+  );
+
+  // update certificate in table
+  return await updateCertificate(certificate);
+};
+
 const deleteCertificateByLmkKey = async (lmkKey) => {
   const params = {
     TableName: TABLE_NAME,
@@ -297,5 +313,6 @@ module.exports = {
   getCertificateByLmkKey,
   addCertificate,
   updateCertificate,
+  updateLastUpdatedOfCertificateByLmkKey,
   deleteCertificateByLmkKey,
 };
