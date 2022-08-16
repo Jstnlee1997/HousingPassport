@@ -113,7 +113,7 @@ router
     try {
       await updateAddressAndLmkKeyUsingId(address, lmkKey, userId);
       console.log(`New address is: ${address}, and lmk-key is: ${lmkKey}`);
-      res.redirect("/");
+      res.status(201).redirect("/");
     } catch (err) {
       // No 2 users can have the same lmk-key
       console.log(err);

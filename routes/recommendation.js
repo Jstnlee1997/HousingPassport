@@ -51,11 +51,8 @@ const addRecommendationsByLmkKey = async (lmkKey) => {
 
 /* GET all recommendations given an lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
-  // console.log(req.params);
-
   // check if there is an lmk-key in the database
-  const found = getRecommendationsByLmkKey(req.params.lmkKey);
-  found.then((result) => {
+  getRecommendationsByLmkKey(req.params.lmkKey).then((result) => {
     // Display all the recommendations if valid
     if (result) {
       res.send(result.rows);

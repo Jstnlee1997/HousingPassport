@@ -49,7 +49,7 @@ router.route("/").post(checkAuthenticated, async (req, res, next) => {
 
   console.log("Succesfully completed a recommendation");
 
-  res.redirect("/");
+  res.status(201).redirect("/");
 });
 
 module.exports = router;

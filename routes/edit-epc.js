@@ -63,7 +63,7 @@ router
       await updateCertificate(certificate);
     });
 
-    res.redirect("/");
+    res.status(201).redirect("/");
   });
 
 module.exports = router;

@@ -168,13 +168,10 @@ router.route("/:lmkKey").get((req, res, next) => {
 
 /* GET certificates for postcode query */
 router.route("/postcode/:postcode").get((req, res, next) => {
-  // console.log(req.params);
-
   // check if there are returned certificates
-  const found = getCertificatesOfPostCode(req.params.postcode);
-  found.then((result) => {
-    if (result) {
-      res.send(result["rows"]);
+  getCertificatesOfPostCode(req.params.postcode).then((result) => {
+    if (Object.keys(result).length > 0) {
+      res.send(result);
     } else {
       res.status(404).send("No certificates under indicated postcode");
     }
