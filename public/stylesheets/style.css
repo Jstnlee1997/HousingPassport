@@ -9,7 +9,7 @@
   margin: 0;     /* by default, all elements (selector *) have no margin */
 }
 html {
-  width: 100%;                    /* 100% width of parent (root) element */
+  width: 100vw;                    /* 100% width of parent (root) element */
   height: 100vh;                              /* 100% height of viewport */
   background: rgb(0, 0, 0, 0.1);                            /* 10% black */
   font-size: 1.0em;                                /* our root font size */
@@ -184,6 +184,9 @@ th, td {
 }
 
 /* Style for Maps */
+.map-wrapper {
+  height:80vh;
+}
 #map {
-  height: 80vh;
+  height:100%
 }

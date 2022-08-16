@@ -20,7 +20,8 @@ block append scripts
 block content
   block title 
   block map-content
-    #map
+    div(class="map-wrapper")
+      #map
     button(type='button' value="Go back" onclick="location.href = '/map/'") Go Back to London Map
     <br><br>
 
@@ -43,17 +44,14 @@ block content
       //- Create different marker icons
       var houseBlue = L.icon({
         iconUrl: '/images/house-blue.png',
-        iconSize: [24, 14],
         iconAnchor: [12, 7]
       })
       var houseYellow = L.icon({
         iconUrl: '/images/house-yellow.png',
-        iconSize: [24, 14],
         iconAnchor: [12, 7]
       })
       var houseRed = L.icon({
         iconUrl: '/images/house-red.png',
-        iconSize: [24, 14],
         iconAnchor: [12, 7]
       })
 
