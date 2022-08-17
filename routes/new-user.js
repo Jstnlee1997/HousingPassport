@@ -39,7 +39,7 @@ router.route("/postcode").get(checkAuthenticated, async (req, res, next) => {
       console.log(response.length);
       // No addresses under given postcode
       console.log("Invalid postcode");
-      return res.redirect("/");
+      return res.redirect("/new-user");
     }
     var addresses = [];
 

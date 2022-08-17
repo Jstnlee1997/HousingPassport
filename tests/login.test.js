@@ -35,24 +35,6 @@ describe("Login User", () => {
     loginUser()
   );
 
-  function loginUser() {
-    return function (done) {
-      server
-        .post("/login")
-        .send({
-          email: process.env.USER_LOGIN_EMAIL,
-          password: process.env.USER_LOGIN_PASSWORD,
-        })
-        .expect(302)
-        .expect("Location", "/")
-        .end((err, res) => {
-          if (err) return done(err);
-
-          return done();
-        });
-    };
-  }
-
   it("GET /index with registered user should return 200 with valid EPC data and logout button", (done) => {
     server
       .get("/")
@@ -70,3 +52,34 @@ describe("Login User", () => {
       });
   });
 });
+
+describe("Logout User", () => {
+  it("DEL /logout should log user out and redirect to login page", (done) => {
+    server
+      .del("/logout")
+      .expect(302)
+      .expect("Content-Type", "text/plain; charset=utf-8")
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.text.includes("Redirect to /login"));
+        done();
+      });
+  });
+});
+
+function loginUser() {
+  return function (done) {
+    server
+      .post("/login")
+      .send({
+        email: process.env.USER_LOGIN_EMAIL,
+        password: process.env.USER_LOGIN_PASSWORD,
+      })
+      .expect(302)
+      .expect("Location", "/")
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  };
+}
