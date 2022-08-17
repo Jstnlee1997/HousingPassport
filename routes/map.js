@@ -4018,7 +4018,7 @@ router.route("/").get((req, res, next) => {
     );
 
     res.render("map", {
-      title: "Map of London",
+      title: "Map of UK",
       localAuthorities: localAuthorities,
       latlongsOfLocalAuthorities: latlongsOfLocalAuthorities,
       aggregateDataOfLocalAuthorities: aggregateDataOfLocalAuthorities,
