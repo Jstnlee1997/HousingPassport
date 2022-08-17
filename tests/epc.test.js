@@ -4,7 +4,7 @@ const app = require("../app");
 const validLmkKey = "1573380469022017090821481343938953";
 
 describe("EPC Certificates", () => {
-  it("GET /epc/:lmkkey should return certificate if valid", () => {
+  it("GET /epc/:lmkKey should return certificate if valid", () => {
     return request(app)
       .get(`/epc/${validLmkKey}`)
       .expect(200)
@@ -18,7 +18,7 @@ describe("EPC Certificates", () => {
       });
   });
 
-  it("GET /epc/:lmkkey should return 404 if not found", () => {
+  it("GET /epc/:lmkKey should return 404 if not found", () => {
     return request(app).get("/epc/abc").expect(404);
   });
 

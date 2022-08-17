@@ -60,7 +60,6 @@ describe("GET /new-user/postcode", () => {
       .expect("Content-Type", "text/html; charset=utf-8")
       .end(function (err, res) {
         if (err) return done(err);
-        console.log(res.text);
         expect(res.text.includes("postal code: s12"));
         expect(res.text.includes('form action="/" method="POST"'));
         expect(res.text.includes('input type="radio" name="address"'));
@@ -79,6 +78,31 @@ describe("GET /new-user/postcode", () => {
         done();
       });
   });
+
+  it("logout user without address", logoutUserWithoutAddress());
+  it("login user WITH address", loginValidUserWithAddress());
+
+  it("GET /new-user with user that has address should redirect back to index page", (done) => {
+    server
+      .get("/new-user")
+      .expect("Location", "/")
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.text.includes("Redirecting to /"));
+        done();
+      });
+  });
+
+  it("GET /new-user/postcode with user that has address should redirect back to index page", (done) => {
+    server
+      .get("/new-user/postcode?postcode=s12")
+      .expect("Location", "/")
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.text.includes("Redirecting to /"));
+        done();
+      });
+  });
 });
 
 function loginUserWithoutAddress() {
@@ -91,6 +115,19 @@ function loginUserWithoutAddress() {
       })
       .expect(302)
       .expect("Location", "/")
+      .end((err, res) => {
+        if (err) return done(err);
+        return done();
+      });
+  };
+}
+
+function logoutUserWithoutAddress() {
+  return function (done) {
+    server
+      .del("/logout")
+      .expect(302)
+      .expect("Location", "/login")
       .end((err, res) => {
         if (err) return done(err);
         return done();

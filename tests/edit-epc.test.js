@@ -3,7 +3,7 @@ var server = request.agent("http://localhost:3000");
 require("dotenv").config();
 
 describe("GET /edit-epc", () => {
-  it("GET /edit-epc with NOT authenticated should return 302 and redirect to /login", (done) => {
+  it("GET /edit-epc with NOT authenticated user should return 302 and redirect to /login", (done) => {
     server
       .get("/edit-epc")
       .expect(302)
@@ -17,7 +17,7 @@ describe("GET /edit-epc", () => {
   });
 
   it("login", loginUser());
-  it("GET /edit-epc should return 200 and form for user to edit and POST", (done) => {
+  it("GET /edit-epc with authenticated user should return 200 and form for user to edit and POST", (done) => {
     server
       .get("/edit-epc")
       .expect(200)

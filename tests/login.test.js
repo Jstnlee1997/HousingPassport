@@ -59,6 +59,7 @@ describe("Logout User", () => {
       .del("/logout")
       .expect(302)
       .expect("Content-Type", "text/plain; charset=utf-8")
+      .expect("Location", "/login")
       .end((err, res) => {
         if (err) return done(err);
         expect(res.text.includes("Redirect to /login"));
