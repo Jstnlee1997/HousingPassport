@@ -154,16 +154,26 @@ const getLmkKeyOfAddress = async (address) => {
 /* GET certificate of lmk-key */
 router.route("/:lmkKey").get((req, res, next) => {
   // console.log(req.params);
-
-  // check if there is an lmk-key in the database
-  getCertificateByLmkKey(req.params.lmkKey).then((result) => {
-    // Display the epc certificate if valid
-    if (result) {
-      res.send(result);
-    } else {
+  axios
+    .get(
+      `https://epc.opendatacommunities.org/api/v1/domestic/certificate/${req.params.lmkKey}`,
+      {
+        headers: {
+          Authorization: Authorization,
+          Accept: Accept,
+        },
+      }
+    )
+    .then(async (result) => {
+      if (result.data) {
+        // Display the epc certificate if valid
+        res.send(result.data["rows"][0]);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
       res.status(404).send("There is no certificate by the given lmk-key");
-    }
-  });
+    });
 });
 
 /* GET certificates for postcode query */
