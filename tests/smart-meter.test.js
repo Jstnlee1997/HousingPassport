@@ -5,7 +5,7 @@ const validLmkKey = "1573380469022017090821481343938953";
 const validSerialNumber = "2000024512368";
 
 describe("Smart Meter GET Tests", () => {
-  it("GET /smart-meter/?lmk-key=<lmkKey>&serial-number=<serialNumber> should return smart-meter data if valid", () => {
+  it("GET /smart-meter/?lmk-key=<lmkKey>&serial-number=<serialNumber> should return smart-meter information if valid", () => {
     return request(app)
       .get(
         `/smart-meter/?lmk-key=${validLmkKey}&serial-number=${validSerialNumber}`
@@ -18,8 +18,6 @@ describe("Smart Meter GET Tests", () => {
             "lmk-key": validLmkKey,
             "serial-number": validSerialNumber,
             intervalStart: expect.any(String),
-            electricityConsumption: expect.any(String),
-            gasConsumption: expect.any(String),
           })
         );
       });

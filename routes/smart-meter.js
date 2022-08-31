@@ -10,28 +10,31 @@ router
   .route("/")
   .get((req, res, next) => {
     console.log(req.query);
+    const lmkKey = req.query["lmk-key"];
+    const serialNumber = req.query["serial-number"];
     // Check if lmk-key and serial-number is present in query
-    if (
-      req.query["lmk-key"].length === 0 ||
-      req.query["serial-number"].length === 0
-    ) {
+    if (lmkKey.length === 0 || serialNumber.length === 0) {
       return res.status(422).send("Invalid query parameters");
     }
     // Check if there is existing smart-meter in database
-    getSmartMeterInformationByLmkKeyAndSerialNumber(
-      req.query["lmk-key"],
-      req.query["serial-number"]
-    ).then(async (result) => {
-      if (result) {
-        res.send(result);
-      } else {
-        res
-          .status(404)
-          .send(
-            "There is no smart meter information by the given lmk-key and serial-number"
-          );
+    getSmartMeterInformationByLmkKeyAndSerialNumber(lmkKey, serialNumber).then(
+      async (result) => {
+        if (result) {
+          var data = {};
+          // do not send electricity and gas consumption
+          data["lmk-key"] = lmkKey;
+          data["serial-number"] = serialNumber;
+          data["intervalStart"] = result.intervalStart;
+          res.send(data);
+        } else {
+          res
+            .status(404)
+            .send(
+              "There is no smart meter information by the given lmk-key and serial-number"
+            );
+        }
       }
-    });
+    );
   })
   .post(async (req, res, next) => {
     // Ensure that all parameters are present
